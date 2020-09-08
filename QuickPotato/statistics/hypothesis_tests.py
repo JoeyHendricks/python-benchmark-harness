@@ -36,7 +36,7 @@ class TTest:
         -------
 
         """
-        return self.run_test()
+        return self.run_t_test()
 
     @property
     def t_value(self):
@@ -66,8 +66,8 @@ class TTest:
         """
         return stats.t.ppf(q=1-.05/2, df=self.baseline_number_of_samples-2)
 
-    @save_t_test_evidence_to_regression_test_report
-    def run_test(self):
+    @save_evidence_test_report
+    def run_t_test(self):
         """
 
         Returns
@@ -104,7 +104,7 @@ class FTest:
 
     @property
     def results(self):
-        return self.run_test()
+        return self.run_f_test()
 
     @property
     def f_value(self):
@@ -136,8 +136,8 @@ class FTest:
         return stats.f.ppf(q=1-0.05, dfn=self.benchmark_number_of_samples - 1,
                            dfd=self.benchmark_number_of_samples - 1)
 
-    @save_f_test_evidence_to_regression_test_report
-    def run_test(self):
+    @save_evidence_test_report
+    def run_f_test(self):
         """
 
         Returns

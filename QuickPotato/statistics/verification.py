@@ -1,7 +1,7 @@
-from QuickPotato.utilities.decorators import save_evidence_to_boundaries_test_report
+from QuickPotato.utilities.decorators import save_evidence_test_report
 
 
-@save_evidence_to_boundaries_test_report
+@save_evidence_test_report
 def validate_max_boundary_of_measurements(metric, threshold):
     """
     :return:
@@ -16,7 +16,7 @@ def validate_max_boundary_of_measurements(metric, threshold):
         return False
 
 
-@save_evidence_to_boundaries_test_report
+@save_evidence_test_report
 def validate_min_boundary_of_measurements(metric, threshold):
     """
     :return:
