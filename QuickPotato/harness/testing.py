@@ -1,5 +1,5 @@
 from QuickPotato.configuration.rules import Boundaries, RegressionSettings
-from QuickPotato.utilities.decorators import save_to_regression_test_report
+from QuickPotato.utilities.decorators import save_to_test_report
 from QuickPotato.statistics.hypothesis_tests import TTest, FTest
 from QuickPotato.harness.results import Measurements
 from QuickPotato.database.actions import DatabaseActions
@@ -171,6 +171,7 @@ class UnitPerformanceTest(Boundaries, Measurements, RegressionSettings):
         else:
             return True
 
+    @save_to_test_report
     def analyse_benchmark_against_defined_boundaries(self):
         """
         This method will validate how well the benchmark will hold up to the
@@ -206,7 +207,7 @@ class UnitPerformanceTest(Boundaries, Measurements, RegressionSettings):
 
         return self._inspect_test_results(results)
 
-    @save_to_regression_test_report
+    @save_to_test_report
     def analyse_benchmark_against_baseline_for_regression(self):
         """
         Will test the benchmark against the baseline.

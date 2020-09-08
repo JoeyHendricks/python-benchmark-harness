@@ -148,7 +148,7 @@ def save_t_test_evidence_to_regression_test_report(fnc):
     return encapsulated_method
 
 
-def save_to_regression_test_report(fnc):
+def save_to_test_report(fnc):
     """
 
     Parameters
@@ -181,7 +181,16 @@ def save_to_regression_test_report(fnc):
             report.test_case_name = instance.test_case_name
             report.status = fnc(*args, **kwargs)
             report.save()
+            return report.status
 
+        elif str(fnc.__name__) == "analyse_benchmark_against_defined_boundaries":
+
+            instance = args[0]
+            report = BoundariesTestReport()
+            report.test_id = instance.current_test_id
+            report.test_case_name = instance.test_case_name
+            report.status = fnc(*args, **kwargs)
+            report.save()
             return report.status
 
         else:

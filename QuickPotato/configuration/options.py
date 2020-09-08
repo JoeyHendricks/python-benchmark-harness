@@ -7,7 +7,7 @@ collect_performance_statistics = True
 # For MySQL
 # "mysql+pymysql://user:password@localhost"
 # Specify which database vendor you want to use.
-database_connection_url = None
+database_connection_url = "mysql+pymysql://user:password@localhost"
 
 # Turn on or off database logging
 database_echo = False

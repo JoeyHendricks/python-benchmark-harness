@@ -335,7 +335,7 @@ class DatabaseActions(Inserts, Select, Delete, Update):
 
         return True
 
-    def check_if_test_id_exists_in_regression_test_report(self, test_id, database_name):
+    def check_if_test_id_exists_in_test_report(self, test_id, table, database_name):
         """
         This method finds out if the test report needs to be updated or created.
 
@@ -343,13 +343,14 @@ class DatabaseActions(Inserts, Select, Delete, Update):
         ----------
         database_name: the name of the database (This is equal to the test case)
         test_id: The tests id that needs to be found.
+        table: The name of the table.
 
         Returns
         -------
         When test id is found it will output True, if not it will output False
         """
         all_test_ids = self.select_all_test_ids(
-            table=self.regression_test_report_model(),
+            table=table,
             database_name=database_name,
             number=maximum_number_of_saved_test_results - 1
             )
@@ -359,3 +360,4 @@ class DatabaseActions(Inserts, Select, Delete, Update):
 
         else:
             return False
+

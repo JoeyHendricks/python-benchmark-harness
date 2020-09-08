@@ -36,8 +36,16 @@ class BoundariesTestReport(DatabaseActions):
         -------
         Will return True on success
         """
+        table = self.boundaries_test_report_model()
+        database_name = self.test_case_name
         payload = self._build_payload()
-        self.insert_boundaries_test_report(payload, database_name=self.test_case_name)
+
+        if self.check_if_test_id_exists_in_test_report(self.test_id, table, database_name):
+            self.update_boundaries_test_report(payload, self.test_id, database_name)
+
+        else:
+            self.insert_boundaries_test_report(payload, database_name)
+
         return True
 
 
@@ -78,11 +86,14 @@ class RegressionTestReport(DatabaseActions):
         -------
         Will return True on success
         """
+        table = self.regression_test_report_model()
+        database_name = self.test_case_name
         payload = self._build_payload()
-        if self.check_if_test_id_exists_in_regression_test_report(self.test_id, database_name=self.test_case_name):
-            self.update_regression_test_report(payload, database_name=self.test_case_name, test_id=self.test_id)
+
+        if self.check_if_test_id_exists_in_test_report(self.test_id, table, database_name):
+            self.update_regression_test_report(payload, self.test_id, database_name)
 
         else:
-            self.insert_regression_test_report(payload, database_name=self.test_case_name)
+            self.insert_regression_test_report(payload, database_name)
 
         return True
