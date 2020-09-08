@@ -62,7 +62,7 @@ def save_evidence_to_boundaries_test_report(fnc):
         function_output = fnc(*args, **kwargs)
 
         # Note down test output
-        report.verification_status = str(function_output)
+        report.verification_status = function_output
         report.save()
 
         return function_output
@@ -188,4 +188,3 @@ def save_to_regression_test_report(fnc):
             raise NotImplementedError
 
     return encapsulated_method
-

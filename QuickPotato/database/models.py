@@ -1,5 +1,5 @@
 # coding=utf-8
-from sqlalchemy import MetaData, Table, Column, Integer, Float, String
+from sqlalchemy import MetaData, Table, Column, Integer, Float, String, Boolean
 
 
 class RawResultsModels:
@@ -56,9 +56,9 @@ class UnitPerformanceTestResultsModels:
             Column('ID', Integer, primary_key=True),
             Column('test_id', String(99)),
             Column("test_case_name", String(999)),
-            Column('status', String(99)),
+            Column('status', Boolean),
             Column("verification_name", String(999)),
-            Column("verification_status", String(99)),
+            Column("verification_status", Boolean),
             Column("metric", Float),
             Column("threshold", Float)
         )
@@ -72,11 +72,11 @@ class UnitPerformanceTestResultsModels:
             Column('ID', Integer, primary_key=True),
             Column('test_id', String(99)),
             Column("test_case_name", String(999)),
-            Column('status', String(99)),
-            Column('t_test_status', String(99)),
+            Column('status', Boolean),
+            Column('t_test_status', Boolean),
             Column('t_test_value', Float),
             Column('t_test_critical_value', Float),
-            Column('f_test_status', String(99)),
+            Column('f_test_status', Boolean),
             Column('f_test_value', Float),
             Column('f_test_critical_value', Float)
         )
