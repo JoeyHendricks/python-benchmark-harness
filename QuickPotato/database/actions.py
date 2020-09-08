@@ -230,7 +230,7 @@ class Delete(DatabaseManager):
     def __init__(self):
         super(Delete, self).__init__()
 
-    def delete_time_spent_statistic_that_match_test_id(self, database_name, test_id):
+    def delete_time_spent_statistics_that_match_test_id(self, database_name, test_id):
         """
 
         Parameters
@@ -331,7 +331,7 @@ class DatabaseActions(Inserts, Select, Delete, Update):
             )
 
             for test_id in oldest_test_ids:
-                self.delete_time_spent_statistic_that_match_test_id(database_name, test_id)
+                self.delete_time_spent_statistics_that_match_test_id(database_name, test_id)
 
         return True
 
