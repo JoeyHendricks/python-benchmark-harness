@@ -8,11 +8,11 @@ import re
 
 class TimeSpentInterpreter(DatabaseActions):
 
-    def __init__(self, time_spent_metrics, database_name, method_name, method_id, test_id):
+    def __init__(self, time_spent_statistics, database_name, method_name, method_id, test_id):
         super(TimeSpentInterpreter, self).__init__()
 
-        self.time_spent_metrics = time_spent_metrics
-        self.response_times = self.extract_response_time()
+        self.time_spent_metrics = time_spent_statistics
+        self.overall_response_time = self.extract_overall_response_time()
 
         self.database_name = database_name
         self.method_name = method_name
@@ -61,11 +61,16 @@ class TimeSpentInterpreter(DatabaseActions):
             # Generate a dictionary
             stack = []
             header = ['number_of_calls', 'total_time', 'total_time_per_call',
-                      'cumulative_time', 'cumulative_time_per_call', 'file', 'line_number', 'function_name']
+                      'cumulative_time', 'cumulative_time_per_call', 'file',
+                      'line_number', 'function_name']
 
-            meta_data = {"test_id": self.test_id, "uuid": self.method_id, "test_case_name": self.database_name,
-                         "name_of_method_under_test": self.method_name, "response_time": self.response_times,
-                         "epoch_datetime": self.epoch_timestamp, "human_datetime": self.human_timestamp}
+            meta_data = {
+                "test_id": self.test_id, "uuid": self.method_id,
+                "test_case_name": self.database_name,
+                "name_of_method_under_test": self.method_name,
+                "overall_response_time": self.overall_response_time,
+                "epoch_timestamp": self.epoch_timestamp, "human_timestamp": self.human_timestamp
+            }
 
             for line in self.convert_payload_to_dictionary(header=header, meta=meta_data):
                 stack.append(line)
@@ -126,7 +131,7 @@ class TimeSpentInterpreter(DatabaseActions):
 
         return payload
 
-    def extract_response_time(self):
+    def extract_overall_response_time(self):
         """
         :return:
         """
@@ -135,19 +140,14 @@ class TimeSpentInterpreter(DatabaseActions):
 
 class SystemResourcesInterpreter(DatabaseActions):
 
-    def __init__(self, cpu_metrics, database_name, method_name, method_id, test_id):
+    def __init__(self, cpu_statistics, database_name, method_name, method_id, test_id):
         super(SystemResourcesInterpreter, self).__init__()
 
-        self.measurements_of_process_cpu_usage = cpu_metrics["measurements_of_process_cpu_usage"]
-        self.measurements_of_system_cpu_usage = cpu_metrics["measurements_of_system_cpu_usage"]
-
+        self.cpu_statistics = cpu_statistics
         self.database_name = database_name
         self.method_name = method_name
         self.method_id = method_id
         self.test_id = test_id
-
-        self.epoch_timestamp = datetime.now().timestamp()
-        self.human_timestamp = datetime.now()
 
         if asynchronous_payload_delivery:
             self.upload_payload_to_database_async()
@@ -164,16 +164,10 @@ class SystemResourcesInterpreter(DatabaseActions):
         """
         payload = []
         meta_data = {"test_id": self.test_id, "test_case_name": self.database_name,
-                     "uuid": self.method_id, "name_of_method_under_test": self.method_name,
-                     "epoch_datetime": self.epoch_timestamp, "human_datetime": self.human_timestamp}
+                     "uuid": self.method_id, "name_of_method_under_test": self.method_name}
 
-        for process_cpu_usage, system_cpu_usage in zip(self.measurements_of_process_cpu_usage,
-                                                       self.measurements_of_system_cpu_usage):
-
-            cpu_metrics = {"percentage_of_process_cpu_usage": process_cpu_usage,
-                           "percentage_of_system_cpu_usage": system_cpu_usage}
-
-            payload.append({**meta_data, **cpu_metrics})
+        for measurements in self.cpu_statistics:
+            payload.append({**meta_data, **measurements})
 
         return payload
 

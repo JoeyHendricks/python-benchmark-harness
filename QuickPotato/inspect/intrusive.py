@@ -31,14 +31,12 @@ def performance_critical(method=None, enabled=collect_performance_statistics):
         """
         if enabled:
 
-            # Profile method
-            pf = Profiler()
-            profiler_results = pf.profile_method_under_test(method, *args, **kwargs)
-
-            # Hand Buffer over to profiler interpreter class for the handling of the results
             method_id = str(uuid.uuid1())
+            pf = Profiler()
+            pf.profile_method_under_test(method, *args, **kwargs)
+
             TimeSpentInterpreter(
-                time_spent_metrics=profiler_results["time_spent_metrics"],
+                time_spent_statistics=pf.time_spent_statistics,
                 database_name=unit_performance_test.test_case_name,
                 test_id=unit_performance_test.current_test_id,
                 method_name=method.__name__,
@@ -46,14 +44,14 @@ def performance_critical(method=None, enabled=collect_performance_statistics):
             )
 
             SystemResourcesInterpreter(
-                cpu_metrics=profiler_results["cpu_metrics"],
+                cpu_statistics=pf.cpu_measurements,
                 database_name=unit_performance_test.test_case_name,
                 test_id=unit_performance_test.current_test_id,
                 method_name=method.__name__,
                 method_id=method_id
             )
 
-            return profiler_results["functional_output"]
+            return pf.functional_output
 
         else:
             return method(*args, **kwargs)

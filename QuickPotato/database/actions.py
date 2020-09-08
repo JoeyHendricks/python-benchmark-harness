@@ -98,11 +98,11 @@ class Select(DatabaseManager):
         :return:
         """
         table = self.time_spent_model()
-        query = select([table.c.uuid.distinct(), table.c.response_time]).where(table.c.test_id == test_id)
+        query = select([table.c.uuid.distinct(), table.c.overall_response_time]).where(table.c.test_id == test_id)
 
         engine = self.spawn_engine(database_name=database_name)
         connection = engine.connect()
-        results = [float(row.response_time) for row in connection.execute(query)]
+        results = [float(row.overall_response_time) for row in connection.execute(query)]
 
         connection.close()
         engine.dispose()

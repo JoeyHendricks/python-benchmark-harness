@@ -1,3 +1,4 @@
+from datetime import datetime
 import threading
 import cProfile
 import pstats
@@ -14,8 +15,9 @@ class Profiler:
         self.measure_cpu = False
         self.measure_mem = False
 
-        self.measurements_of_process_cpu_usage = []
-        self.measurements_of_system_cpu_usage = []
+        self.functional_output = None
+        self.time_spent_statistics = None
+        self.cpu_measurements = []
 
     def enable_collection_of_system_resource_utilization(self):
         """
@@ -58,8 +60,13 @@ class Profiler:
 
         """
         while self.measure_cpu:
-            self.measurements_of_process_cpu_usage.append(self.HOST_PROCESS.cpu_percent() / psutil.cpu_count())
-            self.measurements_of_system_cpu_usage.append(psutil.cpu_percent())
+            row = {
+                "epoch_timestamp": datetime.now().timestamp(),
+                "human_timestamp": datetime.now(),
+                "percentage_of_system_cpu_usage": psutil.cpu_percent(),
+                "percentage_of_process_cpu_usage": self.HOST_PROCESS.cpu_percent() / psutil.cpu_count()
+             }
+            self.cpu_measurements.append(row)
 
     def measure_mem_usage(self):
         pass
@@ -77,18 +84,14 @@ class Profiler:
         # Start Profiling the method
         self.enable_collection_of_system_resource_utilization()
         timer.enable()
-        function_output = method(*args, **kwargs)
+        self.functional_output = method(*args, **kwargs)
         timer.disable()
         self.disable_collection_of_system_resource_utilization()
 
         # Dump performance statistics from the buffer to local variables
-        profiler_output = io.StringIO()
-        ps = pstats.Stats(timer, stream=profiler_output)
+        self.time_spent_statistics = io.StringIO()
+        ps = pstats.Stats(timer, stream=self.time_spent_statistics)
         ps.sort_stats('cumulative').print_stats()
-        profiler_output = profiler_output.getvalue()
+        self.time_spent_statistics = self.time_spent_statistics.getvalue()
 
-        return {"functional_output": function_output,
-                "time_spent_metrics": profiler_output,
-                "cpu_metrics": {"measurements_of_process_cpu_usage": self.measurements_of_process_cpu_usage,
-                                "measurements_of_system_cpu_usage": self.measurements_of_system_cpu_usage}
-                }
+        return True

@@ -3,7 +3,7 @@ from QuickPotato.database.management import DatabaseManager
 from tests.stubs import *
 import unittest
 
-delete_test_database = False
+delete_test_database = True
 
 
 class TestMechanisms(unittest.TestCase):

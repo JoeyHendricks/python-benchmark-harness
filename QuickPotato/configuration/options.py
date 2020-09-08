@@ -5,7 +5,7 @@ collect_performance_statistics = True
 # "sqlite:///C:\\temp\\"
 
 # For MySQL
-# "mysql+pymysql://root:password@localhost"
+# "mysql+pymysql://user:password@localhost"
 # Specify which database vendor you want to use.
 database_connection_url = None
 
