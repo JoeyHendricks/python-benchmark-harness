@@ -4,8 +4,7 @@ class Boundaries:
 
     def __init__(self):
         self.max_and_min_boundary_for_average = {"max": None, "min": None}
-        self.max_and_min_boundary_for_max_outlier = {"max": None, "min": None}
-        self.max_and_min_boundary_for_min_outlier = {"max": None, "min": None}
+        self.max_and_min_boundary_for_largest_outlier = {"max": None, "min": None}
         self.max_and_min_boundary_for_percentile_5th = {"max": None, "min": None}
         self.max_and_min_boundary_for_percentile_10th = {"max": None, "min": None}
         self.max_and_min_boundary_for_percentile_15th = {"max": None, "min": None}
@@ -30,8 +29,7 @@ class Boundaries:
     def boundary_policy(self):
         return {
             "max_and_min_boundary_for_average": self.max_and_min_boundary_for_average,
-            "max_and_min_boundary_for_outlier": self.max_and_min_boundary_for_max_outlier,
-            "max_and_min_boundary_for_min_outlier": self.max_and_min_boundary_for_min_outlier,
+            "max_and_min_boundary_for_largest_outlier": self.max_and_min_boundary_for_largest_outlier,
             "max_and_min_boundary_for_percentile_5th": self.max_and_min_boundary_for_percentile_5th,
             "max_and_min_boundary_for_percentile_10th": self.max_and_min_boundary_for_percentile_10th,
             "max_and_min_boundary_for_percentile_15th": self.max_and_min_boundary_for_percentile_15th,
