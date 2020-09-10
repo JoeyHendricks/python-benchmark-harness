@@ -1,34 +1,36 @@
 ## Building low level performance tests for Python with QuickPotato
 
-With QuickPotato it is possible to create automated low level performance tests 
+QuickPotato the low level performance testing framework that gets rid of slow couch potato code.
+With it is possible to easily create automated low level performance tests 
 that gather as much information about your code as possible. 
+
 Allowing you to verify if the performance of your code is working like expected 
-and answer the following two questions:
+and create faster code by being able to answer the following two questions:
 
 - Is my code performing in the way I am expecting?
 - Did this code change deteriorate the performance of my code or project?
 
-QuickPotato provides you with the tools needed to answer these two important 
-questions in a easy, reliable, and automated way. Making sure that you can focus
-on delivering awesome code that is lighting fast! 
+QuickPotato provides you with all the tools needed to answer these two important 
+questions in a easy, reliable, and completely automated way. Making sure that you can focus
+on delivering awesome code which is lighting fast! 
 
 ## How it works
 
-
-
-
-> 
-
 ### Installation
 
-Use the package manager [pip](https://pip.pypa.io/en/stable/) to install QuickPotato.
-
+Install using [pip](https://pip.pypa.io/en/stable/) or download the source code from GitHub.
 ```bash
 pip install QuickPotato
 ```
 
 ### Intrusive Testing
 
+Not all functions hold the same risk as of forming a potential performance problem like others.
+Therefore it is possible with QuickPotato to choose which function should be measured and profiled.
+
+The chosen functions need to be fitted with a performance_critical decorator so QuickPotato knows that this
+function needs to be tested when executed during a unit performance test.
+The snippet below gives you a example of how you can decorate function for use with QuickPotato.
 
 ```python
 from QuickPotato.inspect.intrusive import performance_critical
@@ -39,6 +41,9 @@ def example():
     return 1 + 1
 
 ```
+
+
+
 
 ```python
 from QuickPotato.inspect.intrusive import unit_performance_test
