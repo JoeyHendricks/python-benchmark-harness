@@ -12,8 +12,8 @@ It is then possible to get the answers of these two question on the following tw
 1. The smallest unit.
 2. Multiple units that make up a piece of functionality.
 
-> To what extend you want to stub level on each level completely depends on how effortless 
-you can spin up production-like environments. 
+> To what extend you want your performance tests to interact with stubs completely 
+> depends on how effortless you can spin up production-like environments. 
 
 The cool thing about QuickPotato is that it provides you with all the tools needed to 
 answer these two important questions in a easy, reliable, and completely automated way. 
