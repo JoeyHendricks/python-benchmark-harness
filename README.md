@@ -1,16 +1,23 @@
-## Start creating low level performance tests with QuickPotato
+## Building low level performance tests for Python
 
-Uplift the way you tste
+With QuickPotato it is possible to create automated low level performance tests 
+that gather as much information about your code as possible. 
+Allowing you to verify if the performance of your code is working like expected 
+and answer the following two questions:
 
-QuickPotato is a library that enables developer to create automated unit or component level performance tests.
+- Is my code performing in the way I am expecting?
+- Did this code change deteriorate the performance of my code or project?
 
- 
+QuickPotato provides you with the tools needed to answer these two important 
+questions in a easy, reliable, and automated way. Making sure that you can focus
+on delivering awesome code that is lighting fast! 
 
-So what is a performance sanity check? Well, it is a test to quickly evaluate if the code on a unit level has the expected performance behaviour within a reliable testing environment.
+## How it works
 
-It is then possible to answer two primary questions with these sanity checks - Does the performance overstep the set thresholds? How much regression is there between the old method and the newly written method?
 
-If these performance sanity checks pass, then we know that the performance of the code meets our expectations. On the other hand, if they fail, then we know that the performance has deteriorated.
+
+
+> 
 
 ### Installation
 
