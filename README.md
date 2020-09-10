@@ -8,8 +8,18 @@ by being able to answer the following two questions:
 - Did this code change deteriorate the performance of my code or project?
 
 QuickPotato provides you with all the tools needed to answer these two important 
-questions in a easy, reliable, and completely automated way. Making sure that you can focus
-on delivering awesome code which is lighting fast! 
+questions in a easy, reliable, and completely automated way. 
+By creating automated low level performance tests with QuickPotato, 
+you are automatically doing the following things:
+
+- Measuring the end to end performance of your code.
+- Profiling your code with CProfile.
+- Collecting system resource utilization.
+- make automated decisions about the performance of your code. 
+
+By removing as many obstacles between you and performance testing your code.
+The QuickPotato hopes to enable you to get fast feedback about the speed of your code.
+Giving you the space to focus on delivering awesome code which is lighting fast! 
 
 ## How it works
 
