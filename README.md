@@ -9,7 +9,7 @@ by being able to answer the following two questions:
 
 It is then possible to get the answers of these two question on the following two levels:
 
-1. The smallest unit.
+1.  The smallest unit.
 2. Multiple units that make up a piece of functionality.
 
 > To what extend you want your performance tests to interact with stubs completely 
@@ -23,7 +23,7 @@ doing the following things:
 - Measuring the end to end performance of your code.
 - Profiling your code with CProfile.
 - Collecting system resource utilization.
-- make automated decisions about the performance of your code. 
+- Automated decisions about the performance of your code. 
 
 By removing as many obstacles between you and performance testing your code.
 QuickPotato hopes to enable you to get fast feedback about the speed of your code.
