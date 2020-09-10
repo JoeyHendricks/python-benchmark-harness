@@ -44,7 +44,7 @@ Not all functions hold the same risk of forming a potential performance problem 
 Therefore it is possible with QuickPotato to pick and choose which function should be measured and profiled.
 
 The chosen functions need to be fitted with a performance_critical decorator so QuickPotato knows that this
-function needs to be tested when executed during a unit performance test.
+function needs to be tested when triggered during a unit performance test. 
 The snippet below gives you a example of how you can decorate function for use with QuickPotato.
 
 ```python
@@ -57,8 +57,11 @@ def example():
 
 ```
 
+It is important to understand that when using the intrusive method. 
+That there are no side effect when running during normal operation. 
 
-
+To be able to test the performance of function you need to create a performance test.
+The snippet below provides an excellent example of the first type of test that QuickPotato offers.
 
 ```python
 from QuickPotato.inspect.intrusive import unit_performance_test
@@ -78,6 +81,7 @@ for _ in range(0, 10):
 # Verify if the function does not breach any defined boundaries.
 results = upt.analyse_benchmark_against_defined_boundaries()
 ```
+This type of test focuses on allowing you to define boundaries where you code needs adhere to.
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
