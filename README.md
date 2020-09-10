@@ -1,4 +1,4 @@
-## Building low level performance tests for Python
+## Building low level performance tests for Python with QuickPotato
 
 With QuickPotato it is possible to create automated low level performance tests 
 that gather as much information about your code as possible. 
