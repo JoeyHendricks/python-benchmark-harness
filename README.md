@@ -1,6 +1,16 @@
-## QuickPotato
+## Start creating low level performance tests with QuickPotato
 
-A library that helps automate performance tests on the unit level.
+Uplift the way you tste
+
+QuickPotato is a library that enables developer to create automated unit or component level performance tests.
+
+ 
+
+So what is a performance sanity check? Well, it is a test to quickly evaluate if the code on a unit level has the expected performance behaviour within a reliable testing environment.
+
+It is then possible to answer two primary questions with these sanity checks - Does the performance overstep the set thresholds? How much regression is there between the old method and the newly written method?
+
+If these performance sanity checks pass, then we know that the performance of the code meets our expectations. On the other hand, if they fail, then we know that the performance has deteriorated.
 
 ### Installation
 
@@ -10,54 +20,36 @@ Use the package manager [pip](https://pip.pypa.io/en/stable/) to install QuickPo
 pip install QuickPotato
 ```
 
-### Intrusive Profiling Usage
+### Intrusive Testing
 
-QuickPotato support intrusive profiling this means that only methods that are marked with a decorator are tested.
-This enables you to pick and choose which methods you want to measure and validate in your performance unit test.
-Besides that it also empathizes which methods are potential performance risk.
-So team members know that this method is sensitive for performance problems.
-
-Below you can find instruction how to set-up a unit performance test with QuickPotato:  
 
 ```python
-from QuickPotato.inspect.intrusive import performance_critical # <-- Decorator 
-from QuickPotato.inspect.intrusive import unit_performance_test # <-- Testing Object
-import unittest # <-- The unit test framework 
+from QuickPotato.inspect.intrusive import performance_critical
 
-# Step 1. Mark performance critical methods with a QuickPotato decorator
+
 @performance_critical
-def foo(y):
-    x = y + 1 
-    return x
+def example():
+    return 1 + 1
 
-class ValidatePerformanceOfProject(unittest.TestCase):
+```
 
-    # Step 2. Define a performance unit test like below
-    def test_foo_for_performance(self):
+```python
+from QuickPotato.inspect.intrusive import unit_performance_test
+from example.intrusive_example import example
+
+# Setup your unit performance test.
+upt = unit_performance_test
+upt.test_case_name = "Default"
+
+# Define the boundaries for your code.
+upt.max_and_min_boundary_for_average = {"max": 0.200, "min": 0.011}
         
-        # Step 3. Define your test case name, metric boundaries or statistical regression tests 
-        unit_performance_test.test_case_name = "Test Case Name Here!"
-    
-        # Example: for setting boundaries for the overall average response time
-        # max and min key = Either Float or Integer to not validate boundary use None
-        unit_performance_test.max_and_min_boundary_for_average = {"max": 1, "min": None}
-    
-        # Example: Turn on statistical regression tests
-        # True = Execute Test, False = Skip Test
-        unit_performance_test.regression_setting_perform_f_test = True
-        unit_performance_test.regression_setting_perform_t_test = True
+# Run functions which are decorated as performance critical.
+for _ in range(0, 10):
+    example() # <-- Your function or class here.
         
-        # Execute method a couple times to collect metrics
-        for _ in range(0, 10): # <-- Make sure your sample size is higher then 10
-            foo(y=7)
-        
-        # Step 4. Run your verifications and bind the results to a variable  
-        regression_tests = unit_performance_test.analyse_benchmark_against_baseline_for_regression()
-        threshold_tests = unit_performance_test.analyse_benchmark_against_defined_boundaries()
-        
-        # Step 5. Validate the output with the unit test framework
-        self.assertIsNone(regression_tests) # <-- Is None on first use because there is NO BASELINE
-        self.assertTrue(threshold_tests)
+# Verify if the function does not breach any defined boundaries.
+results = upt.analyse_benchmark_against_defined_boundaries()
 ```
 
 ## Contributing
