@@ -7,10 +7,18 @@ by being able to answer the following two questions:
 - Is my code performing in the way I am expecting?
 - Did this code change deteriorate the performance of my code or project?
 
-QuickPotato provides you with all the tools needed to answer these two important 
-questions in a easy, reliable, and completely automated way. 
-By creating automated low level performance tests with QuickPotato, 
-you are automatically doing the following things:
+It is then possible to get the answers of these two question on the following two levels:
+
+1. The smallest unit.
+2. Multiple units that make up a piece of functionality.
+
+> To what extend you want to stub level on each level completely depends on how effortless 
+you can spin up production-like environments. 
+
+The cool thing about QuickPotato is that it provides you with all the tools needed to 
+answer these two important questions in a easy, reliable, and completely automated way. 
+By creating automated low level performance tests with QuickPotato, you are automatically 
+doing the following things:
 
 - Measuring the end to end performance of your code.
 - Profiling your code with CProfile.
@@ -32,8 +40,8 @@ pip install QuickPotato
 
 ### Intrusive Testing
 
-Not all functions hold the same risk as of forming a potential performance problem like others.
-Therefore it is possible with QuickPotato to choose which function should be measured and profiled.
+Not all functions hold the same risk of forming a potential performance problem like others.
+Therefore it is possible with QuickPotato to pick and choose which function should be measured and profiled.
 
 The chosen functions need to be fitted with a performance_critical decorator so QuickPotato knows that this
 function needs to be tested when executed during a unit performance test.
