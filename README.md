@@ -18,7 +18,7 @@ you are automatically doing the following things:
 - make automated decisions about the performance of your code. 
 
 By removing as many obstacles between you and performance testing your code.
-The QuickPotato hopes to enable you to get fast feedback about the speed of your code.
+QuickPotato hopes to enable you to get fast feedback about the speed of your code.
 Giving you the space to focus on delivering awesome code which is lighting fast! 
 
 ## How it works
