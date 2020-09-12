@@ -109,6 +109,7 @@ results = upt.verify_that_there_is_no_change_between_the_baseline_benchmark()
 ```
 
 ## License
+
 [MIT](https://choosealicense.com/licenses/mit/)
 
 ## Read More About Unit Performance Testing
