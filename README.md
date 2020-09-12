@@ -60,7 +60,7 @@ def example():
 It is important to understand that when using the intrusive method. 
 That there are no side effect when during normal operation.
 
-#### Boundary Testing
+### Boundary Testing
 
 Within QuickPotato it is possible to create a performance test that validates if 
 your code does not breach any defined boundary.
@@ -84,6 +84,7 @@ for _ in range(0, 10):
 # Verify if the function does not breach any defined boundaries.
 results = upt.verify_if_benchmark_does_not_breach_defined_boundaries()
 ```
+### Regression Testing
 
 Besides testing if your code does not breach any boundaries.
 It is also possible to verify that there is no regression between the current benchmark and a previous baseline.
