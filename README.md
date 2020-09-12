@@ -105,7 +105,7 @@ for _ in range(0, 10):
     example() # <-- Your function or class here.
 
 # Verify if the function does not contain any change.
-results = upt.verify_that_there_is_no_change_between_the_baseline_benchmark()
+results = upt.verify_that_there_is_no_change_between_the_baseline_and_benchmark()
 ```
 
 ## License

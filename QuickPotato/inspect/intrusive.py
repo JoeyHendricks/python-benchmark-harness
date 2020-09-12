@@ -44,7 +44,7 @@ def performance_critical(method=None, enabled=collect_performance_statistics):
             )
 
             SystemResourcesInterpreter(
-                cpu_statistics=pf.cpu_measurements,
+                cpu_statistics=pf.system_resource_utilization_measurements,
                 database_name=unit_performance_test.test_case_name,
                 test_id=unit_performance_test.current_test_id,
                 method_name=method.__name__,

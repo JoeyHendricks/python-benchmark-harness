@@ -102,7 +102,7 @@ def save_to_test_report(fnc):
         -------
 
         """
-        if str(fnc.__name__) == "analyse_benchmark_against_baseline_for_regression":
+        if str(fnc.__name__) == "verify_that_there_is_no_change_between_the_baseline_and_benchmark":
 
             instance = args[0]
             report = RegressionTestReport()
@@ -112,7 +112,7 @@ def save_to_test_report(fnc):
             report.save()
             return report.status
 
-        elif str(fnc.__name__) == "analyse_benchmark_against_defined_boundaries":
+        elif str(fnc.__name__) == "verify_if_benchmark_does_not_breach_defined_boundaries":
 
             instance = args[0]
             report = BoundariesTestReport()

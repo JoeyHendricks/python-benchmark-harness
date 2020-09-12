@@ -121,7 +121,7 @@ class TestRegressionEndToEnd(unittest.TestCase):
             slow_method()
 
         # Analyse profiled results
-        results = upt.verify_that_there_is_no_change_between_the_baseline_benchmark()
+        results = upt.verify_that_there_is_no_change_between_the_baseline_and_benchmark()
         self.assertFalse(results)
 
     def test_fast_benchmark_against_slow_baseline(self):
@@ -140,7 +140,7 @@ class TestRegressionEndToEnd(unittest.TestCase):
             fast_method()
 
         # Analyse profiled results
-        results = upt.verify_that_there_is_no_change_between_the_baseline_benchmark()
+        results = upt.verify_that_there_is_no_change_between_the_baseline_and_benchmark()
         self.assertFalse(results)
 
     def test_baseline_against_benchmark_with_no_regression(self):
@@ -159,7 +159,7 @@ class TestRegressionEndToEnd(unittest.TestCase):
             fast_method()
 
         # Analyse profiled results
-        results = upt.verify_that_there_is_no_change_between_the_baseline_benchmark()
+        results = upt.verify_that_there_is_no_change_between_the_baseline_and_benchmark()
         self.assertTrue(results)
 
 

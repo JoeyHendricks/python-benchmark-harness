@@ -12,12 +12,10 @@ class Profiler:
 
     def __init__(self):
 
-        self.measure_cpu = False
-        self.measure_mem = False
-
+        self.collection_system_resource_utilization = False
+        self.system_resource_utilization_measurements = []
         self.functional_output = None
         self.time_spent_statistics = None
-        self.cpu_measurements = []
 
     def enable_collection_of_system_resource_utilization(self):
         """
@@ -26,16 +24,9 @@ class Profiler:
         -------
 
         """
-        cpu_measure_thread = threading.Thread(target=self.measure_cpu_usage)
-        # mem_measure_thread = threading.Thread(target=self.run)
-
-        self.measure_cpu = True
-        # self.measure_mem = True
-
+        cpu_measure_thread = threading.Thread(target=self.measure_system_resource_utilization)
+        self.collection_system_resource_utilization = True
         cpu_measure_thread.start()
-        # mem_measure_thread.start()
-
-        return True
 
     def disable_collection_of_system_resource_utilization(self):
         """
@@ -47,29 +38,23 @@ class Profiler:
         -------
 
         """
-        self.measure_cpu = False
-        self.measure_mem = False
+        self.collection_system_resource_utilization = False
 
-        return True
-
-    def measure_cpu_usage(self):
+    def measure_system_resource_utilization(self):
         """
 
         Returns
         -------
 
         """
-        while self.measure_cpu:
+        while self.collection_system_resource_utilization:
             row = {
                 "epoch_timestamp": datetime.now().timestamp(),
                 "human_timestamp": datetime.now(),
                 "percentage_of_system_cpu_usage": psutil.cpu_percent(),
                 "percentage_of_process_cpu_usage": self.HOST_PROCESS.cpu_percent() / psutil.cpu_count()
              }
-            self.cpu_measurements.append(row)
-
-    def measure_mem_usage(self):
-        pass
+            self.system_resource_utilization_measurements.append(row)
 
     def profile_method_under_test(self, method, *args, **kwargs):
         """
@@ -93,5 +78,3 @@ class Profiler:
         ps = pstats.Stats(timer, stream=self.time_spent_statistics)
         ps.sort_stats('cumulative').print_stats()
         self.time_spent_statistics = self.time_spent_statistics.getvalue()
-
-        return True
