@@ -9,7 +9,7 @@ by being able to answer the following two questions:
 
 It is then possible to get the answers of these two question on the following two levels:
 
-1.  The smallest unit.
+1. The smallest unit.
 2. Multiple units that make up a piece of functionality.
 
 > To what extend you want your performance tests to interact with stubs completely 
@@ -58,10 +58,13 @@ def example():
 ```
 
 It is important to understand that when using the intrusive method. 
-That there are no side effect when running during normal operation. 
+That there are no side effect when during normal operation.
 
-To be able to test the performance of function you need to create a performance test.
-The snippet below provides an excellent example of the first type of test that QuickPotato offers.
+#### Boundary Testing
+
+Within QuickPotato it is possible to create a performance test that validates if 
+your code does not breach any defined boundary.
+An example of this sort of test can be found in the snippet below: 
 
 ```python
 from QuickPotato.inspect.intrusive import unit_performance_test
@@ -79,19 +82,36 @@ for _ in range(0, 10):
     example() # <-- Your function or class here.
         
 # Verify if the function does not breach any defined boundaries.
-results = upt.analyse_benchmark_against_defined_boundaries()
+results = upt.verify_if_benchmark_does_not_breach_defined_boundaries()
 ```
-This type of test focuses on allowing you to define boundaries where you code needs adhere to.
 
-## Contributing
-Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+Besides testing if your code does not breach any boundaries.
+It is also possible to verify that there is no regression between the current benchmark and a previous baseline.
+How to create such a test can be found in the snippet below.
 
-Please make sure to update tests as appropriate.
+```python
+from QuickPotato.inspect.intrusive import unit_performance_test
+from example.intrusive_example import example
+
+# Setup your unit performance test.
+upt = unit_performance_test
+upt.test_case_name = "Default"
+upt.regression_setting_perform_f_test = True
+upt.regression_setting_perform_t_test = True
+
+# Run functions which are decorated as performance critical.
+for _ in range(0, 10):
+    example() # <-- Your function or class here.
+
+# Verify if the function does not contain any change.
+results = upt.verify_that_there_is_no_change_between_the_baseline_benchmark()
+```
 
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
 
 ## Read More About Unit Performance Testing
 
-My LinkedIn article describing the concept with all it benefits and problems.
+If you want to learn more about low level performance testing than check out the following resources:
+
 [Don’t lose your mind over slow code check your performance sanity.](https://www.linkedin.com/pulse/dont-lose-your-mind-over-slow-code-check-performance-sanity-joey/) 

@@ -27,7 +27,7 @@ class TestBoundariesEndToEnd(unittest.TestCase):
             slow_method()
 
         # Analyse profiled results
-        results = upt.analyse_benchmark_against_defined_boundaries()
+        results = upt.verify_if_benchmark_does_not_breach_defined_boundaries()
 
         self.assertTrue(results)
 
@@ -43,7 +43,7 @@ class TestBoundariesEndToEnd(unittest.TestCase):
             slow_method()
 
         # Analyse profiled results
-        results = upt.analyse_benchmark_against_defined_boundaries()
+        results = upt.verify_if_benchmark_does_not_breach_defined_boundaries()
 
         self.assertFalse(results)
 
@@ -79,7 +79,7 @@ class TestBoundariesEndToEnd(unittest.TestCase):
             slow_method()
 
         # Analyse profiled results
-        results = upt.analyse_benchmark_against_defined_boundaries()
+        results = upt.verify_if_benchmark_does_not_breach_defined_boundaries()
 
         self.assertTrue(results)
 
@@ -121,7 +121,7 @@ class TestRegressionEndToEnd(unittest.TestCase):
             slow_method()
 
         # Analyse profiled results
-        results = upt.analyse_benchmark_against_baseline_for_regression()
+        results = upt.verify_that_there_is_no_change_between_the_baseline_benchmark()
         self.assertFalse(results)
 
     def test_fast_benchmark_against_slow_baseline(self):
@@ -140,7 +140,7 @@ class TestRegressionEndToEnd(unittest.TestCase):
             fast_method()
 
         # Analyse profiled results
-        results = upt.analyse_benchmark_against_baseline_for_regression()
+        results = upt.verify_that_there_is_no_change_between_the_baseline_benchmark()
         self.assertFalse(results)
 
     def test_baseline_against_benchmark_with_no_regression(self):
@@ -159,7 +159,7 @@ class TestRegressionEndToEnd(unittest.TestCase):
             fast_method()
 
         # Analyse profiled results
-        results = upt.analyse_benchmark_against_baseline_for_regression()
+        results = upt.verify_that_there_is_no_change_between_the_baseline_benchmark()
         self.assertTrue(results)
 
 

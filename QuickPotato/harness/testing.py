@@ -172,7 +172,7 @@ class UnitPerformanceTest(Boundaries, Measurements, RegressionSettings):
             return True
 
     @save_to_test_report
-    def analyse_benchmark_against_defined_boundaries(self):
+    def verify_if_benchmark_does_not_breach_defined_boundaries(self):
         """
         This method will validate how well the benchmark will hold up to the
         set threshold in the service level agreement.
@@ -208,7 +208,7 @@ class UnitPerformanceTest(Boundaries, Measurements, RegressionSettings):
         return self._inspect_test_results(results)
 
     @save_to_test_report
-    def analyse_benchmark_against_baseline_for_regression(self):
+    def verify_that_there_is_no_change_between_the_baseline_benchmark(self):
         """
         Will test the benchmark against the baseline.
         The following statistical tests are performed in this method:
