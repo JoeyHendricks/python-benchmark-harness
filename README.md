@@ -1,3 +1,5 @@
+[![An old rock in the desert](/images/potato-banner-no-tv.jpg "Slow Potato Code")](https://media-exp1.licdn.com/dms/image/C4D12AQHWoFEHeMiTFg/article-cover_image-shrink_720_1280/0?e=1605744000&v=beta&t=WkCHUs58CbSCMlSrvKeAfgLU2uchODD06ucz5vrcUZk)
+
 ## Building low level performance tests for Python with QuickPotato
 
 QuickPotato is a low level performance testing framework that helps you gets rid of slow couch potato code.
