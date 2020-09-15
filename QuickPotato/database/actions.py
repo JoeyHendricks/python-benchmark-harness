@@ -168,7 +168,7 @@ class Select(DatabaseManager):
 
         return pd.DataFrame(results)
 
-    def select_entire_stack(self, database_name, stack_uuid):
+    def select_stack(self, database_name, stack_uuid):
         """
 
         Parameters
