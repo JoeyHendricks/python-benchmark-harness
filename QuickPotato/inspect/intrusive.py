@@ -2,7 +2,7 @@ from QuickPotato.configuration.options import collect_performance_statistics
 from QuickPotato.utilities.exceptions import AgentCannotFindMethod
 from QuickPotato.inspect.interpreters import TimeSpentInterpreter, SystemResourcesInterpreter
 from QuickPotato.harness.testing import UnitPerformanceTest
-from QuickPotato.inspect.measure import Profiler
+from QuickPotato.inspect.debugger import Profiler
 from functools import wraps, partial
 import uuid
 
