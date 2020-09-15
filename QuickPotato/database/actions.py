@@ -1,6 +1,7 @@
 from QuickPotato.configuration.options import *
 from QuickPotato.database.management import DatabaseManager
 from sqlalchemy import select, func, and_
+import pandas as pd
 
 
 class Inserts(DatabaseManager):
@@ -15,7 +16,7 @@ class Inserts(DatabaseManager):
         table = self.time_spent_model()
         statement = table.insert()
 
-        engine = self.spawn_engine(database_name=database_name)
+        engine = self.spawn_engine(database_name)
         connection = engine.connect()
         connection.execute(statement, payload)
 
@@ -31,7 +32,7 @@ class Inserts(DatabaseManager):
         table = self.system_resources_model()
         statement = table.insert()
 
-        engine = self.spawn_engine(database_name=database_name)
+        engine = self.spawn_engine(database_name)
         connection = engine.connect()
         connection.execute(statement, payload)
 
@@ -47,7 +48,7 @@ class Inserts(DatabaseManager):
         table = self.boundaries_test_report_model()
         statement = table.insert()
 
-        engine = self.spawn_engine(database_name=database_name)
+        engine = self.spawn_engine(database_name)
         connection = engine.connect()
         connection.execute(statement, payload)
 
@@ -76,7 +77,7 @@ class Inserts(DatabaseManager):
         table = self.regression_test_report_model()
         statement = table.insert()
 
-        engine = self.spawn_engine(database_name=database_name)
+        engine = self.spawn_engine(database_name)
         connection = engine.connect()
         connection.execute(statement, payload)
 
@@ -100,7 +101,7 @@ class Select(DatabaseManager):
         table = self.time_spent_model()
         query = select([table.c.uuid.distinct(), table.c.overall_response_time]).where(table.c.test_id == test_id)
 
-        engine = self.spawn_engine(database_name=database_name)
+        engine = self.spawn_engine(database_name)
         connection = engine.connect()
         results = [float(row.overall_response_time) for row in connection.execute(query)]
 
@@ -118,7 +119,7 @@ class Select(DatabaseManager):
         table = self.time_spent_model()
         query = select([table.c.cumulative_time]).where(and_(table.c.test_id == test_id, table.c.cumulative_time > 0))
 
-        engine = self.spawn_engine(database_name=database_name)
+        engine = self.spawn_engine(database_name)
         connection = engine.connect()
         results = [float(row.cumulative_time) for row in connection.execute(query)]
 
@@ -126,6 +127,46 @@ class Select(DatabaseManager):
         engine.dispose()
 
         return results
+
+    def select_all_stacks(self, database_name, test_id):
+        """
+        :param test_id:
+        :param database_name:
+        :return:
+        """
+        table = self.time_spent_model()
+        query = table.select().where(table.c.test_id == test_id)
+        results = []
+
+        engine = self.spawn_engine(database_name)
+        connection = engine.connect()
+
+        for row in connection.execute(query):
+            results.append(
+                {
+                    "ID": row.ID,
+                    "test_id": row.test_id,
+                    "test_case_name": row.test_case_name,
+                    "uuid": row.uuid,
+                    "name_of_method_under_test": row.name_of_method_under_test,
+                    "epoch_timestamp": row.epoch_timestamp,
+                    "human_timestamp": row.human_timestamp,
+                    "number_of_calls": row.number_of_calls,
+                    "overall_response_time": row.overall_response_time,
+                    "total_time": row.total_time,
+                    "total_time_per_call": row.total_time_per_call,
+                    "cumulative_time": row.cumulative_time,
+                    "cumulative_time_per_call": row.cumulative_time_per_call,
+                    "file": row.file,
+                    "line_number": row.line_number,
+                    "function_name": row.function_name
+                }
+            )
+
+        connection.close()
+        engine.dispose()
+
+        return pd.DataFrame(results)
 
     def select_entire_stack(self, database_name, stack_uuid):
         """
@@ -143,18 +184,22 @@ class Select(DatabaseManager):
         query = table.select().where(table.c.uuid == str(stack_uuid))
         results = []
 
-        engine = self.spawn_engine(database_name=database_name)
+        engine = self.spawn_engine(database_name)
         connection = engine.connect()
 
         for row in connection.execute(query):
-            results.append({"test_id": row.test_id, "uuid": row.uuid,
-                            "name_of_method_under_test": row.name_of_method_under_test,
-                            "response_time": row.response_time, "epoch_datetime": row.epoch_datetime,
-                            "human_datetime": row.human_datetime, "number_of_calls": row.number_of_calls,
-                            "total_time": row.total_time, "total_time_per_call": row.total_time_per_call,
-                            "cumulative_time": row.cumulative_time,
-                            "cumulative_time_per_call": row.cumulative_time_per_call, "file": row.file,
-                            "line_number": row.line_number, "function_name": row.function_name})
+            results.append(
+                {
+                    "test_id": row.test_id, "uuid": row.uuid,
+                    "name_of_method_under_test": row.name_of_method_under_test,
+                    "response_time": row.response_time, "epoch_datetime": row.epoch_datetime,
+                    "human_datetime": row.human_datetime, "number_of_calls": row.number_of_calls,
+                    "total_time": row.total_time, "total_time_per_call": row.total_time_per_call,
+                    "cumulative_time": row.cumulative_time,
+                    "cumulative_time_per_call": row.cumulative_time_per_call, "file": row.file,
+                    "line_number": row.line_number, "function_name": row.function_name
+                 }
+            )
         connection.close()
         engine.dispose()
 
@@ -175,7 +220,7 @@ class Select(DatabaseManager):
         """
         query = select([table.c.test_id]).distinct().limit(number)
 
-        engine = self.spawn_engine(database_name=database_name)
+        engine = self.spawn_engine(database_name)
         connection = engine.connect()
 
         results = [str(row.test_id) for row in connection.execute(query)]
@@ -194,7 +239,7 @@ class Select(DatabaseManager):
         table = self.time_spent_model()
         query = select([table.c.test_id]).distinct()
 
-        engine = self.spawn_engine(database_name=database_name)
+        engine = self.spawn_engine(database_name)
         connection = engine.connect()
 
         results = [str(row.test_id) for row in connection.execute(query)]
@@ -214,7 +259,7 @@ class Select(DatabaseManager):
         table = self.time_spent_model()
         query = select([func.count(table.c.test_id.distinct())])
 
-        engine = self.spawn_engine(database_name=database_name)
+        engine = self.spawn_engine(database_name)
         connection = engine.connect()
 
         results = int([row[0] for row in connection.execute(query)][0])
@@ -245,7 +290,7 @@ class Delete(DatabaseManager):
         table = self.time_spent_model()
         query = table.delete().where(table.c.test_id == str(test_id))
 
-        engine = self.spawn_engine(database_name=database_name)
+        engine = self.spawn_engine(database_name)
         connection = engine.connect()
         connection.execute(query)
 
@@ -276,7 +321,7 @@ class Update(DatabaseManager):
         table = self.regression_test_report_model()
         statement = table.update().where(table.c.test_id == str(test_id)).values(payload)
 
-        engine = self.spawn_engine(database_name=database_name)
+        engine = self.spawn_engine(database_name)
         connection = engine.connect()
         connection.execute(statement)
 
@@ -301,7 +346,7 @@ class Update(DatabaseManager):
         table = self.boundaries_test_report_model()
         statement = table.update().where(table.c.test_id == str(test_id)).values(payload)
 
-        engine = self.spawn_engine(database_name=database_name)
+        engine = self.spawn_engine(database_name)
         connection = engine.connect()
         connection.execute(statement)
 
@@ -360,4 +405,3 @@ class DatabaseActions(Inserts, Select, Delete, Update):
 
         else:
             return False
-

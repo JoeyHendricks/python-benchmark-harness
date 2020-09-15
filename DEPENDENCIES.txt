@@ -6,3 +6,4 @@ PyMySQL
 psutil
 asyncio
 threading
+pandas
