@@ -3,35 +3,27 @@
 
 ## Building low level performance tests for Python with QuickPotato
 
-QuickPotato is low level performance testing framework for the Python programming language
-which can help you catch pesky performance bottlenecks in your code. 
-It does this by giving you easy access to all the tools needed to automatically test how your code is performing.
-With QuickPotato it is therefore possible to answer the following questions about your code:
+QuickPotato is low-level performance testing framework for the Python programming language. 
+Enabling its user to define helpful test cases which can help catch problematic performance bottlenecks 
+in the early stages of the development life cycle.
 
-- Is my code performing in the way I am expecting?
-- Did this code change deteriorate the performance of my code or project?
+It does by helping you answer two burning questions about your code. These are:
 
-It is then possible to get the answers of these two question on the following two levels:
+- Did that code change just impact the performance?
+- Is my code performing in the way which I am expecting?
 
-1. The smallest unit.
-2. Multiple units that make up a piece of functionality.
+Getting answers to these questions is not always easy. 
+That is why QuickPotato aims to equip you with all the tools necessary to get the job done. 
+What QuickPotato has in its growing arsenal boils down to the following features:
 
-> To what extend you want your performance tests to interact with stubs completely 
-> depends on how effortless you can spin up production-like environments. 
+- Measure the end to end performance of your code.
+- Automatically profile your code with CProfile.
+- Collect system resource utilization during execution.
+- Automatically discover performance regression after a code change. 
+- Verify if your code does not breach any performance boundaries.
 
-The cool thing about QuickPotato is that it provides you with all the tools needed to 
-answer these two important questions in a easy, reliable, and completely automated way. 
-By creating automated low level performance tests with QuickPotato, you are automatically 
-doing the following things:
-
-- Measuring the end to end performance of your code.
-- Profiling your code with CProfile.
-- Collecting system resource utilization.
-- Automated decisions about the performance of your code. 
-
-By removing as many obstacles between you and performance testing your code.
-QuickPotato hopes to enable you to get fast feedback about the speed of your code.
-Giving you the space to focus on delivering awesome code which is lighting fast! 
+QuickPotato hopes to remove as many obstacles between you and performance testing your code. 
+Allowing you to quickly fix the problem at hand continue creating awesome projects!
 
 ## How it works
 
@@ -41,28 +33,49 @@ Install using [pip](https://pip.pypa.io/en/stable/) or download the source code 
 ```bash
 pip install QuickPotato
 ```
+(Due note that QuickPotato is not yet released)
 
 ### Intrusive Testing
 
-Not all functions hold the same risk of forming a potential performance problem like others.
-Therefore it is possible with QuickPotato to pick and choose which function should be measured and profiled.
+Using QuickPotato's intrusive performance testing method requires you to decorate your function. 
+By tagging your function With the "performance_critical" decorator you are providing 
+QuickPotato access to profile this function.  
 
-The chosen functions need to be fitted with a performance_critical decorator so QuickPotato knows that this
-function needs to be tested when triggered during a unit performance test. 
-The snippet below gives you a example of how you can decorate function for use with QuickPotato.
+Besides that QuickPotato technically needs "performance_critical" decorator to be able to work. 
+It also serves a human purpose be decorating as performance-critical functions with this decorator. 
+You are reminding your self and your teammates to think about the performance of the code.
+An example of this concept can be found below:
 
 ```python
 from QuickPotato.inspect.intrusive import performance_critical
 
 
+# Decorate your function 
 @performance_critical
 def example():
     return 1 + 1
 
 ```
 
-It is important to understand that when using the intrusive method. 
-That there are no side effect when during normal operation.
+### Quick Profiling 
+
+Once you import and attach the "performance_critical" decorator to your function you are one step 
+away of gaining insights into the performance of your code. 
+The code snippet below shows you the final step needed to get performance statistics out of your code: 
+
+```python
+from QuickPotato.inspect.intrusive import performance_critical
+from QuickPotato.configuration import options
+
+# Turn on profiling 
+options.collect_performance_statistics = True
+
+# Decorate your function 
+@performance_critical
+def example():
+    return 1 + 1
+
+```
 
 ### Boundary Testing
 
