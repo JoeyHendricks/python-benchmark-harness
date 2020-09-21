@@ -3,9 +3,29 @@
 
 ## Building low level performance tests for Python with QuickPotato
 
-QuickPotato is a low level performance testing framework that helps you gets rid of slow couch potato code.
-It allows you to verify if the performance of your code is working like expected 
-by being able to answer the following two questions:
+QuickPotato is low level performance testing framework for the Python programming language
+that can help you get rid of pesky performance bottlenecks in your code. It does this by giving you easy access 
+to all the tools needed to automatically test how your code is performing.
+
+## Why shift performance testing left?
+
+The further we progress in the software development life cycle the more defects we are going to find. 
+But as the project matures fixing these defects will become more and more expensive and time consuming. 
+
+[![Couch Potato code in a lazy chair](/images/potato-banner-tv.jpg "Slow Potato Code")](https://github.com/JoeyHendricks/python-low-level-performance-testing/blob/master/images/potato-banner-tv.png?raw=true)
+
+To prevent costly performance issues to appear in your code you would want to start verifying the performance 
+of your code as early as possible. By implementing these performance verifications into your testing efforts 
+you would gain the two main advantages:
+
+-  Performance does not become an afterthought.
+- Quick automated feedback about the performance of your code.
+
+
+
+
+
+---
 
 - Is my code performing in the way I am expecting?
 - Did this code change deteriorate the performance of my code or project?
