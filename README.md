@@ -1,7 +1,4 @@
-<p align="center">
-  <img src="https://github.com/JoeyHendricks/python-low-level-performance-testing/blob/master/images/potato-banner-tv.png?raw=true" />
-</p>
-
+[![Couch Potato code in a lazy chair](/images/potato-banner-tv.jpg "Slow Potato Code")](https://github.com/JoeyHendricks/python-low-level-performance-testing/blob/master/images/potato-banner-tv.png?raw=true)
 
 
 ## Building low level performance tests for Python with QuickPotato
