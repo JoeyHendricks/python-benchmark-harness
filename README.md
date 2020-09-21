@@ -42,7 +42,7 @@ By tagging your function With the "performance_critical" decorator you are provi
 QuickPotato access to profile this function.  
 
 Besides that QuickPotato technically needs "performance_critical" decorator to be able to work. 
-It also serves a human purpose be decorating as performance-critical functions with this decorator. 
+It also serves a human purpose be decorating functions as performance-critical. 
 You are reminding your self and your teammates to think about the performance of the code.
 An example of this concept can be found below:
 
