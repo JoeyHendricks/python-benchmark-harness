@@ -3,7 +3,6 @@ from QuickPotato.utilities.decorators import save_to_test_report
 from QuickPotato.statistics.hypothesis_tests import TTest, FTest
 from QuickPotato.harness.results import Measurements
 from QuickPotato.database.actions import DatabaseActions
-from QuickPotato.utilities.exceptions import *
 from QuickPotato.statistics.verification import *
 from QuickPotato.harness.results import RawData
 import string
@@ -23,6 +22,7 @@ class UnitPerformanceTest(Boundaries, Measurements, RegressionSettings):
         self._previous_test_id = None
         self._test_case_name = None
         self._silence_warning_messages = False
+        self._profiling_code_outside_of_unit_performance_test = True
 
     @property
     def current_test_id(self):
@@ -35,55 +35,6 @@ class UnitPerformanceTest(Boundaries, Measurements, RegressionSettings):
     @silence_warning_messages.setter
     def silence_warning_messages(self, value):
         self._silence_warning_messages = value
-
-    @property
-    def test_case_name(self):
-        """
-        The test case name that has been defined in the unit load test.
-
-        Raises
-        -------
-            AgentCannotFindTestCase If no test case is found
-        """
-        if self._test_case_name is None:
-            raise AgentCannotFindTestCase()
-            # No test case found cannot perform test
-        else:
-            return self._test_case_name
-
-    @test_case_name.setter
-    def test_case_name(self, value):
-        """
-        Will update the test case name with the provided value.
-
-        When the test case name is changed by a performance unit test.
-        The following automatic action will be performed:
-
-            - Create the database schema and tables.
-            - Find the previous test id
-            - Create the current test id
-
-        Parameters
-        ----------
-        value
-            the new value of the test case name that will
-            be defined by the developer.
-        """
-        # Spawn Test Case Database
-        self.DATABASE_ACTIONS.spawn_results_database(database_name=value)
-        self.DATABASE_ACTIONS.spawn_time_spent_table(database_name=value)
-        self.DATABASE_ACTIONS.spawn_system_resources_table(database_name=value)
-        self.DATABASE_ACTIONS.spawn_boundaries_test_report_table(database_name=value)
-        self.DATABASE_ACTIONS.spawn_regression_test_report_table(database_name=value)
-
-        # Execute Database Maintenance
-        self.DATABASE_ACTIONS.enforce_test_result_retention_policy(database_name=value)
-
-        # Refresh Test ID's
-        self._reset_unit_load_test(database_name=value)
-
-        # Bind Given Test Case Name
-        self._test_case_name = value
 
     @property
     def benchmark_measurements(self):
@@ -107,7 +58,59 @@ class UnitPerformanceTest(Boundaries, Measurements, RegressionSettings):
         """
         return RawData(test_id=self._previous_test_id, database_name=self._test_case_name)
 
-    def _reset_unit_load_test(self, database_name):
+    @property
+    def test_case_name(self):
+        """
+        The test case name that has been defined in the unit load test.
+
+        Raises
+        -------
+            AgentCannotFindTestCase If no test case is found
+        """
+        if self._profiling_code_outside_of_unit_performance_test is False:
+            return self._test_case_name
+
+        else:
+            self._create_and_populate_test_case_database("quick_potato_default_database")
+            self._current_test_id = "collected_outside_unit_performance_test"
+            return "quick_potato_default_database"
+
+    @test_case_name.setter
+    def test_case_name(self, value):
+        """
+        Will update the test case name with the provided value.
+
+        When the test case name is changed by a performance unit test.
+        The following automatic action will be performed:
+
+            - Create the database schema and tables.
+            - Find the previous test id
+            - Create the current test id
+
+        Parameters
+        ----------
+        value
+            the new value of the test case name that will
+            be defined by the developer.
+        """
+        self._create_and_populate_test_case_database(value)
+        self._profiling_code_outside_of_unit_performance_test = False
+
+        # Refresh Test ID's
+        self._reset_unit_performance_test(database_name=value)
+        self._test_case_name = value
+
+    def _create_and_populate_test_case_database(self, database):
+        """
+        """
+        self.DATABASE_ACTIONS.spawn_results_database(database)
+        self.DATABASE_ACTIONS.spawn_time_spent_table(database)
+        self.DATABASE_ACTIONS.spawn_system_resources_table(database)
+        self.DATABASE_ACTIONS.spawn_boundaries_test_report_table(database)
+        self.DATABASE_ACTIONS.spawn_regression_test_report_table(database)
+        self.DATABASE_ACTIONS.enforce_test_result_retention_policy(database)
+
+    def _reset_unit_performance_test(self, database_name):
         """
         The method will reset the unit load test class to it original state.
 
@@ -121,7 +124,6 @@ class UnitPerformanceTest(Boundaries, Measurements, RegressionSettings):
         """
         self._previous_test_id = str(self.DATABASE_ACTIONS.select_previous_test_id(database_name=database_name))
         self._current_test_id = ''.join(random.choices(string.ascii_uppercase + string.digits, k=12))
-        return True
 
     def _inspect_benchmark_and_baseline(self):
         """

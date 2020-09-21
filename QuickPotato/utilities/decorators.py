@@ -61,8 +61,8 @@ def save_evidence_test_report(fnc):
             report.test_id = kwargs["test_id"]
             report.test_case_name = kwargs["test_case_name"]
             report.verification_name = kwargs["validation_name"]
-            report.metric = kwargs["metric"]
-            report.threshold = kwargs["threshold"]
+            report.metric = float(kwargs["metric"])
+            report.threshold = float(kwargs["threshold"])
 
             # Scrub unused meta data
             del kwargs["test_id"]

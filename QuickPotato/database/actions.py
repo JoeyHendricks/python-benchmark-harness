@@ -245,6 +245,7 @@ class Select(DatabaseManager):
         results = [str(row.test_id) for row in connection.execute(query)]
         connection.close()
         engine.dispose()
+        
         if len(results) > 0:
             return results[-1]
 

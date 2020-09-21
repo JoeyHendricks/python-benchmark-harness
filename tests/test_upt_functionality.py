@@ -8,7 +8,7 @@ class TestBoundariesEndToEnd(unittest.TestCase):
 
     SAMPLE_SIZE = 10
     DELETE_TEMPORARY_DATABASE_AFTER_USE = True
-    TEMPORARY_UNIT_TEST_DATABASE_NAME = "quick_potato_unit_test_database"
+    TEMPORARY_UNIT_TEST_DATABASE_NAME = "quick_potato_boundary_test_database"
 
     def tearDown(self):
         if self.DELETE_TEMPORARY_DATABASE_AFTER_USE is True:
@@ -88,7 +88,7 @@ class TestRegressionEndToEnd(unittest.TestCase):
 
     DEFAULT_SAMPLE_SIZE = 10
     DELETE_TEMPORARY_DATABASE_AFTER_USE = True
-    TEMPORARY_UNIT_TEST_DATABASE_NAME = "quick_potato_unit_test_database"
+    TEMPORARY_UNIT_TEST_DATABASE_NAME = "quick_potato_regression_test_database"
 
     def set_baseline(self, slowdown):
         # Creating a default_baseline
@@ -161,6 +161,3 @@ class TestRegressionEndToEnd(unittest.TestCase):
         # Analyse profiled results
         results = upt.verify_that_there_is_no_change_between_the_baseline_and_benchmark()
         self.assertTrue(results)
-
-
-

@@ -7,15 +7,6 @@ class AgentCannotProcessProfilerOutput(Exception):
         return self.__doc__
 
 
-class AgentCannotFindTestCase(Exception):
-    """
-    An exception occurred while trying to initialize the agent.
-    Please review if you have defined a test case name.
-    """
-    def __str__(self):
-        return self.__doc__
-
-
 class AgentCannotFindMethod(Exception):
     """
     The inspect agent has not detected any method to collect metrics from.
