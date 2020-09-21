@@ -12,7 +12,7 @@ to all the tools needed to automatically test how your code is performing.
 The further we progress in the software development life cycle the more defects we are going to find. 
 But as the project matures fixing these defects will become more and more expensive and time consuming. 
 
-[![Couch Potato code in a lazy chair](/images/potato-banner-tv.jpg "Slow Potato Code")](https://github.com/JoeyHendricks/python-low-level-performance-testing/blob/master/images/potato-banner-tv.png?raw=true)
+[![Graph](/images/sdlc-graph.jpg "graph about earlier testing")](https://github.com/JoeyHendricks/python-low-level-performance-testing/blob/master/images/sdlc-graph.jpg?raw=true)
 
 To prevent costly performance issues to appear in your code you would want to start verifying the performance 
 of your code as early as possible. By implementing these performance verifications into your testing efforts 
