@@ -7,7 +7,7 @@ QuickPotato is low-level performance testing framework for the Python programmin
 Enabling its user to define helpful test cases which can help catch problematic performance bottlenecks 
 in the early stages of the development life cycle.
 
-It does by helping you answer two burning questions about your code. These are:
+It does by helping you answer two burning questions about your code. 
 
 - Did that code change just impact the performance?
 - Is my code performing in the way which I am expecting?
