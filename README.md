@@ -1,4 +1,4 @@
-[![An old rock in the desert](/images/potato-banner-no-tv.jpg "Slow Potato Code")](https://media-exp1.licdn.com/dms/image/C4D12AQHWoFEHeMiTFg/article-cover_image-shrink_720_1280/0?e=1605744000&v=beta&t=WkCHUs58CbSCMlSrvKeAfgLU2uchODD06ucz5vrcUZk)
+[![Couch Potato code in a lazy chair](/images/potato-banner-no-tv.jpg "Slow Potato Code")](https://github.com/JoeyHendricks/python-low-level-performance-testing/blob/master/images/potato-banner-tv.png?raw=true)
 
 ## Building low level performance tests for Python with QuickPotato
 
