@@ -65,7 +65,7 @@ The code snippet below shows you the final step needed to get performance statis
 
 ```python
 from QuickPotato.inspect.intrusive import performance_critical
-from QuickPotato.configuration import options
+from QuickPotato.configuration.manager import options
 
 # Turn on profiling 
 options.collect_performance_statistics = True

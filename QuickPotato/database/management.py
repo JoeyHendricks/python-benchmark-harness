@@ -1,4 +1,4 @@
-from QuickPotato.configuration.options import database_echo, database_connection_url
+from QuickPotato.configuration.manager import options
 from QuickPotato.database.models import *
 from QuickPotato.utilities.exceptions import *
 from sqlalchemy import create_engine
@@ -9,7 +9,7 @@ import tempfile
 
 class DatabaseManager(RawResultsModels, UnitPerformanceTestResultsModels):
 
-    URL = database_connection_url
+    URL = options.database_connection_url
 
     def __init__(self):
         RawResultsModels.__init__(self)
@@ -23,7 +23,7 @@ class DatabaseManager(RawResultsModels, UnitPerformanceTestResultsModels):
             path_to_temp = tempfile.gettempdir() + "\\" if '\\' in tempfile.gettempdir() else "/"
             return "sqlite:///" + path_to_temp + database_name + ".db"
 
-        elif database_connection_url.startswith('sqlite'):
+        elif options.database_connection_url.startswith('sqlite'):
             return self.URL + database_name + ".db"
 
         else:
@@ -35,7 +35,7 @@ class DatabaseManager(RawResultsModels, UnitPerformanceTestResultsModels):
         """
         try:
             url = self.validate_connection_url(database_name=database_name)
-            engine = create_engine(url, echo=database_echo)
+            engine = create_engine(url, echo=options.database_echo)
             return engine
 
         except Exception:
@@ -48,7 +48,7 @@ class DatabaseManager(RawResultsModels, UnitPerformanceTestResultsModels):
         try:
             # Add check for SQLite
             url = self.validate_connection_url(database_name=database_name)
-            engine = create_engine(url, echo=database_echo)
+            engine = create_engine(url, echo=options.database_echo)
             if not database_exists(engine.url):
                 create_database(engine.url)
             engine.dispose()
@@ -69,7 +69,7 @@ class DatabaseManager(RawResultsModels, UnitPerformanceTestResultsModels):
 
         """
         url = self.validate_connection_url(database_name=database_name)
-        engine = create_engine(url, echo=database_echo)
+        engine = create_engine(url, echo=options.database_echo)
         if database_exists(engine.url):
             drop_database(engine.url)
         return True
@@ -80,7 +80,7 @@ class DatabaseManager(RawResultsModels, UnitPerformanceTestResultsModels):
         """
         try:
             url = self.validate_connection_url(database_name=database_name)
-            engine = create_engine(url, echo=database_echo)
+            engine = create_engine(url, echo=options.database_echo)
             schema = self.time_spent_model()
             schema.metadata.create_all(engine)
             engine.dispose()
@@ -96,7 +96,7 @@ class DatabaseManager(RawResultsModels, UnitPerformanceTestResultsModels):
         """
         try:
             url = self.validate_connection_url(database_name=database_name)
-            engine = create_engine(url, echo=database_echo)
+            engine = create_engine(url, echo=options.database_echo)
             schema = self.system_resources_model()
             schema.metadata.create_all(engine)
             engine.dispose()
@@ -112,7 +112,7 @@ class DatabaseManager(RawResultsModels, UnitPerformanceTestResultsModels):
         """
         try:
             url = self.validate_connection_url(database_name=database_name)
-            engine = create_engine(url, echo=database_echo)
+            engine = create_engine(url, echo=options.database_echo)
             schema = self.boundaries_test_report_model()
             schema.metadata.create_all(engine)
             engine.dispose()
@@ -128,7 +128,7 @@ class DatabaseManager(RawResultsModels, UnitPerformanceTestResultsModels):
         """
         try:
             url = self.validate_connection_url(database_name=database_name)
-            engine = create_engine(url, echo=database_echo)
+            engine = create_engine(url, echo=options.database_echo)
             schema = self.regression_test_report_model()
             schema.metadata.create_all(engine)
             engine.dispose()

@@ -1,4 +1,5 @@
 from QuickPotato.database.management import DatabaseManager
+from QuickPotato.configuration.manager import options
 from sqlalchemy_utils import database_exists
 from sqlalchemy import create_engine
 from tests.stubs import *
@@ -10,7 +11,11 @@ class TestUsage(unittest.TestCase):
     DELETE_TEMPORARY_DATABASE_AFTER_USE = True
     TEMPORARY_UNIT_TEST_DATABASE_NAME = "quick_potato_default_database"
 
+    def setUp(self):
+        options.collect_performance_statistics = True
+
     def tearDown(self):
+        options.collect_performance_statistics = False
         if self.DELETE_TEMPORARY_DATABASE_AFTER_USE is True:
             database_manager = DatabaseManager()
             database_manager.delete_result_database(database_name=self.TEMPORARY_UNIT_TEST_DATABASE_NAME)

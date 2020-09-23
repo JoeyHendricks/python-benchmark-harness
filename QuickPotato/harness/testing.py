@@ -1,4 +1,4 @@
-from QuickPotato.configuration.criteria import Boundaries, RegressionSettings
+from QuickPotato.configuration.settings import Boundaries, RegressionSettings
 from QuickPotato.utilities.decorators import save_to_test_report
 from QuickPotato.statistics.hypothesis_tests import TTest, FTest
 from QuickPotato.harness.results import Measurements

@@ -1,5 +1,6 @@
 from QuickPotato.inspect.intrusive import unit_performance_test
 from QuickPotato.database.management import DatabaseManager
+from QuickPotato.configuration.manager import options
 from tests.stubs import *
 import unittest
 
@@ -9,6 +10,9 @@ class TestBoundariesEndToEnd(unittest.TestCase):
     SAMPLE_SIZE = 10
     DELETE_TEMPORARY_DATABASE_AFTER_USE = True
     TEMPORARY_UNIT_TEST_DATABASE_NAME = "quick_potato_boundary_test_database"
+
+    def setUp(self):
+        options.collect_performance_statistics = True
 
     def tearDown(self):
         if self.DELETE_TEMPORARY_DATABASE_AFTER_USE is True:
@@ -86,15 +90,18 @@ class TestBoundariesEndToEnd(unittest.TestCase):
 
 class TestRegressionEndToEnd(unittest.TestCase):
 
-    DEFAULT_SAMPLE_SIZE = 10
+    SAMPLE_SIZE = 10
     DELETE_TEMPORARY_DATABASE_AFTER_USE = True
     TEMPORARY_UNIT_TEST_DATABASE_NAME = "quick_potato_regression_test_database"
+
+    def setUp(self):
+        options.collect_performance_statistics = True
 
     def set_baseline(self, slowdown):
         # Creating a default_baseline
         upt = unit_performance_test
         upt.test_case_name = self.TEMPORARY_UNIT_TEST_DATABASE_NAME
-        for _ in range(0, self.DEFAULT_SAMPLE_SIZE):
+        for _ in range(0, self.SAMPLE_SIZE):
             if slowdown is True:
                 slow_method()
             else:
@@ -117,7 +124,7 @@ class TestRegressionEndToEnd(unittest.TestCase):
         upt.regression_setting_perform_t_test = True
 
         # Execute method under test
-        for _ in range(0, self.DEFAULT_SAMPLE_SIZE):
+        for _ in range(0, self.SAMPLE_SIZE):
             slow_method()
 
         # Analyse profiled results
@@ -136,7 +143,7 @@ class TestRegressionEndToEnd(unittest.TestCase):
         upt.regression_setting_perform_t_test = True
 
         # Execute method under test
-        for _ in range(0, self.DEFAULT_SAMPLE_SIZE):
+        for _ in range(0, self.SAMPLE_SIZE):
             fast_method()
 
         # Analyse profiled results
@@ -155,7 +162,7 @@ class TestRegressionEndToEnd(unittest.TestCase):
         upt.regression_setting_perform_t_test = True
 
         # Execute method under test
-        for _ in range(0, self.DEFAULT_SAMPLE_SIZE):
+        for _ in range(0, self.SAMPLE_SIZE):
             fast_method()
 
         # Analyse profiled results

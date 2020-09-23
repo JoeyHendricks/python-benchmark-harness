@@ -22,3 +22,14 @@ template_for_service_level_agreement_threshold_policy = {
     "max_and_min_boundary_for_percentile_90th": {"max": None, "min": None},
     "max_and_min_boundary_for_percentile_95th": {"max": None, "min": None},
 }
+
+default_quick_potato_configuration = {
+
+    "collect_performance_statistics": True,
+    "database_connection_url": None,
+    "database_echo": False,
+    "asynchronous_payload_delivery": True,
+    "automatically_clean_up_old_test_results": True,
+    "maximum_number_of_saved_test_results": 10,
+
+    }

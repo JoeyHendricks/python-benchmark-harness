@@ -1,6 +1,6 @@
 from QuickPotato.database.actions import DatabaseActions
 from QuickPotato.utilities.exceptions import *
-from QuickPotato.configuration.options import asynchronous_payload_delivery
+from QuickPotato.configuration.manager import options
 from datetime import datetime
 import asyncio
 import re
@@ -22,7 +22,7 @@ class TimeSpentInterpreter(DatabaseActions):
         self.epoch_timestamp = datetime.now().timestamp()
         self.human_timestamp = datetime.now()
 
-        if asynchronous_payload_delivery:
+        if options.asynchronous_payload_delivery:
             self.upload_payload_to_database_async()
 
         else:
@@ -149,7 +149,7 @@ class SystemResourcesInterpreter(DatabaseActions):
         self.method_id = method_id
         self.test_id = test_id
 
-        if asynchronous_payload_delivery:
+        if options.asynchronous_payload_delivery:
             self.upload_payload_to_database_async()
 
         else:

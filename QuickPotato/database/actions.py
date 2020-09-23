@@ -1,4 +1,4 @@
-from QuickPotato.configuration.options import *
+from QuickPotato.configuration.manager import options
 from QuickPotato.database.management import DatabaseManager
 from sqlalchemy import select, func, and_
 import pandas as pd
@@ -205,7 +205,7 @@ class Select(DatabaseManager):
 
         return results
 
-    def select_all_test_ids(self, table, database_name, number=maximum_number_of_saved_test_results):
+    def select_all_test_ids(self, table, database_name, number=options.maximum_number_of_saved_test_results):
         """
 
         Parameters
@@ -366,14 +366,15 @@ class DatabaseActions(Inserts, Select, Delete, Update):
         :return:
         """
         current_number_of_test_ids = self.select_total_number_of_test_ids(database_name)
-        maximum_number_of_test_ids = maximum_number_of_saved_test_results
+        maximum_number_of_test_ids = options.maximum_number_of_saved_test_results
 
-        if current_number_of_test_ids > maximum_number_of_test_ids and automatically_clean_up_old_test_results is True:
+        if current_number_of_test_ids > maximum_number_of_test_ids and \
+                options.automatically_clean_up_old_test_results is True:
 
             oldest_test_ids = self.select_all_test_ids(
                 table=self.time_spent_model(),
                 database_name=database_name,
-                number=maximum_number_of_saved_test_results - 1
+                number=options.maximum_number_of_saved_test_results - 1
             )
 
             for test_id in oldest_test_ids:
@@ -398,7 +399,7 @@ class DatabaseActions(Inserts, Select, Delete, Update):
         all_test_ids = self.select_all_test_ids(
             table=table,
             database_name=database_name,
-            number=maximum_number_of_saved_test_results - 1
+            number=options.maximum_number_of_saved_test_results - 1
             )
 
         if test_id in all_test_ids:

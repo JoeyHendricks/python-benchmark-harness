@@ -1,4 +1,4 @@
-from QuickPotato.configuration.options import collect_performance_statistics
+from QuickPotato.configuration.manager import options
 from QuickPotato.utilities.exceptions import AgentCannotFindMethod
 from QuickPotato.inspect.interpreters import TimeSpentInterpreter, SystemResourcesInterpreter
 from QuickPotato.harness.testing import UnitPerformanceTest
@@ -9,7 +9,7 @@ import uuid
 unit_performance_test = UnitPerformanceTest()
 
 
-def performance_critical(method=None, enabled=collect_performance_statistics):
+def performance_critical(method=None, enabled=True):
     """
     This decorator can be used to gather performance statistics
     on a method.
@@ -29,7 +29,7 @@ def performance_critical(method=None, enabled=collect_performance_statistics):
         :param kwargs: The key word arguments of the method under test
         :return: the methods results
         """
-        if enabled:
+        if enabled and options.collect_performance_statistics:
 
             method_id = str(uuid.uuid1())
             pf = Profiler()
