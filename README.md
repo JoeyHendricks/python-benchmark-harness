@@ -1,9 +1,9 @@
 [![Couch Potato code in a lazy chair](/images/potato-banner-tv.jpg "Slow Potato Code")](https://github.com/JoeyHendricks/python-low-level-performance-testing/blob/master/images/potato-banner-tv.png?raw=true)
 
 
-## Building low level performance tests for Python with QuickPotato
+## Building unit level performance tests for Python with QuickPotato
 
-QuickPotato is low-level performance testing framework for the Python programming language. 
+QuickPotato is unit-level performance testing framework for the Python programming language. 
 Enabling its user to define helpful test cases which can help catch problematic performance bottlenecks 
 in the early stages of the development life cycle.
 
