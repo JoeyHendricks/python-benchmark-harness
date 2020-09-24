@@ -29,7 +29,7 @@ def performance_critical(method=None, enabled=True):
         :param kwargs: The key word arguments of the method under test
         :return: the methods results
         """
-        if enabled and options.collect_performance_statistics:
+        if enabled and options.enable_profiling:
 
             method_id = str(uuid.uuid1())
             pf = Profiler()

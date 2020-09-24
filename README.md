@@ -74,14 +74,14 @@ from demo.example_of_slow_and_fast_functions import *
 from QuickPotato.configuration.manager import options  # Import the options object
 
 
-options.collect_performance_statistics = True  # <-- Set to True to enable profiling
+options.enable_profiling = True  # <-- Set to True to enable profiling
 
 fast_method()
 
 options.collect_performance_statistics = False  # <-- Set to False to disable profiling
 
 ```
-> Do note that options states are saved to a yaml file.  
+> Do note that the states of options are saved.  
 
 ### Boundary Testing
 
@@ -98,7 +98,7 @@ from demo.example_of_slow_and_fast_functions import fast_method
 upt.test_case_name = "verify_performance_of_fast_method"  # <-- Define test case name
 upt.max_and_min_boundary_for_average = {"max": 1, "min": 0.001}  # <-- Establish performance boundaries
 
-options.collect_performance_statistics = True  # <-- Set to True to enable profiling
+options.enable_profiling = True  # <-- Set to True to enable profiling
 
 # Execute method under test
 for _ in range(0, 10):
@@ -107,7 +107,7 @@ for _ in range(0, 10):
 # Analyse profiled results will output True if boundaries are not breached otherwise False
 results = upt.verify_if_benchmark_does_not_breach_defined_boundaries()
 
-options.collect_performance_statistics = False  # <-- Set to False to disable profiling
+options.enable_profiling = False  # <-- Set to False to disable profiling
 
 # Export time spent statistics to csv
 export_all_time_spent_statistics_to_csv(
