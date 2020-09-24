@@ -134,4 +134,3 @@ results = upt.verify_that_there_is_no_change_between_the_baseline_and_benchmark(
 If you want to learn more about low level performance testing than check out the following resources:
 
 [Don’t lose your mind over slow code check your performance sanity.](https://www.linkedin.com/pulse/dont-lose-your-mind-over-slow-code-check-performance-sanity-joey/) 
-
