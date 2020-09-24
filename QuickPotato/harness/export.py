@@ -5,7 +5,7 @@ import tempfile
 DATABASE_ACTIONS = DatabaseActions()
 
 
-def export_time_spent_statistics_to_csv(test_case_name, test_id, delimiter=",", path=None):
+def export_all_time_spent_statistics_to_csv(test_case_name, test_id, delimiter=",", path=None):
     """
 
     :return:

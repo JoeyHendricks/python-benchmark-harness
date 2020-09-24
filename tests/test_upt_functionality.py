@@ -1,7 +1,7 @@
 from QuickPotato.inspect.intrusive import unit_performance_test
 from QuickPotato.database.management import DatabaseManager
 from QuickPotato.configuration.manager import options
-from tests.stubs import *
+from demo.example_of_slow_and_fast_functions import *
 import unittest
 
 

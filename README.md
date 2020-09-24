@@ -47,14 +47,20 @@ You are reminding your self and your teammates to think about the performance of
 An example of this concept can be found below:
 
 ```python
-from QuickPotato.inspect.intrusive import performance_critical
+from QuickPotato.inspect.intrusive import performance_critical  # <-- Import the decorator
+import math
 
 
-# Decorate your function 
-@performance_critical
-def example():
-    return 1 + 1
+@performance_critical  # <-- Attach the decorator
+def slow_method():
+    num = 6 ** 6 ** 6
+    return len(str(num))
 
+
+@performance_critical  # <-- Attach the decorator
+def fast_method():
+    num = 6 ** 6 ** 6
+    return int(math.log10(num))
 ```
 
 ### Quick Profiling 
@@ -64,18 +70,18 @@ away of gaining insights into the performance of your code.
 The code snippet below shows you the final step needed to get performance statistics out of your code: 
 
 ```python
-from QuickPotato.inspect.intrusive import performance_critical
-from QuickPotato.configuration.manager import options
+from demo.example_of_slow_and_fast_functions import *
+from QuickPotato.configuration.manager import options  # Import the options object
 
-# Turn on profiling 
-options.collect_performance_statistics = True
 
-# Decorate your function 
-@performance_critical
-def example():
-    return 1 + 1
+options.collect_performance_statistics = True  # <-- Set to True to enable profiling
+
+fast_method()
+
+options.collect_performance_statistics = False  # <-- Set to False to disable profiling
 
 ```
+> Do note that options states are saved to a yaml file.  
 
 ### Boundary Testing
 
@@ -84,22 +90,32 @@ your code does not breach any defined boundary.
 An example of this sort of test can be found in the snippet below: 
 
 ```python
-from QuickPotato.inspect.intrusive import unit_performance_test
-from example.intrusive_example import example
+from QuickPotato.inspect.intrusive import unit_performance_test as upt
+from QuickPotato.configuration.manager import options
+from QuickPotato.harness.export import export_all_time_spent_statistics_to_csv
+from demo.example_of_slow_and_fast_functions import fast_method
 
-# Setup your unit performance test.
-upt = unit_performance_test
-upt.test_case_name = "Default"
+upt.test_case_name = "verify_performance_of_fast_method"  # <-- Define test case name
+upt.max_and_min_boundary_for_average = {"max": 1, "min": 0.001}  # <-- Establish performance boundaries
 
-# Define the boundaries for your code.
-upt.max_and_min_boundary_for_average = {"max": 0.200, "min": 0.011}
-        
-# Run functions which are decorated as performance critical.
+options.collect_performance_statistics = True  # <-- Set to True to enable profiling
+
+# Execute method under test
 for _ in range(0, 10):
-    example() # <-- Your function or class here.
-        
-# Verify if the function does not breach any defined boundaries.
+    fast_method()
+
+# Analyse profiled results will output True if boundaries are not breached otherwise False
 results = upt.verify_if_benchmark_does_not_breach_defined_boundaries()
+
+options.collect_performance_statistics = False  # <-- Set to False to disable profiling
+
+# Export time spent statistics to csv
+export_all_time_spent_statistics_to_csv(
+    test_case_name=upt.test_case_name,
+    test_id=upt.current_test_id,
+    delimiter=";",
+    path="C:\\Temp\\"
+)
 ```
 ### Regression Testing
 
@@ -109,7 +125,7 @@ How to create such a test can be found in the snippet below.
 
 ```python
 from QuickPotato.inspect.intrusive import unit_performance_test
-from example.intrusive_example import example
+from demo.intrusive_example import example
 
 # Setup your unit performance test.
 upt = unit_performance_test
