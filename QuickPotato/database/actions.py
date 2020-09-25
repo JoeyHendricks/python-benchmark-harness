@@ -128,7 +128,7 @@ class Select(DatabaseManager):
 
         return results
 
-    def select_all_stacks(self, database_name, test_id):
+    def select_all_call_stacks(self, database_name, test_id):
         """
         :param test_id:
         :param database_name:
@@ -168,20 +168,20 @@ class Select(DatabaseManager):
 
         return pd.DataFrame(results)
 
-    def select_stack(self, database_name, stack_uuid):
+    def select_call_stack(self, database_name, uuid):
         """
 
         Parameters
         ----------
         database_name
-        stack_uuid
+        uuid
 
         Returns
         -------
 
         """
         table = self.time_spent_model()
-        query = table.select().where(table.c.uuid == str(stack_uuid))
+        query = table.select().where(table.c.uuid == str(uuid))
         results = []
 
         engine = self.spawn_engine(database_name)

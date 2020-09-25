@@ -1,4 +1,5 @@
 from QuickPotato.configuration.settings import Boundaries, RegressionSettings
+from QuickPotato.utilities.templates import default_test_case_name
 from QuickPotato.utilities.decorators import save_to_test_report
 from QuickPotato.statistics.hypothesis_tests import TTest, FTest
 from QuickPotato.harness.results import Measurements
@@ -9,11 +10,11 @@ import string
 import random
 
 
-class UnitPerformanceTest(Boundaries, Measurements, RegressionSettings):
-
-    DATABASE_ACTIONS = DatabaseActions()
+class UnitPerformanceTest(DatabaseActions, Boundaries, Measurements, RegressionSettings):
 
     def __init__(self):
+
+        DatabaseActions.__init__(self)
         Boundaries.__init__(self)
         RegressionSettings.__init__(self)
         Measurements.__init__(self)
@@ -22,7 +23,7 @@ class UnitPerformanceTest(Boundaries, Measurements, RegressionSettings):
         self._previous_test_id = None
         self._test_case_name = None
         self._silence_warning_messages = False
-        self._profiling_code_outside_of_unit_performance_test = True
+        self._outside_of_unit_performance_test = True
 
     @property
     def current_test_id(self):
@@ -67,13 +68,13 @@ class UnitPerformanceTest(Boundaries, Measurements, RegressionSettings):
         -------
             AgentCannotFindTestCase If no test case is found
         """
-        if self._profiling_code_outside_of_unit_performance_test is False:
+        if self._outside_of_unit_performance_test is False:
             return self._test_case_name
 
         else:
-            self._create_and_populate_test_case_database("quick_potato_default_database")
+            self._create_and_populate_test_case_database(default_test_case_name)
             self._current_test_id = "collected_outside_unit_performance_test"
-            return "quick_potato_default_database"
+            return default_test_case_name
 
     @test_case_name.setter
     def test_case_name(self, value):
@@ -94,7 +95,7 @@ class UnitPerformanceTest(Boundaries, Measurements, RegressionSettings):
             be defined by the developer.
         """
         self._create_and_populate_test_case_database(value)
-        self._profiling_code_outside_of_unit_performance_test = False
+        self._outside_of_unit_performance_test = False
 
         # Refresh Test ID's
         self._reset_unit_performance_test(database_name=value)
@@ -103,12 +104,12 @@ class UnitPerformanceTest(Boundaries, Measurements, RegressionSettings):
     def _create_and_populate_test_case_database(self, database):
         """
         """
-        self.DATABASE_ACTIONS.spawn_results_database(database)
-        self.DATABASE_ACTIONS.spawn_time_spent_table(database)
-        self.DATABASE_ACTIONS.spawn_system_resources_table(database)
-        self.DATABASE_ACTIONS.spawn_boundaries_test_report_table(database)
-        self.DATABASE_ACTIONS.spawn_regression_test_report_table(database)
-        self.DATABASE_ACTIONS.enforce_test_result_retention_policy(database)
+        self.spawn_results_database(database)
+        self.spawn_time_spent_table(database)
+        self.spawn_system_resources_table(database)
+        self.spawn_boundaries_test_report_table(database)
+        self.spawn_regression_test_report_table(database)
+        self.enforce_test_result_retention_policy(database)
 
     def _reset_unit_performance_test(self, database_name):
         """
@@ -122,7 +123,7 @@ class UnitPerformanceTest(Boundaries, Measurements, RegressionSettings):
         -------
             Will return True on success
         """
-        self._previous_test_id = str(self.DATABASE_ACTIONS.select_previous_test_id(database_name=database_name))
+        self._previous_test_id = str(self.select_previous_test_id(database_name=database_name))
         self._current_test_id = ''.join(random.choices(string.ascii_uppercase + string.digits, k=12))
 
     def _inspect_benchmark_and_baseline(self):

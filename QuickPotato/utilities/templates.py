@@ -33,3 +33,5 @@ default_quick_potato_configuration = {
     "maximum_number_of_saved_test_results": 10,
 
     }
+
+default_test_case_name = "quick_potato_default_database"
