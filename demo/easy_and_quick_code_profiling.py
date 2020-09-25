@@ -3,11 +3,11 @@ from QuickPotato.configuration.manager import options  # <-- Import the options 
 from QuickPotato.harness.export import TimeSpentStatisticsExport
 
 
-options.enable_profiling = True  # <-- Set to True to enable profiling
+options.enable_intrusive_profiling = True  # <-- Set to True to enable profiling
 
 fast_method()
 
-options.enable_profiling = False  # <-- Set to False to disable profiling
+options.enable_intrusive_profiling = False  # <-- Set to False to disable profiling
 
 # Export all results to csv
 TimeSpentStatisticsExport(

@@ -12,7 +12,7 @@ class TestBoundariesEndToEnd(unittest.TestCase):
     TEMPORARY_UNIT_TEST_DATABASE_NAME = "quick_potato_boundary_test_database"
 
     def setUp(self):
-        options.enable_profiling = True
+        options.enable_intrusive_profiling = True
 
     def tearDown(self):
         if self.DELETE_TEMPORARY_DATABASE_AFTER_USE is True:
@@ -95,7 +95,7 @@ class TestRegressionEndToEnd(unittest.TestCase):
     TEMPORARY_UNIT_TEST_DATABASE_NAME = "quick_potato_regression_test_database"
 
     def setUp(self):
-        options.enable_profiling = True
+        options.enable_intrusive_profiling = True
 
     def set_baseline(self, slowdown):
         # Creating a default_baseline

@@ -21,11 +21,11 @@ class Configuration:
             yaml.dump(contents, file)
 
     @property
-    def enable_profiling(self):
+    def enable_intrusive_profiling(self):
         return self.contents["collect_performance_statistics"]
 
-    @enable_profiling.setter
-    def enable_profiling(self, value):
+    @enable_intrusive_profiling.setter
+    def enable_intrusive_profiling(self, value):
         self.contents["collect_performance_statistics"] = value
         self.dump_setting_to_yaml_file(self.contents)
 
