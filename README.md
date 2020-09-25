@@ -65,9 +65,9 @@ def fast_method():
 
 ### Quick Profiling 
 
-Once you import and attach the "performance_critical" decorator to your function you are one step 
+Once you import and attach the "performance_critical" decorator to your function you are two steps
 away of gaining insights into the performance of your code. 
-The code snippet below shows you the final step needed to get performance statistics out of your code: 
+The code snippet below shows you the final two step needed to get performance statistics out of your code: 
 
 ```python
 from demo.example_of_slow_and_fast_functions import *
@@ -88,7 +88,7 @@ TimeSpentStatisticsExport(
 ).to_csv()
 
 ```
-> Do note that the states of options are saved.  
+> Do note that the states of options are saved in a static yaml options file.  
 
 ### Boundary Testing
 
