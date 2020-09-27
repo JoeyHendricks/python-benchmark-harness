@@ -2,7 +2,7 @@ from QuickPotato.database.management import DatabaseManager
 from QuickPotato.configuration.manager import options
 from sqlalchemy_utils import database_exists
 from sqlalchemy import create_engine
-from demo.example_of_slow_and_fast_functions import *
+from demo.example_code import *
 import unittest
 
 

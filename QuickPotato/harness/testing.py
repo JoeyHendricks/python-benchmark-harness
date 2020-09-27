@@ -255,5 +255,5 @@ class UnitPerformanceTest(DatabaseActions, Boundaries, Measurements, RegressionS
 
         else:
             if self._silence_warning_messages is False:
-                print("Warning no baseline found so regression test performed")
+                print("Warning no baseline found so no regression test performed")
             return None

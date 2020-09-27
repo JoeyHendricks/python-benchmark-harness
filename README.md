@@ -70,7 +70,7 @@ away of gaining insights into the performance of your code.
 The code snippet below shows you the final two step needed to get performance statistics out of your code: 
 
 ```python
-from demo.example_of_slow_and_fast_functions import *
+from demo.example_code import *
 from QuickPotato.configuration.manager import options  # <-- Import the options object
 from QuickPotato.harness.export import TimeSpentStatisticsExport
 
@@ -100,9 +100,9 @@ An example of this sort of test can be found in the snippet below:
 from QuickPotato.inspect.intrusive import unit_performance_test as upt
 from QuickPotato.configuration.manager import options
 from QuickPotato.harness.export import TimeSpentStatisticsExport
-from demo.example_of_slow_and_fast_functions import fast_method
+from demo.example_code import fast_method
 
-upt.test_case_name = "verify_performance_of_fast_method"  # <-- Define test case name
+upt.test_case_name = "test_performance"  # <-- Define test case name
 upt.max_and_min_boundary_for_average = {"max": 1, "min": 0.001}  # <-- Establish performance boundaries
 
 options.enable_intrusive_profiling = True  # <-- Set to True to enable profiling
@@ -111,19 +111,20 @@ options.enable_intrusive_profiling = True  # <-- Set to True to enable profiling
 for _ in range(0, 10):
     fast_method()
 
+options.enable_intrusive_profiling = False  # <-- Set to False to disable profiling
+
 # Analyse profiled results will output True if boundaries are not breached otherwise False
 results = upt.verify_if_benchmark_does_not_breach_defined_boundaries()
 
-options.enable_intrusive_profiling = False  # <-- Set to False to disable profiling
-
 # Export time spent statistics to csv
-TimeSpentStatisticsExport(
-    test_case_name=upt.test_case_name,
-    test_id=upt.current_test_id,
-    delimiter=";",
-    path="C:\\Temp\\",
-    purge_database_after_export=True  # <-- Optionally clean-up the database after use.
-).to_csv()
+if results is False:
+    TimeSpentStatisticsExport(
+        test_case_name=upt.test_case_name,
+        test_id=upt.current_test_id,
+        delimiter=";",
+        path="C:\\Temp\\",
+        purge_database_after_export=True  # <-- Optionally clean-up the database after use.
+    ).to_csv()
 
 ```
 ### Regression Testing
@@ -133,21 +134,36 @@ It is also possible to verify that there is no regression between the current be
 How to create such a test can be found in the snippet below.
 
 ```python
-from QuickPotato.inspect.intrusive import unit_performance_test
-from demo.intrusive_example import example
+from QuickPotato.inspect.intrusive import unit_performance_test as upt
+from QuickPotato.configuration.manager import options
+from QuickPotato.harness.export import TimeSpentStatisticsExport
+from demo.example_code import fast_method
 
-# Setup your unit performance test.
-upt = unit_performance_test
-upt.test_case_name = "Default"
-upt.regression_setting_perform_f_test = True
-upt.regression_setting_perform_t_test = True
 
-# Run functions which are decorated as performance critical.
+upt.test_case_name = "test_performance"  # <-- Define test case name
+upt.regression_setting_perform_f_test = True  # <-- Turn on f-test 
+upt.regression_setting_perform_t_test = True  # <-- Turn on t-test
+
+options.enable_intrusive_profiling = True  # <-- Set to True to enable profiling
+
+# Execute method under test
 for _ in range(0, 10):
-    example() # <-- Your function or class here.
+    fast_method()
 
-# Verify if the function does not contain any change.
+options.enable_intrusive_profiling = False  # <-- Set to False to disable profiling
+
+# Analyse results for change True if there is no change otherwise False
 results = upt.verify_that_there_is_no_change_between_the_baseline_and_benchmark()
+
+# Export time spent statistics to csv
+if results is False:
+    TimeSpentStatisticsExport(
+        test_case_name=upt.test_case_name,
+        test_id=upt.current_test_id,
+        delimiter=";",
+        path="C:\\Temp\\"
+    ).to_csv()
+
 ```
 
 ## License
@@ -156,6 +172,6 @@ results = upt.verify_that_there_is_no_change_between_the_baseline_and_benchmark(
 
 ## Read More About Unit Performance Testing
 
-If you want to learn more about low level performance testing than check out the following resources:
+If you want to learn more about unit-level performance testing than check out the following resources:
 
 [Don’t lose your mind over slow code check your performance sanity.](https://www.linkedin.com/pulse/dont-lose-your-mind-over-slow-code-check-performance-sanity-joey/) 

@@ -1,4 +1,4 @@
-from demo.example_of_slow_and_fast_functions import *
+from demo.example_code import *
 from QuickPotato.configuration.manager import options  # <-- Import the options object
 from QuickPotato.harness.export import TimeSpentStatisticsExport
 
