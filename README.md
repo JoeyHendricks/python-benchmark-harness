@@ -31,7 +31,7 @@ Install using [pip](https://pip.pypa.io/en/stable/) or download the source code 
 ```bash
 pip install QuickPotato
 ```
-(Due note that QuickPotato is not yet released)
+(Do note that QuickPotato is not yet released)
 
 ### Intrusive Testing
 
