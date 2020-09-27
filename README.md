@@ -1,4 +1,4 @@
-[![Couch Potato code in a lazy chair](/images/potato-banner-tv.jpg "Slow Potato Code")](https://github.com/JoeyHendricks/python-low-level-performance-testing/blob/master/images/potato-banner-tv.png?raw=true)
+[![Couch Potato code in a lazy chair](/images/banner-with-text.jpg "Slow Potato Code")](https://github.com/JoeyHendricks/python-unit-level-performance-testing/blob/master/images/banner-with-text.jpg?raw=true)
 
 
 ## Building unit level performance tests for Python with QuickPotato
