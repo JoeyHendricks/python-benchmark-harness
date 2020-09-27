@@ -1,27 +1,26 @@
 [![Couch Potato code in a lazy chair](/images/banner-with-text.jpg "Slow Potato Code")](https://github.com/JoeyHendricks/python-unit-level-performance-testing/blob/master/images/banner-with-text.jpg?raw=true)
 ---
 
-QuickPotato is unit-level performance testing framework for the Python programming language. 
-Enabling its user to define helpful test cases which can help catch problematic performance bottlenecks 
+QuickPotato is a unit-level performance testing framework for the Python programming language. 
+It enables its users to define helpful test cases which can help catch problematic performance bottlenecks 
 in the early stages of the development life cycle.
 
-It does by helping you answer two burning questions about your code. 
+It does so by helping you answer two burning questions about your code. 
 
 - Did that code change just impact the performance?
-- Is my code performing in the way which I am expecting?
+- Is my code performing the way I expect it to?
 
-Getting answers to these questions is not always easy. 
-That is why QuickPotato aims to equip you with all the tools necessary to get the job done. 
+Getting answers to these questions is not always easy. That is why QuickPotato aims to equip you with all the tools necessary to get the job done. 
 What QuickPotato has in its growing arsenal boils down to the following features:
 
-- Measure the end to end performance of your code.
-- Automatically profile your code with CProfile.
-- Collect system resource utilization during execution.
-- Automatically discover performance regression after a code change. 
-- Verify if your code does not breach any performance boundaries.
+- Measure the end to end performance of your code
+- Automatically profile your code using CProfile
+- Collect system resource utilization during execution
+- Automatically discover performance regression after a code change
+- Verify if your code does not breach any performance boundaries
 
-QuickPotato hopes to remove as many obstacles between you and performance testing your code. 
-Allowing you to quickly fix the problem at hand continue creating awesome projects!
+QuickPotato hopes to remove as many obstacles between you and your code allowing you to quickly fix the problem at hand 
+and continue your quest of creating awesome projects!
 
 ## How it works
 
@@ -31,17 +30,16 @@ Install using [pip](https://pip.pypa.io/en/stable/) or download the source code 
 ```bash
 pip install QuickPotato
 ```
-(Do note that QuickPotato is not yet released)
+(Do note that QuickPotato hasn't released yet)
 
 ### Intrusive Testing
 
 Using QuickPotato's intrusive performance testing method requires you to decorate your function. 
-By tagging your function With the "performance_critical" decorator you are providing 
-QuickPotato access to profile this function.  
+By tagging your function with the "performance_critical" decorator, you are providing QuickPotato access to profile this function.  
 
-Besides that QuickPotato technically needs "performance_critical" decorator to be able to work. 
-It also serves a human purpose be decorating functions as performance-critical. 
-You are reminding your self and your teammates to think about the performance of the code.
+Besides that, QuickPotato technically needs "performance_critical" decorator to be able to work. 
+It also serves a human purpose of decorating functions as performance-critical. 
+Thus, you remind yourself and your teammates to think about the performance of the code.
 An example of this concept can be found below:
 
 ```python
@@ -63,9 +61,9 @@ def fast_method():
 
 ### Quick Profiling 
 
-Once you import and attach the "performance_critical" decorator to your function you are two steps
-away of gaining insights into the performance of your code. 
-The code snippet below shows you the final two step needed to get performance statistics out of your code: 
+Once you import and attach the "performance_critical" decorator to your function, you are two steps
+away from gaining insights into the performance of your code. 
+The code snippet below, shows you the final two steps needed to get the performance statistics out of your code: 
 
 ```python
 from demo.example_code import *
@@ -90,8 +88,8 @@ TimeSpentStatisticsExport(
 
 ### Boundary Testing
 
-Within QuickPotato it is possible to create a performance test that validates if 
-your code does not breach any defined boundary.
+Within QuickPotato, it is possible to create a performance test that validates if 
+your code breaches any defined boundary or not.
 An example of this sort of test can be found in the snippet below: 
 
 ```python
@@ -127,9 +125,9 @@ if results is False:
 ```
 ### Regression Testing
 
-Besides testing if your code does not breach any boundaries.
-It is also possible to verify that there is no regression between the current benchmark and a previous baseline.
-How to create such a test can be found in the snippet below.
+Besides testing if your code does not breach any boundaries, it is also possible to verify that there is no regression 
+between the current benchmark and a previous baseline.
+The method for creating such a test can be found in the snippet below.
 
 ```python
 from QuickPotato.inspect.intrusive import unit_performance_test as upt
@@ -164,12 +162,8 @@ if results is False:
 
 ```
 
-## License
-
-[MIT](https://choosealicense.com/licenses/mit/)
-
 ## Read More About Unit Performance Testing
 
-If you want to learn more about unit-level performance testing than check out the following resources:
+If you want to learn more about unit-level performance testing then check out the following resources:
 
 [Don’t lose your mind over slow code check your performance sanity.](https://www.linkedin.com/pulse/dont-lose-your-mind-over-slow-code-check-performance-sanity-joey/) 
