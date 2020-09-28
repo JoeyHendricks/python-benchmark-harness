@@ -3,9 +3,8 @@ from setuptools import setup
 setup(
     name='QuickPotato',
     version='0.1',
-    packages=['QuickPotato', 'QuickPotato.harness', 'QuickPotato.database', 'QuickPotato.inspect',
-              'QuickPotato.utilities', 'QuickPotato.utilities.tests', 'QuickPotato.utilities.exceptions',
-              'QuickPotato.statistics', 'QuickPotato.configuration'],
+    packages=['QuickPotato', 'QuickPotato.harness', 'QuickPotato.inspect', 'QuickPotato.database',
+              'QuickPotato.utilities', 'QuickPotato.statistics', 'QuickPotato.configuration'],
     url='https://github.com/JoeyHendricks/python-unit-level-performance-testing',
     license='MIT',
     author='Joey Hendricks',

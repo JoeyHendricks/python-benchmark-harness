@@ -1,9 +1,0 @@
-numpy
-SQLAlchemy-Utils
-scipy
-SQLAlchemy
-PyMySQL
-psutil
-asyncio
-threading
-pandas
