@@ -41,11 +41,11 @@ class Inserts(DatabaseManager):
 
         return True
 
-    def insert_boundaries_test_report(self, payload, database_name):
+    def insert_boundaries_test_evidence(self, payload, database_name):
         """
         :return:
         """
-        table = self.boundaries_test_report_model()
+        table = self.boundaries_test_evidence()
         statement = table.insert()
 
         engine = self.spawn_engine(database_name)
@@ -57,7 +57,7 @@ class Inserts(DatabaseManager):
 
         return True
 
-    def insert_regression_test_report(self, payload, database_name):
+    def insert_regression_test_evidence(self, payload, database_name):
         """
         If the regression test report does not exist in database.
         Then this method will create the first row.
@@ -74,7 +74,7 @@ class Inserts(DatabaseManager):
         -------
         Will return True on success.
         """
-        table = self.regression_test_report_model()
+        table = self.regression_test_evidence()
         statement = table.insert()
 
         engine = self.spawn_engine(database_name)
@@ -300,63 +300,7 @@ class Delete(DatabaseManager):
         return True
 
 
-class Update(DatabaseManager):
-
-    def __init__(self):
-        super(Update, self).__init__()
-
-    def update_regression_test_report(self, payload, test_id, database_name):
-        """
-        Updates the regression test report when and additional statistical test is performed.
-
-        Parameters
-        ----------
-        payload: A dictionary payload which should contain the updated values
-        database_name: The name of the database
-        test_id: The test id which needs the update
-
-        Returns
-        -------
-        Will return True on success
-        """
-        table = self.regression_test_report_model()
-        statement = table.update().where(table.c.test_id == str(test_id)).values(payload)
-
-        engine = self.spawn_engine(database_name)
-        connection = engine.connect()
-        connection.execute(statement)
-
-        connection.close()
-        engine.dispose()
-        return True
-
-    def update_boundaries_test_report(self, payload, test_id, database_name):
-        """
-        Updates the regression test report when and additional statistical test is performed.
-
-        Parameters
-        ----------
-        payload: A dictionary payload which should contain the updated values
-        database_name: The name of the database
-        test_id: The test id which needs the update
-
-        Returns
-        -------
-        Will return True on success
-        """
-        table = self.boundaries_test_report_model()
-        statement = table.update().where(table.c.test_id == str(test_id)).values(payload)
-
-        engine = self.spawn_engine(database_name)
-        connection = engine.connect()
-        connection.execute(statement)
-
-        connection.close()
-        engine.dispose()
-        return True
-
-
-class DatabaseActions(Inserts, Select, Delete, Update):
+class DatabaseActions(Inserts, Select, Delete):
 
     def __init__(self):
         super(DatabaseActions, self).__init__()

@@ -1,30 +1,30 @@
-from QuickPotato.utilities.decorators import save_evidence_test_report
+from QuickPotato.utilities.decorators import save_boundary_evidence
 
 
-@save_evidence_test_report
-def validate_max_boundary_of_measurements(metric, threshold):
+@save_boundary_evidence
+def validate_max_boundary_of_measurements(value, boundary):
     """
     :return:
     """
-    if threshold is None:
+    if boundary is None:
         return None
 
-    elif float(metric) < float(threshold):
+    elif float(value) < float(boundary):
         return True
 
     else:
         return False
 
 
-@save_evidence_test_report
-def validate_min_boundary_of_measurements(metric, threshold):
+@save_boundary_evidence
+def validate_min_boundary_of_measurements(value, boundary):
     """
     :return:
     """
-    if threshold is None:
+    if boundary is None:
         return None
 
-    elif float(metric) > float(threshold):
+    elif float(value) > float(boundary):
         return True
 
     else:

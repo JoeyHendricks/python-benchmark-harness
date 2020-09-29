@@ -46,38 +46,34 @@ class RawResultsModels:
         return table
 
 
-class UnitPerformanceTestResultsModels:
+class UnitPerformanceTestResultModels:
 
     @staticmethod
-    def boundaries_test_report_model():
+    def boundaries_test_evidence():
         meta = MetaData()
         table = Table(
-            "boundaries_test_report", meta,
+            "boundaries_test_evidence", meta,
             Column('ID', Integer, primary_key=True),
             Column('test_id', String(99)),
             Column("test_case_name", String(999)),
-            Column('status', Boolean),
             Column("verification_name", String(999)),
-            Column("verification_status", Boolean),
-            Column("metric", Float),
-            Column("threshold", Float)
+            Column("status", Boolean),
+            Column("value", Float),
+            Column("boundary", Float)
         )
         return table
 
     @staticmethod
-    def regression_test_report_model():
+    def regression_test_evidence():
         meta = MetaData()
         table = Table(
-            "regression_test_report", meta,
+            "regression_test_evidence", meta,
             Column('ID', Integer, primary_key=True),
             Column('test_id', String(99)),
             Column("test_case_name", String(999)),
-            Column('status', Boolean),
-            Column('t_test_status', Boolean),
-            Column('t_test_value', Float),
-            Column('t_test_critical_value', Float),
-            Column('f_test_status', Boolean),
-            Column('f_test_value', Float),
-            Column('f_test_critical_value', Float)
+            Column("verification_name", String(999)),
+            Column("status", Boolean),
+            Column("value", Float),
+            Column("critical_value", Float)
         )
         return table

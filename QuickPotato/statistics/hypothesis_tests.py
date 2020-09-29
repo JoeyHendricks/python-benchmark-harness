@@ -1,6 +1,5 @@
-from QuickPotato.utilities.decorators import *
+from QuickPotato.harness.reporting import RegressionTestEvidence
 import numpy as np
-from math import sqrt
 from decimal import *
 from scipy import stats
 
@@ -8,25 +7,31 @@ from scipy import stats
 np.seterr(divide='ignore')
 
 
-class TTest:
+class TTest(RegressionTestEvidence):
 
     def __init__(self, test_id, test_case_name, baseline_measurements, benchmark_measurements):
+        super(TTest, self).__init__()
 
-        # meta data
-        self.test_id = test_id
-        self.test_case_name = test_case_name
-
-        # baseline calculations
+        # Baseline calculations
         self.baseline_measurements = np.array(baseline_measurements)
         self.baseline_mean = np.mean(self.baseline_measurements)
         self.baseline_variance = np.var(self.baseline_measurements)
         self.baseline_number_of_samples = self.baseline_measurements.size
 
-        # benchmark calculations
+        # Benchmark calculations
         self.benchmark_measurements = np.array(benchmark_measurements)
         self.benchmark_mean = np.mean(self.benchmark_measurements)
         self.benchmark_variance = np.var(self.benchmark_measurements)
         self.benchmark_number_of_samples = self.benchmark_measurements.size
+
+        # Information for test evidence report
+        self.test_id = test_id
+        self.test_case_name = test_case_name
+        self.verification_name = "T-Test"
+        self.status = self.run_t_test()
+        self.value = float(self.t_value)
+        self.critical_value = float(self.critical_t_value)
+        self.save_test_evidence()
 
     @property
     def results(self):
@@ -36,7 +41,7 @@ class TTest:
         -------
 
         """
-        return self.run_t_test()
+        return self.status
 
     @property
     def t_value(self):
@@ -66,7 +71,6 @@ class TTest:
         """
         return stats.t.ppf(q=1-.05/2, df=self.baseline_number_of_samples-2)
 
-    @save_evidence_test_report
     def run_t_test(self):
         """
 
@@ -84,13 +88,10 @@ class TTest:
             return True
 
 
-class FTest:
+class FTest(RegressionTestEvidence):
 
     def __init__(self, test_id, test_case_name, baseline_measurements, benchmark_measurements):
-
-        # meta data
-        self.test_id = test_id
-        self.test_case_name = test_case_name
+        super(FTest, self).__init__()
 
         # baseline calculations
         self.baseline_measurements = np.array(baseline_measurements)
@@ -101,6 +102,15 @@ class FTest:
         self.benchmark_measurements = np.array(benchmark_measurements)
         self.benchmark_variance = 0.0 if sum(self.benchmark_measurements) == 0 else np.var(self.benchmark_measurements)
         self.benchmark_number_of_samples = self.benchmark_measurements.size
+
+        # Information for test evidence report
+        self.test_id = test_id
+        self.test_case_name = test_case_name
+        self.verification_name = "F-Test"
+        self.status = self.run_f_test()
+        self.value = float(self.f_value)
+        self.critical_value = float(self.critical_f_value)
+        self.save_test_evidence()
 
     @property
     def results(self):
@@ -136,7 +146,6 @@ class FTest:
         return stats.f.ppf(q=1-0.05, dfn=self.benchmark_number_of_samples - 1,
                            dfd=self.benchmark_number_of_samples - 1)
 
-    @save_evidence_test_report
     def run_f_test(self):
         """
 

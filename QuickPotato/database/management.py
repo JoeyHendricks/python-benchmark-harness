@@ -7,13 +7,13 @@ from sqlalchemy_utils import database_exists, create_database, drop_database
 import tempfile
 
 
-class DatabaseManager(RawResultsModels, UnitPerformanceTestResultsModels):
+class DatabaseManager(RawResultsModels, UnitPerformanceTestResultModels):
 
     URL = options.database_connection_url
 
     def __init__(self):
         RawResultsModels.__init__(self)
-        UnitPerformanceTestResultsModels.__init__(self)
+        UnitPerformanceTestResultModels.__init__(self)
 
     def validate_connection_url(self, database_name):
         """
@@ -113,7 +113,7 @@ class DatabaseManager(RawResultsModels, UnitPerformanceTestResultsModels):
         try:
             url = self.validate_connection_url(database_name=database_name)
             engine = create_engine(url, echo=options.database_echo)
-            schema = self.boundaries_test_report_model()
+            schema = self.boundaries_test_evidence()
             schema.metadata.create_all(engine)
             engine.dispose()
 
@@ -129,7 +129,7 @@ class DatabaseManager(RawResultsModels, UnitPerformanceTestResultsModels):
         try:
             url = self.validate_connection_url(database_name=database_name)
             engine = create_engine(url, echo=options.database_echo)
-            schema = self.regression_test_report_model()
+            schema = self.regression_test_evidence()
             schema.metadata.create_all(engine)
             engine.dispose()
 

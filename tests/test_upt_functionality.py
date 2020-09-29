@@ -8,7 +8,7 @@ import unittest
 class TestBoundariesEndToEnd(unittest.TestCase):
 
     SAMPLE_SIZE = 10
-    DELETE_TEMPORARY_DATABASE_AFTER_USE = True
+    DELETE_TEMPORARY_DATABASE_AFTER_USE = False
     TEMPORARY_UNIT_TEST_DATABASE_NAME = "quick_potato_boundary_test_database"
 
     def setUp(self):
@@ -90,8 +90,8 @@ class TestBoundariesEndToEnd(unittest.TestCase):
 
 class TestRegressionEndToEnd(unittest.TestCase):
 
-    SAMPLE_SIZE = 10
-    DELETE_TEMPORARY_DATABASE_AFTER_USE = True
+    SAMPLE_SIZE = 100
+    DELETE_TEMPORARY_DATABASE_AFTER_USE = False
     TEMPORARY_UNIT_TEST_DATABASE_NAME = "quick_potato_regression_test_database"
 
     def setUp(self):
@@ -101,11 +101,16 @@ class TestRegressionEndToEnd(unittest.TestCase):
         # Creating a default_baseline
         upt = unit_performance_test
         upt.test_case_name = self.TEMPORARY_UNIT_TEST_DATABASE_NAME
+        upt.regression_setting_perform_f_test = True
+        upt.regression_setting_perform_t_test = True
+
         for _ in range(0, self.SAMPLE_SIZE):
             if slowdown is True:
                 slow_method()
             else:
                 fast_method()
+
+        upt.verify_that_there_is_no_change_between_the_baseline_and_benchmark()
 
     def tearDown(self):
         if self.DELETE_TEMPORARY_DATABASE_AFTER_USE is True:

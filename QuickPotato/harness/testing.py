@@ -1,6 +1,5 @@
 from QuickPotato.configuration.settings import Boundaries, RegressionSettings
 from QuickPotato.utilities.templates import default_test_case_name
-from QuickPotato.utilities.decorators import save_to_test_report
 from QuickPotato.statistics.hypothesis_tests import TTest, FTest
 from QuickPotato.harness.results import Measurements
 from QuickPotato.database.actions import DatabaseActions
@@ -144,10 +143,6 @@ class UnitPerformanceTest(DatabaseActions, Boundaries, Measurements, RegressionS
             # Test Cases are the same
             return False
 
-        elif sum(self.baseline_measurements.response_times()) == sum(self.benchmark_measurements.response_times()):
-            # The sum of the baseline and benchmark is both zero no further test needed (No regression)
-            return None
-
         else:
             # Two different test cases regression analysis can be done
             return True
@@ -174,7 +169,6 @@ class UnitPerformanceTest(DatabaseActions, Boundaries, Measurements, RegressionS
         else:
             return True
 
-    @save_to_test_report
     def verify_if_benchmark_does_not_breach_defined_boundaries(self):
         """
         This method will validate how well the benchmark will hold up to the
@@ -194,8 +188,8 @@ class UnitPerformanceTest(DatabaseActions, Boundaries, Measurements, RegressionS
                         test_id=self.current_test_id,
                         test_case_name=self._test_case_name,
                         validation_name="validate_max_boundary_for_" + measurements_key,
-                        threshold=self.boundary_policy[boundary_key]["max"],
-                        metric=self.threshold_measurements[measurements_key]())
+                        boundary=self.boundary_policy[boundary_key]["max"],
+                        value=self.threshold_measurements[measurements_key]())
                 )
 
             if self.boundary_policy[boundary_key]["min"] is not None:
@@ -204,13 +198,12 @@ class UnitPerformanceTest(DatabaseActions, Boundaries, Measurements, RegressionS
                         test_id=self.current_test_id,
                         test_case_name=self._test_case_name,
                         validation_name="validate_min_boundary_for_" + measurements_key,
-                        threshold=self.boundary_policy[boundary_key]["min"],
-                        metric=self.threshold_measurements[measurements_key]())
+                        boundary=self.boundary_policy[boundary_key]["min"],
+                        value=self.threshold_measurements[measurements_key]())
                 )
 
         return self._inspect_test_results(results)
 
-    @save_to_test_report
     def verify_that_there_is_no_change_between_the_baseline_and_benchmark(self):
         """
         Will test the benchmark against the baseline.
