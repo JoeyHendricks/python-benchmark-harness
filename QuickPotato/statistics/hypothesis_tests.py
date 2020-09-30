@@ -1,4 +1,5 @@
 from QuickPotato.harness.reporting import RegressionTestEvidence
+from datetime import datetime
 import numpy as np
 from decimal import *
 from scipy import stats
@@ -27,6 +28,8 @@ class TTest(RegressionTestEvidence):
         # Information for test evidence report
         self.test_id = test_id
         self.test_case_name = test_case_name
+        self.epoch_timestamp = datetime.now().timestamp()
+        self.human_timestamp = datetime.now()
         self.verification_name = "T-Test"
         self.status = self.run_t_test()
         self.value = float(self.t_value)
@@ -106,6 +109,8 @@ class FTest(RegressionTestEvidence):
         # Information for test evidence report
         self.test_id = test_id
         self.test_case_name = test_case_name
+        self.epoch_timestamp = datetime.now().timestamp()
+        self.human_timestamp = datetime.now()
         self.verification_name = "F-Test"
         self.status = self.run_f_test()
         self.value = float(self.f_value)

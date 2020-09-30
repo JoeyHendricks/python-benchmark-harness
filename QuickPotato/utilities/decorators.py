@@ -1,6 +1,7 @@
 from QuickPotato.harness.reporting import BoundariesTestEvidence
 from QuickPotato.utilities.exceptions import NeedsKeyWordArguments
 from functools import wraps
+from datetime import datetime
 
 
 def save_boundary_evidence(fnc):
@@ -34,6 +35,8 @@ def save_boundary_evidence(fnc):
         evidence = BoundariesTestEvidence()
         evidence.test_id = kwargs["test_id"]
         evidence.test_case_name = kwargs["test_case_name"]
+        evidence.epoch_timestamp = datetime.now().timestamp()
+        evidence.human_timestamp = datetime.now()
         evidence.verification_name = kwargs["validation_name"]
         evidence.value = float(kwargs["value"])
         evidence.boundary = float(kwargs["boundary"])

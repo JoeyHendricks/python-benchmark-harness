@@ -8,6 +8,8 @@ class BoundariesTestEvidence(DatabaseActions):
 
         self.test_id = None
         self.test_case_name = None
+        self.epoch_timestamp = None
+        self.human_timestamp = None
         self.verification_name = None
         self.status = None
         self.value = None
@@ -48,6 +50,8 @@ class RegressionTestEvidence(DatabaseActions):
 
         self.test_id = None
         self.test_case_name = None
+        self.epoch_timestamp = None
+        self.human_timestamp = None
         self.verification_name = None
         self.status = None
         self.value = None
