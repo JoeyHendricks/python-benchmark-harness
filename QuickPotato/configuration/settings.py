@@ -59,8 +59,8 @@ class Boundaries:
 class RegressionSettings:
 
     def __init__(self):
-        self.regression_setting_perform_t_test = True
-        self.regression_setting_perform_f_test = True
+        self.regression_setting_perform_t_test = False
+        self.regression_setting_perform_f_test = False
 
     @property
     def regression_settings_policy(self):

@@ -7,8 +7,8 @@ import unittest
 
 class TestBoundariesEndToEnd(unittest.TestCase):
 
-    SAMPLE_SIZE = 10
-    DELETE_TEMPORARY_DATABASE_AFTER_USE = False
+    SAMPLE_SIZE = 20
+    DELETE_TEMPORARY_DATABASE_AFTER_USE = True
     TEMPORARY_UNIT_TEST_DATABASE_NAME = "quick_potato_boundary_test_database"
 
     def setUp(self):
@@ -91,11 +91,8 @@ class TestBoundariesEndToEnd(unittest.TestCase):
 class TestRegressionEndToEnd(unittest.TestCase):
 
     SAMPLE_SIZE = 100
-    DELETE_TEMPORARY_DATABASE_AFTER_USE = False
+    DELETE_TEMPORARY_DATABASE_AFTER_USE = True
     TEMPORARY_UNIT_TEST_DATABASE_NAME = "quick_potato_regression_test_database"
-
-    def setUp(self):
-        options.enable_intrusive_profiling = True
 
     def set_baseline(self, slowdown):
         # Creating a default_baseline
@@ -103,6 +100,7 @@ class TestRegressionEndToEnd(unittest.TestCase):
         upt.test_case_name = self.TEMPORARY_UNIT_TEST_DATABASE_NAME
         upt.regression_setting_perform_f_test = True
         upt.regression_setting_perform_t_test = True
+        upt.silence_warning_messages = True
 
         for _ in range(0, self.SAMPLE_SIZE):
             if slowdown is True:
@@ -112,12 +110,15 @@ class TestRegressionEndToEnd(unittest.TestCase):
 
         upt.verify_that_there_is_no_change_between_the_baseline_and_benchmark()
 
+    def setUp(self):
+        options.enable_intrusive_profiling = True
+
     def tearDown(self):
         if self.DELETE_TEMPORARY_DATABASE_AFTER_USE is True:
             database_manager = DatabaseManager()
             database_manager.delete_result_database(database_name=self.TEMPORARY_UNIT_TEST_DATABASE_NAME)
 
-    def test_slow_benchmark_against_fast_baseline(self):
+    def test_slow_benchmark_against_fast_baseline_using_t_test(self):
 
         # Creating a fast baseline
         self.set_baseline(slowdown=False)
@@ -125,7 +126,6 @@ class TestRegressionEndToEnd(unittest.TestCase):
         # Define Test Case
         upt = unit_performance_test
         upt.test_case_name = self.TEMPORARY_UNIT_TEST_DATABASE_NAME
-        upt.regression_setting_perform_f_test = True
         upt.regression_setting_perform_t_test = True
 
         # Execute method under test
@@ -136,7 +136,7 @@ class TestRegressionEndToEnd(unittest.TestCase):
         results = upt.verify_that_there_is_no_change_between_the_baseline_and_benchmark()
         self.assertFalse(results)
 
-    def test_fast_benchmark_against_slow_baseline(self):
+    def test_fast_benchmark_against_slow_baseline_using_t_test(self):
 
         # Creating a fast baseline
         self.set_baseline(slowdown=True)
@@ -144,7 +144,6 @@ class TestRegressionEndToEnd(unittest.TestCase):
         # Define Test Case
         upt = unit_performance_test
         upt.test_case_name = self.TEMPORARY_UNIT_TEST_DATABASE_NAME
-        upt.regression_setting_perform_f_test = True
         upt.regression_setting_perform_t_test = True
 
         # Execute method under test
@@ -155,7 +154,25 @@ class TestRegressionEndToEnd(unittest.TestCase):
         results = upt.verify_that_there_is_no_change_between_the_baseline_and_benchmark()
         self.assertFalse(results)
 
-    def test_baseline_against_benchmark_with_no_regression(self):
+    def test_baseline_against_benchmark_with_no_regression_using_t_test(self):
+
+        # Creating a fast baseline
+        self.set_baseline(slowdown=False)
+
+        # Define Test Case
+        upt = unit_performance_test
+        upt.test_case_name = self.TEMPORARY_UNIT_TEST_DATABASE_NAME
+        upt.regression_setting_perform_t_test = True
+
+        # Execute method under test
+        for _ in range(0, self.SAMPLE_SIZE):
+            fast_method()
+
+        # Analyse profiled results
+        results = upt.verify_that_there_is_no_change_between_the_baseline_and_benchmark()
+        self.assertTrue(results)
+
+    def test_slow_benchmark_against_fast_baseline_using_f_test(self):
 
         # Creating a fast baseline
         self.set_baseline(slowdown=False)
@@ -164,7 +181,42 @@ class TestRegressionEndToEnd(unittest.TestCase):
         upt = unit_performance_test
         upt.test_case_name = self.TEMPORARY_UNIT_TEST_DATABASE_NAME
         upt.regression_setting_perform_f_test = True
-        upt.regression_setting_perform_t_test = True
+
+        # Execute method under test
+        for _ in range(0, self.SAMPLE_SIZE):
+            slow_method()
+
+        # Analyse profiled results
+        results = upt.verify_that_there_is_no_change_between_the_baseline_and_benchmark()
+        self.assertFalse(results)
+
+    def test_fast_benchmark_against_slow_baseline_using_f_test(self):
+
+        # Creating a fast baseline
+        self.set_baseline(slowdown=True)
+
+        # Define Test Case
+        upt = unit_performance_test
+        upt.test_case_name = self.TEMPORARY_UNIT_TEST_DATABASE_NAME
+        upt.regression_setting_perform_f_test = True
+
+        # Execute method under test
+        for _ in range(0, self.SAMPLE_SIZE):
+            fast_method()
+
+        # Analyse profiled results
+        results = upt.verify_that_there_is_no_change_between_the_baseline_and_benchmark()
+        self.assertFalse(results)
+
+    def test_baseline_against_benchmark_with_no_regression_using_f_test(self):
+
+        # Creating a fast baseline
+        self.set_baseline(slowdown=False)
+
+        # Define Test Case
+        upt = unit_performance_test
+        upt.test_case_name = self.TEMPORARY_UNIT_TEST_DATABASE_NAME
+        upt.regression_setting_perform_f_test = True
 
         # Execute method under test
         for _ in range(0, self.SAMPLE_SIZE):

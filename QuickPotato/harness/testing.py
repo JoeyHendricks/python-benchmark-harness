@@ -18,23 +18,12 @@ class UnitPerformanceTest(DatabaseActions, Boundaries, Measurements, RegressionS
         RegressionSettings.__init__(self)
         Measurements.__init__(self)
 
-        self._current_test_id = None
-        self._previous_test_id = None
+        self.current_test_id = None
+        self.previous_test_id = None
+        self.silence_warning_messages = False
+
         self._test_case_name = None
-        self._silence_warning_messages = False
-        self._outside_of_unit_performance_test = True
-
-    @property
-    def current_test_id(self):
-        return self._current_test_id
-
-    @property
-    def silence_warning_messages(self):
-        return self._silence_warning_messages
-
-    @silence_warning_messages.setter
-    def silence_warning_messages(self, value):
-        self._silence_warning_messages = value
+        self._monitoring_mode = True
 
     @property
     def benchmark_measurements(self):
@@ -56,7 +45,7 @@ class UnitPerformanceTest(DatabaseActions, Boundaries, Measurements, RegressionS
         -------
             A raw data object that contains all baseline measurements.
         """
-        return RawData(test_id=self._previous_test_id, database_name=self._test_case_name)
+        return RawData(test_id=self.previous_test_id, database_name=self._test_case_name)
 
     @property
     def test_case_name(self):
@@ -67,12 +56,12 @@ class UnitPerformanceTest(DatabaseActions, Boundaries, Measurements, RegressionS
         -------
             AgentCannotFindTestCase If no test case is found
         """
-        if self._outside_of_unit_performance_test is False:
+        if self._monitoring_mode is False:
             return self._test_case_name
 
         else:
             self._create_and_populate_test_case_database(default_test_case_name)
-            self._current_test_id = "collected_outside_unit_performance_test"
+            self.current_test_id = "collected_outside_unit_performance_test"
             return default_test_case_name
 
     @test_case_name.setter
@@ -94,7 +83,7 @@ class UnitPerformanceTest(DatabaseActions, Boundaries, Measurements, RegressionS
             be defined by the developer.
         """
         self._create_and_populate_test_case_database(value)
-        self._outside_of_unit_performance_test = False
+        self._monitoring_mode = False
 
         # Refresh Test ID's
         self._reset_unit_performance_test(database_name=value)
@@ -122,8 +111,8 @@ class UnitPerformanceTest(DatabaseActions, Boundaries, Measurements, RegressionS
         -------
             Will return True on success
         """
-        self._previous_test_id = str(self.select_previous_test_id(database_name=database_name))
-        self._current_test_id = ''.join(random.choices(string.ascii_uppercase + string.digits, k=12))
+        self.previous_test_id = str(self.select_previous_test_id(database_name))
+        self.current_test_id = ''.join(random.choices(string.ascii_uppercase + string.digits, k=12))
 
     def _inspect_benchmark_and_baseline(self):
         """
@@ -135,11 +124,11 @@ class UnitPerformanceTest(DatabaseActions, Boundaries, Measurements, RegressionS
             Will return False if the test ids do not match the above requirements.
             Will return None if the sum of both the baseline and benchmark equal to zero
         """
-        if self._current_test_id == "None" or self._previous_test_id == "None":
+        if self.current_test_id == "None" or self.previous_test_id == "None":
             # Test case is empty
             return False
 
-        elif self._current_test_id == self._previous_test_id:
+        elif self.current_test_id == self.previous_test_id:
             # Test Cases are the same
             return False
 
@@ -159,7 +148,7 @@ class UnitPerformanceTest(DatabaseActions, Boundaries, Measurements, RegressionS
             _ None = No test performed (throws an warning message)
         """
         if len(results) == 0:
-            if self._silence_warning_messages is False:
+            if self.silence_warning_messages is False:
                 print("Warning no test have been executed against the benchmark")
             return None
 
@@ -247,6 +236,6 @@ class UnitPerformanceTest(DatabaseActions, Boundaries, Measurements, RegressionS
             return True
 
         else:
-            if self._silence_warning_messages is False:
+            if self.silence_warning_messages is False:
                 print("Warning no baseline found so no regression test performed")
             return None
