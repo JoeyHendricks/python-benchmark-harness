@@ -222,7 +222,7 @@ class TestRegressionDetectionTTest(unittest.TestCase):
 
         results = []
 
-        for _ in range(0, 50):
+        for _ in range(0, 10000):
 
             # Define Test Case
             upt.test_case_name = UNIT_TEST_DATABASE_NAME
