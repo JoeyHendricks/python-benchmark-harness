@@ -1,5 +1,5 @@
 from demo.example_code import *
-from QuickPotato.configuration.manager import options  # <-- Import the options object
+from QuickPotato.configuration.management import options  # <-- Import the options object
 from QuickPotato.harness.export import TimeSpentStatisticsExport
 
 

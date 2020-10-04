@@ -1,3 +1,4 @@
+from QuickPotato.configuration.management import options
 from datetime import datetime
 import threading
 import cProfile
@@ -24,9 +25,10 @@ class Profiler:
         -------
 
         """
-        cpu_measure_thread = threading.Thread(target=self.measure_system_resource_utilization)
-        self.collection_system_resource_utilization = True
-        cpu_measure_thread.start()
+        if options.enable_system_resource_collection:
+            cpu_measure_thread = threading.Thread(target=self.measure_system_resource_utilization)
+            self.collection_system_resource_utilization = True
+            cpu_measure_thread.start()
 
     def disable_collection_of_system_resource_utilization(self):
         """
@@ -38,7 +40,8 @@ class Profiler:
         -------
 
         """
-        self.collection_system_resource_utilization = False
+        if options.enable_system_resource_collection:
+            self.collection_system_resource_utilization = False
 
     def measure_system_resource_utilization(self):
         """

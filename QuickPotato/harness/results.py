@@ -1,7 +1,7 @@
 from QuickPotato.statistics.measurements import RawData
 
 
-class Measurements:
+class Metrics(object):
 
     def __init__(self):
 

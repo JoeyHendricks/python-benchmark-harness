@@ -1,6 +1,6 @@
 
 
-class Boundaries:
+class Boundaries(object):
 
     def __init__(self):
         self.max_and_min_boundary_for_average = {"max": None, "min": None}
@@ -56,17 +56,15 @@ class Boundaries:
         self.__dict__.update(new_policy)
 
 
-class RegressionSettings:
+class RegressionSettings(object):
 
     def __init__(self):
-        self.regression_setting_perform_t_test = False
-        self.regression_setting_perform_f_test = False
+        self.run_t_test = True
 
     @property
     def regression_settings_policy(self):
         return {
-            "run_t_test": self.regression_setting_perform_t_test,
-            "run_f_test": self.regression_setting_perform_f_test
+            "run_t_test": self.run_t_test
         }
 
     @regression_settings_policy.setter

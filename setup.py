@@ -10,5 +10,5 @@ setup(
     author='Joey Hendricks',
     author_email='joey.hendricks20@icloud.com',
     description='The framework that enables Python developers to include performance validation into their unit tests',
-    install_requires=['numpy', 'SQLAlchemy-Utils', 'scipy', 'SQLAlchemy', 'PyMySQL', 'psutil']
+    install_requires=['numpy', 'SQLAlchemy-Utils', 'scipy', 'SQLAlchemy', 'PyMySQL', 'psutil', 'pandas', 'PyYAML']
 )

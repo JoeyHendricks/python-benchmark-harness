@@ -1,4 +1,4 @@
-from QuickPotato.configuration.manager import options
+from QuickPotato.configuration.management import options
 from QuickPotato.database.management import DatabaseManager
 from sqlalchemy import select, func, and_
 import pandas as pd
@@ -41,11 +41,11 @@ class Inserts(DatabaseManager):
 
         return True
 
-    def insert_boundaries_test_evidence(self, payload, database_name):
+    def insert_boundaries_test_evidence(self, database_name, payload):
         """
         :return:
         """
-        table = self.boundaries_test_evidence()
+        table = self.boundaries_test_evidence_model()
         statement = table.insert()
 
         engine = self.spawn_engine(database_name)
@@ -57,7 +57,7 @@ class Inserts(DatabaseManager):
 
         return True
 
-    def insert_regression_test_evidence(self, payload, database_name):
+    def insert_regression_test_evidence(self, database_name, payload):
         """
         If the regression test report does not exist in database.
         Then this method will create the first row.
@@ -74,7 +74,36 @@ class Inserts(DatabaseManager):
         -------
         Will return True on success.
         """
-        table = self.regression_test_evidence()
+        table = self.regression_test_evidence_model()
+        statement = table.insert()
+
+        engine = self.spawn_engine(database_name)
+        connection = engine.connect()
+        connection.execute(statement, payload)
+
+        connection.close()
+        engine.dispose()
+
+        return True
+
+    def insert_results_into_test_report(self, database_name, payload):
+        """
+        If the regression test report does not exist in database.
+        Then this method will create the first row.
+
+        Note that all additional statistical tests will update this
+        row with their payload if they are executed.
+
+        Parameters
+        ----------
+        database_name: The name of the database
+        payload: A dictionary payload which should contain the updated values
+
+        Returns
+        -------
+        Will return True on success.
+        """
+        table = self.test_report_model()
         statement = table.insert()
 
         engine = self.spawn_engine(database_name)
@@ -144,7 +173,7 @@ class Select(DatabaseManager):
         for row in connection.execute(query):
             results.append(
                 {
-                    "ID": row.ID,
+                    "id": row.id,
                     "test_id": row.test_id,
                     "test_case_name": row.test_case_name,
                     "uuid": row.uuid,
@@ -245,12 +274,26 @@ class Select(DatabaseManager):
         results = [str(row.test_id) for row in connection.execute(query)]
         connection.close()
         engine.dispose()
-        
-        if len(results) > 0:
-            return results[-1]
 
-        else:
-            return None
+        return None if len(results) == 0 else results[-1]
+
+    def select_previous_passed_test_id(self, database_name):
+        """
+        :param database_name:
+        :return:
+        """
+        table = self.test_report_model()
+        query = select([table.c.test_id]).where(table.c.status == "1").order_by(table.c.id.desc()).limit(1)
+
+        engine = self.spawn_engine(database_name)
+        connection = engine.connect()
+
+        results = [str(row.test_id) for row in connection.execute(query)]
+
+        connection.close()
+        engine.dispose()
+
+        return results[0] if len(results) == 1 else None
 
     def select_total_number_of_test_ids(self, database_name):
         """
@@ -269,6 +312,35 @@ class Select(DatabaseManager):
         engine.dispose()
 
         return results
+
+
+class Update(DatabaseManager):
+
+    def __init__(self):
+        super(Update, self).__init__()
+
+    def update_results_in_test_report(self, database_name, test_id, payload):
+        """
+        Updates the regression test report when and additional statistical test is performed.
+        Parameters
+        ----------
+        payload: A dictionary payload which should contain the updated values
+        database_name: The name of the database
+        test_id: The test id which needs the update
+        Returns
+        -------
+        Will return True on success
+        """
+        table = self.test_report_model()
+        statement = table.update().where(table.c.test_id == str(test_id)).values(payload)
+
+        engine = self.spawn_engine(database_name)
+        connection = engine.connect()
+        connection.execute(statement)
+
+        connection.close()
+        engine.dispose()
+        return True
 
 
 class Delete(DatabaseManager):
@@ -300,7 +372,7 @@ class Delete(DatabaseManager):
         return True
 
 
-class DatabaseActions(Inserts, Select, Delete):
+class DatabaseActions(Inserts, Select, Delete, Update):
 
     def __init__(self):
         super(DatabaseActions, self).__init__()
@@ -313,7 +385,7 @@ class DatabaseActions(Inserts, Select, Delete):
         maximum_number_of_test_ids = options.maximum_number_of_saved_test_results
 
         if current_number_of_test_ids > maximum_number_of_test_ids and \
-                options.automatically_clean_up_old_test_results is True:
+                options.enable_auto_clean_up_old_test_results is True:
 
             oldest_test_ids = self.select_all_test_ids(
                 table=self.time_spent_model(),
@@ -326,7 +398,7 @@ class DatabaseActions(Inserts, Select, Delete):
 
         return True
 
-    def check_if_test_id_exists_in_test_report(self, test_id, table, database_name):
+    def check_if_test_id_exists_in_test_report(self, database_name, test_id):
         """
         This method finds out if the test report needs to be updated or created.
 
@@ -334,14 +406,13 @@ class DatabaseActions(Inserts, Select, Delete):
         ----------
         database_name: the name of the database (This is equal to the test case)
         test_id: The tests id that needs to be found.
-        table: The name of the table.
 
         Returns
         -------
         When test id is found it will output True, if not it will output False
         """
         all_test_ids = self.select_all_test_ids(
-            table=table,
+            table=self.test_report_model(),
             database_name=database_name,
             number=options.maximum_number_of_saved_test_results - 1
             )

@@ -1,4 +1,4 @@
-from QuickPotato.configuration.manager import options
+from QuickPotato.configuration.management import options
 from QuickPotato.utilities.exceptions import AgentCannotFindMethod
 from QuickPotato.inspect.interpreters import TimeSpentInterpreter, SystemResourcesInterpreter
 from QuickPotato.harness.testing import UnitPerformanceTest

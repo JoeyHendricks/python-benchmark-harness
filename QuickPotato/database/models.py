@@ -1,15 +1,14 @@
-# coding=utf-8
 from sqlalchemy import MetaData, Table, Column, Integer, Float, String, Boolean
 
 
-class RawResultsModels:
+class RawResultsModels(object):
 
     @staticmethod
     def time_spent_model():
         meta = MetaData()
         table = Table(
             "time_spent_statistics", meta,
-            Column('ID', Integer, primary_key=True),
+            Column('id', Integer, primary_key=True),
             Column('test_id', String(99)),
             Column("test_case_name", String(999)),
             Column('uuid', String(99)),
@@ -33,7 +32,7 @@ class RawResultsModels:
         meta = MetaData()
         table = Table(
             "system_resources_statistics", meta,
-            Column('ID', Integer, primary_key=True),
+            Column('id', Integer, primary_key=True),
             Column('test_id', String(99)),
             Column("test_case_name", String(999)),
             Column('uuid', String(99)),
@@ -46,14 +45,30 @@ class RawResultsModels:
         return table
 
 
-class UnitPerformanceTestResultModels:
+class UnitPerformanceTestResultModels(object):
 
     @staticmethod
-    def boundaries_test_evidence():
+    def test_report_model():
+        meta = MetaData()
+        table = Table(
+            "test_report", meta,
+            Column('id', Integer, primary_key=True),
+            Column('test_id', String(99)),
+            Column("test_case_name", String(999)),
+            Column("epoch_timestamp", Integer),
+            Column("human_timestamp", String(99)),
+            Column("status", Boolean),
+            Column("boundaries_breached", Boolean),
+            Column("regression_found", Boolean),
+        )
+        return table
+
+    @staticmethod
+    def boundaries_test_evidence_model():
         meta = MetaData()
         table = Table(
             "boundaries_test_evidence", meta,
-            Column('ID', Integer, primary_key=True),
+            Column('id', Integer, primary_key=True),
             Column('test_id', String(99)),
             Column("test_case_name", String(999)),
             Column("epoch_timestamp", Integer),
@@ -66,11 +81,11 @@ class UnitPerformanceTestResultModels:
         return table
 
     @staticmethod
-    def regression_test_evidence():
+    def regression_test_evidence_model():
         meta = MetaData()
         table = Table(
             "regression_test_evidence", meta,
-            Column('ID', Integer, primary_key=True),
+            Column('id', Integer, primary_key=True),
             Column('test_id', String(99)),
             Column("test_case_name", String(999)),
             Column("epoch_timestamp", Integer),

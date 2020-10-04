@@ -5,23 +5,6 @@ QuickPotato is a unit-level performance testing framework for the Python program
 It enables its users to define helpful test cases which can help catch problematic performance bottlenecks 
 in the early stages of the development life cycle.
 
-It does so by helping you answer two burning questions about your code. 
-
-- Did that code change just impact the performance?
-- Is my code performing the way I expect it to?
-
-Getting answers to these questions is not always easy. That is why QuickPotato aims to equip you with all the tools necessary to get the job done. 
-What QuickPotato has in its growing arsenal boils down to the following features:
-
-- Measure the end to end performance of your code
-- Automatically profile your code using CProfile
-- Collect system resource utilization during execution
-- Automatically discover performance regression after a code change
-- Verify if your code does not breach any performance boundaries
-
-QuickPotato hopes to remove as many obstacles between you and your code allowing you to quickly fix the problem at hand 
-and continue your quest of creating awesome projects!
-
 ## How it works
 
 ### Installation
@@ -30,7 +13,8 @@ Install using [pip](https://pip.pypa.io/en/stable/) or download the source code 
 ```bash
 pip install QuickPotato
 ```
-(Do note that QuickPotato hasn't released yet)
+> Do note that QuickPotato hasn't released (yet) on the Python Package Index
+> you can find a wheel file under the distribution folder to install it with. 
 
 ### Intrusive Testing
 
@@ -61,13 +45,13 @@ def fast_method():
 
 ### Quick Profiling 
 
-Once you import and attach the "performance_critical" decorator to your function, you are two steps
+Once you import and attach the "performance_critical" decorator to your function, you are just a few steps
 away from gaining insights into the performance of your code. 
-The code snippet below, shows you the final two steps needed to get the performance statistics out of your code: 
+The code snippet below, shows you the basics you need to know to get the performance statistics out of your code: 
 
 ```python
 from demo.example_code import *
-from QuickPotato.configuration.manager import options  # <-- Import the options object
+from QuickPotato.configuration.management import options  # <-- Import the options object
 from QuickPotato.harness.export import TimeSpentStatisticsExport
 
 
@@ -84,7 +68,31 @@ TimeSpentStatisticsExport(
 ).to_csv()
 
 ```
+
+## Options
+
+QuickPotato comes equipped with some options you can configure to make sure QuickPotato fits your needs.
+Below you can find a list of all options and what they can do:
+
+```python
+from QuickPotato.configuration.management import options
+
+# Profiling Settings
+options.enable_intrusive_profiling = True 
+options.enable_system_resource_collection = True
+
+# Results Storage
+options.connection_url = None  # <-- None will use SQlite and store results in Temp directory
+options.enable_database_echo = False
+
+# Storage Maintenance 
+options.enable_auto_clean_up_old_test_results = True
+options.maximum_number_of_saved_test_results = 10
+
+```
+
 > Do note that the states of options are saved in a static yaml options file.  
+> That is why settings can be defined just once or changed on the fly. 
 
 ### Boundary Testing
 
@@ -94,23 +102,18 @@ An example of this sort of test can be found in the snippet below:
 
 ```python
 from QuickPotato.inspect.intrusive import unit_performance_test as upt
-from QuickPotato.configuration.manager import options
 from QuickPotato.harness.export import TimeSpentStatisticsExport
 from demo.example_code import fast_method
 
 upt.test_case_name = "test_performance"  # <-- Define test case name
 upt.max_and_min_boundary_for_average = {"max": 1, "min": 0.001}  # <-- Establish performance boundaries
 
-options.enable_intrusive_profiling = True  # <-- Set to True to enable profiling
-
 # Execute method under test
 for _ in range(0, 10):
     fast_method()
 
-options.enable_intrusive_profiling = False  # <-- Set to False to disable profiling
-
 # Analyse profiled results will output True if boundaries are not breached otherwise False
-results = upt.verify_if_benchmark_does_not_breach_defined_boundaries()
+results = upt.verify_benchmark_against_set_boundaries
 
 # Export time spent statistics to csv
 if results is False:
@@ -131,25 +134,18 @@ The method for creating such a test can be found in the snippet below.
 
 ```python
 from QuickPotato.inspect.intrusive import unit_performance_test as upt
-from QuickPotato.configuration.manager import options
 from QuickPotato.harness.export import TimeSpentStatisticsExport
 from demo.example_code import fast_method
 
 
 upt.test_case_name = "test_performance"  # <-- Define test case name
-upt.regression_setting_perform_f_test = True  # <-- Turn on f-test 
-upt.regression_setting_perform_t_test = True  # <-- Turn on t-test
-
-options.enable_intrusive_profiling = True  # <-- Set to True to enable profiling
 
 # Execute method under test
 for _ in range(0, 10):
     fast_method()
 
-options.enable_intrusive_profiling = False  # <-- Set to False to disable profiling
-
 # Analyse results for change True if there is no change otherwise False
-results = upt.verify_that_there_is_no_change_between_the_baseline_and_benchmark()
+results = upt.verify_benchmark_against_previous_baseline
 
 # Export time spent statistics to csv
 if results is False:

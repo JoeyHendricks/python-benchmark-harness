@@ -17,7 +17,7 @@ def save_boundary_evidence(fnc):
     """
 
     @wraps(fnc)
-    def encapsulated_method(*args, **kwargs):
+    def encapsulated_function(*args, **kwargs):
         """
 
         Parameters
@@ -51,4 +51,4 @@ def save_boundary_evidence(fnc):
 
         return evidence.status
 
-    return encapsulated_method
+    return encapsulated_function

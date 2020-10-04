@@ -1,5 +1,5 @@
 from QuickPotato.inspect.intrusive import unit_performance_test as upt
-from QuickPotato.configuration.manager import options
+from QuickPotato.configuration.management import options
 from QuickPotato.harness.export import TimeSpentStatisticsExport
 from demo.example_code import fast_method
 
@@ -15,7 +15,7 @@ for _ in range(0, 10):
 options.enable_intrusive_profiling = False  # <-- Set to False to disable profiling
 
 # Analyse profiled results will output True if boundaries are not breached otherwise False
-results = upt.verify_if_benchmark_does_not_breach_defined_boundaries()
+results = upt.verify_benchmark_against_set_boundaries
 
 # Export time spent statistics to csv
 if results is False:

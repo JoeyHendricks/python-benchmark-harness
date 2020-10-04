@@ -1,6 +1,6 @@
 from QuickPotato.inspect.intrusive import unit_performance_test as upt
 from QuickPotato.harness.export import TimeSpentStatisticsExport
-from QuickPotato.configuration.manager import options
+from QuickPotato.configuration.management import options
 from demo.example_code import *
 import unittest
 
@@ -24,7 +24,7 @@ class TestPerformance(unittest.TestCase):
             fast_method()
 
         # Analyse results for change True if there is no change otherwise False
-        results = upt.verify_that_there_is_no_change_between_the_baseline_and_benchmark()
+        results = upt.check_difference_baseline_benchmark()
 
         # Export time spent statistics to csv
         if results is False:
