@@ -14,7 +14,7 @@ Install using [pip](https://pip.pypa.io/en/stable/) or download the source code 
 pip install QuickPotato
 ```
 > Do note that QuickPotato hasn't released (yet) on the Python Package Index
-> you can find a wheel file under the distribution folder to install it with. 
+> you can find a wheel file under the releases to install it. 
 
 ### Intrusive Testing
 
