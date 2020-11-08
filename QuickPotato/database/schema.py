@@ -1,41 +1,42 @@
 from sqlalchemy import MetaData, Table, Column, Integer, Float, String, Boolean
 
 
-class RawResultsModels(object):
+class RawResultsSchemas(object):
 
     @staticmethod
-    def time_spent_model():
+    def performance_statistics_schema():
         meta = MetaData()
         table = Table(
-            "time_spent_statistics", meta,
+            "performance_statistics", meta,
             Column('id', Integer, primary_key=True),
             Column('test_id', String(99)),
             Column("test_case_name", String(999)),
-            Column('uuid', String(99)),
+            Column('sample_id', String(99)),
             Column("name_of_method_under_test", String(999)),
             Column("epoch_timestamp", Integer),
             Column("human_timestamp", String(99)),
+            Column("child_path", String(999)),
+            Column("child_line_number", Integer),
+            Column("child_function_name", String(999)),
+            Column("parent_path", String(999)),
+            Column("parent_line_number", Integer),
+            Column("parent_function_name", String(999)),
             Column("number_of_calls", String(99)),
-            Column("overall_response_time", Float),
             Column("total_time", Float),
-            Column("total_time_per_call", Float),
             Column("cumulative_time", Float),
-            Column("cumulative_time_per_call", Float),
-            Column("file", String(999)),
-            Column("line_number", Integer),
-            Column("function_name", String(999))
+            Column("total_response_time", Float),
         )
         return table
 
     @staticmethod
-    def system_resources_model():
+    def system_resources_schema():
         meta = MetaData()
         table = Table(
             "system_resources_statistics", meta,
             Column('id', Integer, primary_key=True),
             Column('test_id', String(99)),
             Column("test_case_name", String(999)),
-            Column('uuid', String(99)),
+            Column('sample_id', String(99)),
             Column("name_of_method_under_test", String(999)),
             Column("epoch_timestamp", Integer),
             Column("human_timestamp", String(99)),
@@ -45,10 +46,10 @@ class RawResultsModels(object):
         return table
 
 
-class UnitPerformanceTestResultModels(object):
+class UnitPerformanceTestResultSchemas(object):
 
     @staticmethod
-    def test_report_model():
+    def test_report_schema():
         meta = MetaData()
         table = Table(
             "test_report", meta,
@@ -64,7 +65,7 @@ class UnitPerformanceTestResultModels(object):
         return table
 
     @staticmethod
-    def boundaries_test_evidence_model():
+    def boundaries_test_evidence_schema():
         meta = MetaData()
         table = Table(
             "boundaries_test_evidence", meta,
@@ -81,7 +82,7 @@ class UnitPerformanceTestResultModels(object):
         return table
 
     @staticmethod
-    def regression_test_evidence_model():
+    def regression_test_evidence_schema():
         meta = MetaData()
         table = Table(
             "regression_test_evidence", meta,

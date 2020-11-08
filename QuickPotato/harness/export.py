@@ -1,25 +1,25 @@
-from QuickPotato.utilities.templates import default_test_case_name
-from QuickPotato.database.actions import DatabaseActions
+from QuickPotato.utilities.defaults import default_test_case_name
+from QuickPotato.database.crud import DatabaseOperations
 from datetime import datetime
 import tempfile
 
 
-class TimeSpentStatisticsExport(DatabaseActions):
+class PerformanceStatisticsExport(DatabaseOperations):
 
     def __init__(
             self,
             test_case_name=default_test_case_name,
             test_id=None,
-            uuid=None,
+            sample_id=None,
             delimiter=",",
             path=None,
             purge_database_after_export=False
     ):
 
-        super(TimeSpentStatisticsExport, self).__init__()
+        super(PerformanceStatisticsExport, self).__init__()
         self.test_case_name = test_case_name
-        self.uuid = uuid
-        self.test_id = self.select_previous_test_id(test_case_name) if test_id is None else test_id
+        self.sample_id = sample_id
+        self.test_id = self.select_previous_test_id(self.test_case_name) if test_id is None else test_id
         self.delimiter = delimiter
         self.path = path
         self.purge_database_after_export = purge_database_after_export
@@ -29,11 +29,11 @@ class TimeSpentStatisticsExport(DatabaseActions):
 
         :return:
         """
-        if self.uuid is not None:
+        if self.sample_id is not None:
 
             return self.select_call_stack(
                 database_name=self.test_case_name,
-                uuid=self.uuid
+                sample_id=self.sample_id
             )
 
         elif self.test_id is not None:

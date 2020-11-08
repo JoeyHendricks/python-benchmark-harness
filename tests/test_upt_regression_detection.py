@@ -1,5 +1,5 @@
-from QuickPotato.inspect.intrusive import unit_performance_test as upt
-from QuickPotato.database.management import DatabaseManager
+from QuickPotato.profiling.intrusive import unit_performance_test as upt
+from QuickPotato.database.management import SchemaManager
 from QuickPotato.configuration.management import options
 from demo.example_code import *
 import unittest
@@ -27,7 +27,7 @@ class TestRegressionDetectionTTest(unittest.TestCase):
         """
 
         """
-        database_manager = DatabaseManager()
+        database_manager = SchemaManager()
         database_manager.delete_result_database(UNIT_TEST_DATABASE_NAME)
 
     @staticmethod
@@ -222,7 +222,7 @@ class TestRegressionDetectionTTest(unittest.TestCase):
 
         results = []
 
-        for _ in range(0, 10000):
+        for _ in range(0, 20):
 
             # Define Test Case
             upt.test_case_name = UNIT_TEST_DATABASE_NAME

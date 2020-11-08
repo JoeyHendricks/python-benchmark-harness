@@ -1,12 +1,12 @@
-from QuickPotato.database.management import DatabaseManager
+from QuickPotato.database.management import SchemaManager
 from QuickPotato.configuration.management import options
 from sqlalchemy_utils import database_exists
 from sqlalchemy import create_engine
 from demo.example_code import *
 import unittest
 
-SAMPLE_SIZE = 10
-UNIT_TEST_DATABASE_NAME = "upt_unit_tests_regression_detection_with_t_test"
+SAMPLE_SIZE = 1
+UNIT_TEST_DATABASE_NAME = "qp_monitoring"
 
 
 class TestUsage(unittest.TestCase):
@@ -22,13 +22,14 @@ class TestUsage(unittest.TestCase):
 
         """
         options.enable_intrusive_profiling = False
+        self.clean_up_database()
 
     @staticmethod
     def clean_up_database():
         """
 
         """
-        database_manager = DatabaseManager()
+        database_manager = SchemaManager()
         database_manager.delete_result_database(UNIT_TEST_DATABASE_NAME)
 
     def test_profiling_outside_of_test_case(self):
@@ -37,7 +38,7 @@ class TestUsage(unittest.TestCase):
             fast_method()
 
         # Checking if a database has been spawned
-        database_manager = DatabaseManager()
+        database_manager = SchemaManager()
         url = database_manager.validate_connection_url(UNIT_TEST_DATABASE_NAME)
         engine = create_engine(url, echo=True)
 

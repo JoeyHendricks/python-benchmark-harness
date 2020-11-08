@@ -1,19 +1,19 @@
 from QuickPotato.configuration.management import options
-from QuickPotato.database.models import *
+from QuickPotato.database.schema import *
 from QuickPotato.utilities.exceptions import *
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, inspect
 from sqlalchemy.exc import ProgrammingError
 from sqlalchemy_utils import database_exists, create_database, drop_database
 import tempfile
 
 
-class DatabaseManager(RawResultsModels, UnitPerformanceTestResultModels):
+class SchemaManager(RawResultsSchemas, UnitPerformanceTestResultSchemas):
 
     URL = options.connection_url
 
     def __init__(self):
-        RawResultsModels.__init__(self)
-        UnitPerformanceTestResultModels.__init__(self)
+        RawResultsSchemas.__init__(self)
+        UnitPerformanceTestResultSchemas.__init__(self)
 
     def validate_connection_url(self, database_name):
         """
@@ -41,6 +41,15 @@ class DatabaseManager(RawResultsModels, UnitPerformanceTestResultModels):
 
         except Exception:
             raise DatabaseConnectionCannotBeSpawned()
+
+    def detect_all_available_schemas(self):
+        """
+
+        :return:
+        """
+        engine = create_engine(self.URL)
+        list_of_available_schemas = inspect(engine).get_schema_names()
+        return [schema for schema in list_of_available_schemas if schema[0:3] == 'qp_']
 
     def spawn_results_database(self, database_name):
         """
@@ -82,7 +91,7 @@ class DatabaseManager(RawResultsModels, UnitPerformanceTestResultModels):
         try:
             url = self.validate_connection_url(database_name=database_name)
             engine = create_engine(url, echo=options.enable_database_echo)
-            schema = self.time_spent_model()
+            schema = self.performance_statistics_schema()
             schema.metadata.create_all(engine)
             engine.dispose()
 
@@ -98,7 +107,7 @@ class DatabaseManager(RawResultsModels, UnitPerformanceTestResultModels):
         try:
             url = self.validate_connection_url(database_name=database_name)
             engine = create_engine(url, echo=options.enable_database_echo)
-            schema = self.system_resources_model()
+            schema = self.system_resources_schema()
             schema.metadata.create_all(engine)
             engine.dispose()
 
@@ -114,7 +123,7 @@ class DatabaseManager(RawResultsModels, UnitPerformanceTestResultModels):
         try:
             url = self.validate_connection_url(database_name=database_name)
             engine = create_engine(url, echo=options.enable_database_echo)
-            schema = self.test_report_model()
+            schema = self.test_report_schema()
             schema.metadata.create_all(engine)
             engine.dispose()
 
@@ -130,7 +139,7 @@ class DatabaseManager(RawResultsModels, UnitPerformanceTestResultModels):
         try:
             url = self.validate_connection_url(database_name=database_name)
             engine = create_engine(url, echo=options.enable_database_echo)
-            schema = self.boundaries_test_evidence_model()
+            schema = self.boundaries_test_evidence_schema()
             schema.metadata.create_all(engine)
             engine.dispose()
 
@@ -146,7 +155,7 @@ class DatabaseManager(RawResultsModels, UnitPerformanceTestResultModels):
         try:
             url = self.validate_connection_url(database_name=database_name)
             engine = create_engine(url, echo=options.enable_database_echo)
-            schema = self.regression_test_evidence_model()
+            schema = self.regression_test_evidence_schema()
             schema.metadata.create_all(engine)
             engine.dispose()
 

@@ -1,8 +1,8 @@
-from QuickPotato.database.actions import DatabaseActions
+from QuickPotato.database.crud import DatabaseOperations
 import numpy as np
 
 
-class RawData(DatabaseActions):
+class RawData(DatabaseOperations):
 
     def __init__(self, test_id, database_name):
         super(RawData, self).__init__()

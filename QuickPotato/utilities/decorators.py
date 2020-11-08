@@ -1,4 +1,4 @@
-from QuickPotato.harness.reporting import BoundariesTestEvidence
+from QuickPotato.harness.results import BoundariesTestEvidence
 from QuickPotato.utilities.exceptions import NeedsKeyWordArguments
 from functools import wraps
 from datetime import datetime

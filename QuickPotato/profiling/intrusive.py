@@ -1,8 +1,8 @@
 from QuickPotato.configuration.management import options
 from QuickPotato.utilities.exceptions import AgentCannotFindMethod
-from QuickPotato.inspect.interpreters import TimeSpentInterpreter, SystemResourcesInterpreter
+from QuickPotato.profiling.interpreters import PerformanceStatisticsInterpreter, SystemResourcesInterpreter
 from QuickPotato.harness.testing import UnitPerformanceTest
-from QuickPotato.inspect.debugger import Profiler
+from QuickPotato.profiling.debugger import Profiler
 from functools import wraps, partial
 import uuid
 
@@ -11,7 +11,7 @@ unit_performance_test = UnitPerformanceTest()
 
 def performance_critical(method=None, enabled=True):
     """
-    This decorator can be used to gather performance statistics
+    This decorator can be used to gather performance statistical
     on a method.
     :param method: The method that is being profiled
     :param enabled: If True will profile the method under test
@@ -35,12 +35,13 @@ def performance_critical(method=None, enabled=True):
             pf = Profiler()
             pf.profile_method_under_test(method, *args, **kwargs)
 
-            TimeSpentInterpreter(
-                time_spent_statistics=pf.time_spent_statistics,
+            PerformanceStatisticsInterpreter(
+                performance_statistics=pf.performance_statistics,
+                total_response_time=pf.total_response_time,
                 database_name=unit_performance_test.test_case_name,
                 test_id=unit_performance_test.current_test_id,
                 method_name=method.__name__,
-                method_id=method_id
+                sample_id=method_id
             )
 
             SystemResourcesInterpreter(
@@ -48,7 +49,7 @@ def performance_critical(method=None, enabled=True):
                 database_name=unit_performance_test.test_case_name,
                 test_id=unit_performance_test.current_test_id,
                 method_name=method.__name__,
-                method_id=method_id
+                sample_id=method_id
             )
 
             return pf.functional_output

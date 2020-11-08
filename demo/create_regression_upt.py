@@ -1,6 +1,6 @@
-from QuickPotato.inspect.intrusive import unit_performance_test as upt
+from QuickPotato.profiling.intrusive import unit_performance_test as upt
 from QuickPotato.configuration.management import options
-from QuickPotato.harness.export import TimeSpentStatisticsExport
+from QuickPotato.harness.export import PerformanceStatisticsExport
 from demo.example_code import fast_method
 
 
@@ -17,9 +17,9 @@ options.enable_intrusive_profiling = False  # <-- Set to False to disable profil
 # Analyse results for change True if there is no change otherwise False
 results = upt.verify_benchmark_against_previous_baseline
 
-# Export time spent statistics to csv
+# Export time spent statistical to csv
 if results is False:
-    TimeSpentStatisticsExport(
+    PerformanceStatisticsExport(
         test_case_name=upt.test_case_name,
         test_id=upt.current_test_id,
         delimiter=";",

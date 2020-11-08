@@ -1,19 +1,18 @@
 from QuickPotato.configuration.management import options
-from QuickPotato.database.management import DatabaseManager
+from QuickPotato.database.management import SchemaManager
 from sqlalchemy import select, func, and_
-import pandas as pd
 
 
-class Inserts(DatabaseManager):
+class Inserts(SchemaManager):
 
     def __init__(self):
         super(Inserts, self).__init__()
 
-    def insert_time_spent_statistics(self, payload, database_name):
+    def insert_performance_statistics(self, payload, database_name):
         """
         :return:
         """
-        table = self.time_spent_model()
+        table = self.performance_statistics_schema()
         statement = table.insert()
 
         engine = self.spawn_engine(database_name)
@@ -29,7 +28,7 @@ class Inserts(DatabaseManager):
         """
         :return:
         """
-        table = self.system_resources_model()
+        table = self.system_resources_schema()
         statement = table.insert()
 
         engine = self.spawn_engine(database_name)
@@ -43,9 +42,12 @@ class Inserts(DatabaseManager):
 
     def insert_boundaries_test_evidence(self, database_name, payload):
         """
+
+        :param database_name:
+        :param payload:
         :return:
         """
-        table = self.boundaries_test_evidence_model()
+        table = self.boundaries_test_evidence_schema()
         statement = table.insert()
 
         engine = self.spawn_engine(database_name)
@@ -74,7 +76,7 @@ class Inserts(DatabaseManager):
         -------
         Will return True on success.
         """
-        table = self.regression_test_evidence_model()
+        table = self.regression_test_evidence_schema()
         statement = table.insert()
 
         engine = self.spawn_engine(database_name)
@@ -103,7 +105,7 @@ class Inserts(DatabaseManager):
         -------
         Will return True on success.
         """
-        table = self.test_report_model()
+        table = self.test_report_schema()
         statement = table.insert()
 
         engine = self.spawn_engine(database_name)
@@ -116,7 +118,7 @@ class Inserts(DatabaseManager):
         return True
 
 
-class Select(DatabaseManager):
+class Select(SchemaManager):
 
     def __init__(self):
         super(Select, self).__init__()
@@ -127,12 +129,12 @@ class Select(DatabaseManager):
         :param database_name:
         :return:
         """
-        table = self.time_spent_model()
-        query = select([table.c.uuid.distinct(), table.c.overall_response_time]).where(table.c.test_id == test_id)
+        table = self.performance_statistics_schema()
+        query = select([table.c.sample_id.distinct(), table.c.total_response_time]).where(table.c.test_id == test_id)
 
         engine = self.spawn_engine(database_name)
         connection = engine.connect()
-        results = [float(row.overall_response_time) for row in connection.execute(query)]
+        results = [float(row.total_response_time) for row in connection.execute(query)]
 
         connection.close()
         engine.dispose()
@@ -145,7 +147,7 @@ class Select(DatabaseManager):
         :param database_name:
         :return:
         """
-        table = self.time_spent_model()
+        table = self.performance_statistics_schema()
         query = select([table.c.cumulative_time]).where(and_(table.c.test_id == test_id, table.c.cumulative_time > 0))
 
         engine = self.spawn_engine(database_name)
@@ -157,14 +159,19 @@ class Select(DatabaseManager):
 
         return results
 
-    def select_all_call_stacks(self, database_name, test_id):
+    def select_all_call_stacks(self, database_name, test_id, alphabetical_order=False):
         """
-        :param test_id:
+
         :param database_name:
+        :param test_id:
+        :param alphabetical_order:
         :return:
         """
-        table = self.time_spent_model()
-        query = table.select().where(table.c.test_id == test_id)
+        table = self.performance_statistics_schema()
+        if alphabetical_order:
+            query = table.select().where(table.c.test_id == test_id).order_by(table.c.function_name)
+        else:
+            query = table.select().where(table.c.test_id == test_id)
         results = []
 
         engine = self.spawn_engine(database_name)
@@ -175,42 +182,43 @@ class Select(DatabaseManager):
                 {
                     "id": row.id,
                     "test_id": row.test_id,
-                    "test_case_name": row.test_case_name,
-                    "uuid": row.uuid,
+                    "test_case_name": database_name,
+                    "sample_id": row.sample_id,
                     "name_of_method_under_test": row.name_of_method_under_test,
-                    "epoch_timestamp": row.epoch_timestamp,
+                    "epoch_timestamp": int(row.epoch_timestamp),
                     "human_timestamp": row.human_timestamp,
+                    "child_path": row.child_path,
+                    "child_line_number": row.child_line_number,
+                    "child_function_name": row.child_function_name,
+                    "parent_path": row.parent_path,
+                    "parent_line_number": row.parent_line_number,
+                    "parent_function_name": row.parent_function_name,
                     "number_of_calls": row.number_of_calls,
-                    "overall_response_time": row.overall_response_time,
-                    "total_time": row.total_time,
-                    "total_time_per_call": row.total_time_per_call,
-                    "cumulative_time": row.cumulative_time,
-                    "cumulative_time_per_call": row.cumulative_time_per_call,
-                    "file": row.file,
-                    "line_number": row.line_number,
-                    "function_name": row.function_name
+                    "total_time": float(row.total_time),
+                    "cumulative_time": float(row.cumulative_time),
+                    "total_response_time": float(row.total_response_time)
                 }
             )
 
         connection.close()
         engine.dispose()
 
-        return pd.DataFrame(results)
+        return results
 
-    def select_call_stack(self, database_name, uuid):
+    def select_call_stack(self, database_name, sample_id):
         """
 
         Parameters
         ----------
         database_name
-        uuid
+        sample_id
 
         Returns
         -------
 
         """
-        table = self.time_spent_model()
-        query = table.select().where(table.c.uuid == str(uuid))
+        table = self.performance_statistics_schema()
+        query = table.select().where(table.c.sample_id == str(sample_id)).order_by(table.c.cumulative_time.desc())
         results = []
 
         engine = self.spawn_engine(database_name)
@@ -219,15 +227,24 @@ class Select(DatabaseManager):
         for row in connection.execute(query):
             results.append(
                 {
-                    "test_id": row.test_id, "uuid": row.uuid,
+                    "id": row.id,
+                    "test_id": row.test_id,
+                    "test_case_name": database_name,
+                    "sample_id": row.sample_id,
                     "name_of_method_under_test": row.name_of_method_under_test,
-                    "response_time": row.response_time, "epoch_datetime": row.epoch_datetime,
-                    "human_datetime": row.human_datetime, "number_of_calls": row.number_of_calls,
-                    "total_time": row.total_time, "total_time_per_call": row.total_time_per_call,
-                    "cumulative_time": row.cumulative_time,
-                    "cumulative_time_per_call": row.cumulative_time_per_call, "file": row.file,
-                    "line_number": row.line_number, "function_name": row.function_name
-                 }
+                    "epoch_timestamp": int(row.epoch_timestamp),
+                    "human_timestamp": row.human_timestamp,
+                    "child_path": row.child_path,
+                    "child_line_number": row.child_line_number,
+                    "child_function_name": row.child_function_name,
+                    "parent_path": row.parent_path,
+                    "parent_line_number": row.parent_line_number,
+                    "parent_function_name": row.parent_function_name,
+                    "number_of_calls": row.number_of_calls,
+                    "total_time": float(row.total_time),
+                    "cumulative_time": float(row.cumulative_time),
+                    "total_response_time": float(row.total_response_time)
+                }
             )
         connection.close()
         engine.dispose()
@@ -259,13 +276,50 @@ class Select(DatabaseManager):
 
         return results
 
+    def select_all_meta_data(self, database_name, test_id):
+        """
+
+        Parameters
+        ----------
+        database_name
+        test_id
+
+        Returns
+        -------
+
+        """
+        table = self.performance_statistics_schema()
+        query = select([table.c.sample_id,
+                        table.c.name_of_method_under_test,
+                        table.c.human_timestamp,
+                        table.c.total_response_time]).distinct().where(table.c.test_id == test_id)
+        results = []
+
+        engine = self.spawn_engine(database_name)
+        connection = engine.connect()
+
+        for row in connection.execute(query):
+            results.append(
+                {
+                    "sample_id": row.sample_id,
+                    "name_of_method_under_test": row.name_of_method_under_test,
+                    "human_timestamp": row.human_timestamp,
+                    "total_response_time": row.total_response_time
+                }
+            )
+
+        connection.close()
+        engine.dispose()
+
+        return results
+
     def select_previous_test_id(self, database_name):
         """
         :param database_name:
         :return:
         """
 
-        table = self.time_spent_model()
+        table = self.performance_statistics_schema()
         query = select([table.c.test_id]).distinct()
 
         engine = self.spawn_engine(database_name)
@@ -282,7 +336,7 @@ class Select(DatabaseManager):
         :param database_name:
         :return:
         """
-        table = self.test_report_model()
+        table = self.test_report_schema()
         query = select([table.c.test_id]).where(table.c.status == "1").order_by(table.c.id.desc()).limit(1)
 
         engine = self.spawn_engine(database_name)
@@ -300,7 +354,7 @@ class Select(DatabaseManager):
         :param database_name:
         :return:
         """
-        table = self.time_spent_model()
+        table = self.performance_statistics_schema()
         query = select([func.count(table.c.test_id.distinct())])
 
         engine = self.spawn_engine(database_name)
@@ -314,7 +368,7 @@ class Select(DatabaseManager):
         return results
 
 
-class Update(DatabaseManager):
+class Update(SchemaManager):
 
     def __init__(self):
         super(Update, self).__init__()
@@ -331,7 +385,7 @@ class Update(DatabaseManager):
         -------
         Will return True on success
         """
-        table = self.test_report_model()
+        table = self.test_report_schema()
         statement = table.update().where(table.c.test_id == str(test_id)).values(payload)
 
         engine = self.spawn_engine(database_name)
@@ -343,12 +397,12 @@ class Update(DatabaseManager):
         return True
 
 
-class Delete(DatabaseManager):
+class Delete(SchemaManager):
 
     def __init__(self):
         super(Delete, self).__init__()
 
-    def delete_time_spent_statistics_that_match_test_id(self, database_name, test_id):
+    def delete_performance_statistics_that_match_test_id(self, database_name, test_id):
         """
 
         Parameters
@@ -360,7 +414,7 @@ class Delete(DatabaseManager):
         -------
 
         """
-        table = self.time_spent_model()
+        table = self.performance_statistics_schema()
         query = table.delete().where(table.c.test_id == str(test_id))
 
         engine = self.spawn_engine(database_name)
@@ -372,10 +426,10 @@ class Delete(DatabaseManager):
         return True
 
 
-class DatabaseActions(Inserts, Select, Delete, Update):
+class DatabaseOperations(Inserts, Select, Delete, Update):
 
     def __init__(self):
-        super(DatabaseActions, self).__init__()
+        super(DatabaseOperations, self).__init__()
 
     def enforce_test_result_retention_policy(self, database_name):
         """
@@ -388,13 +442,13 @@ class DatabaseActions(Inserts, Select, Delete, Update):
                 options.enable_auto_clean_up_old_test_results is True:
 
             oldest_test_ids = self.select_all_test_ids(
-                table=self.time_spent_model(),
+                table=self.performance_statistics_schema(),
                 database_name=database_name,
                 number=options.maximum_number_of_saved_test_results - 1
             )
 
             for test_id in oldest_test_ids:
-                self.delete_time_spent_statistics_that_match_test_id(database_name, test_id)
+                self.delete_performance_statistics_that_match_test_id(database_name, test_id)
 
         return True
 
@@ -412,7 +466,7 @@ class DatabaseActions(Inserts, Select, Delete, Update):
         When test id is found it will output True, if not it will output False
         """
         all_test_ids = self.select_all_test_ids(
-            table=self.test_report_model(),
+            table=self.test_report_schema(),
             database_name=database_name,
             number=options.maximum_number_of_saved_test_results - 1
             )

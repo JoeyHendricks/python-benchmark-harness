@@ -27,7 +27,7 @@ Thus, you remind yourself and your teammates to think about the performance of t
 An example of this concept can be found below:
 
 ```python
-from QuickPotato.inspect.intrusive import performance_critical  # <-- Import the decorator
+from QuickPotato.profiling.intrusive import performance_critical  # <-- Import the decorator
 import math
 
 
@@ -52,7 +52,7 @@ The code snippet below, shows you the basics you need to know to get the perform
 ```python
 from demo.example_code import *
 from QuickPotato.configuration.management import options  # <-- Import the options object
-from QuickPotato.harness.export import TimeSpentStatisticsExport
+from QuickPotato.harness.export import PerformanceStatisticsExport
 
 
 options.enable_intrusive_profiling = True  # <-- Set to True to enable profiling
@@ -101,8 +101,8 @@ your code breaches any defined boundary or not.
 An example of this sort of test can be found in the snippet below: 
 
 ```python
-from QuickPotato.inspect.intrusive import unit_performance_test as upt
-from QuickPotato.harness.export import TimeSpentStatisticsExport
+from QuickPotato.profiling.intrusive import unit_performance_test as upt
+from QuickPotato.harness.export import PerformanceStatisticsExport
 from demo.example_code import fast_method
 
 upt.test_case_name = "test_performance"  # <-- Define test case name
@@ -115,7 +115,7 @@ for _ in range(0, 10):
 # Analyse profiled results will output True if boundaries are not breached otherwise False
 results = upt.verify_benchmark_against_set_boundaries
 
-# Export time spent statistics to csv
+# Export time spent statistical to csv
 if results is False:
     TimeSpentStatisticsExport(
         test_case_name=upt.test_case_name,
@@ -133,8 +133,8 @@ between the current benchmark and a previous baseline.
 The method for creating such a test can be found in the snippet below.
 
 ```python
-from QuickPotato.inspect.intrusive import unit_performance_test as upt
-from QuickPotato.harness.export import TimeSpentStatisticsExport
+from QuickPotato.profiling.intrusive import unit_performance_test as upt
+from QuickPotato.harness.export import PerformanceStatisticsExport
 from demo.example_code import fast_method
 
 
@@ -147,7 +147,7 @@ for _ in range(0, 10):
 # Analyse results for change True if there is no change otherwise False
 results = upt.verify_benchmark_against_previous_baseline
 
-# Export time spent statistics to csv
+# Export time spent statistical to csv
 if results is False:
     TimeSpentStatisticsExport(
         test_case_name=upt.test_case_name,

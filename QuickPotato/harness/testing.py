@@ -1,21 +1,21 @@
 from QuickPotato.configuration.settings import Boundaries, RegressionSettings
-from QuickPotato.utilities.templates import default_test_case_name
-from QuickPotato.statistics.hypothesis_tests import TTest
-from QuickPotato.harness.results import Metrics
-from QuickPotato.statistics.verification import *
-from QuickPotato.database.actions import DatabaseActions
-from QuickPotato.harness.reporting import TestReport
-from QuickPotato.harness.results import RawData
+from QuickPotato.utilities.defaults import default_test_case_name
+from QuickPotato.statistical.hypothesis_tests import TTest
+from QuickPotato.harness.measurements import Metrics
+from QuickPotato.statistical.verification import *
+from QuickPotato.database.crud import DatabaseOperations
+from QuickPotato.harness.results import TestReport
+from QuickPotato.harness.measurements import RawData
 from datetime import datetime
 import string
 import random
 
 
-class UnitPerformanceTest(DatabaseActions, Boundaries, Metrics, RegressionSettings):
+class UnitPerformanceTest(DatabaseOperations, Boundaries, Metrics, RegressionSettings):
 
     def __init__(self):
 
-        DatabaseActions.__init__(self)
+        DatabaseOperations.__init__(self)
         Boundaries.__init__(self)
         Metrics.__init__(self)
         RegressionSettings.__init__(self)
@@ -84,6 +84,7 @@ class UnitPerformanceTest(DatabaseActions, Boundaries, Metrics, RegressionSettin
             the new value of the test case name that will
             be defined by the developer.
         """
+        value = value
         self._create_and_populate_test_case_database(value)
         self._monitoring_mode = False
 

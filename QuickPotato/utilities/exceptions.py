@@ -9,7 +9,7 @@ class AgentCannotProcessProfilerOutput(Exception):
 
 class AgentCannotFindMethod(Exception):
     """
-    The inspect agent has not detected any method to collect metrics from.
+    The profiling agent has not detected any method to collect metrics from.
     Please review the use of the 'profile' decorator in the QuickPotato documentation.
     """
     def __str__(self):
