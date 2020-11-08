@@ -95,10 +95,3 @@ text = CompareFlameGraphs(
     filter_external_libraries=False,
     filter_builtin=False
 ).export_html_flame_graphs_test_report(path="C:\\Temp\\")
-
-
-
-
-
-
-

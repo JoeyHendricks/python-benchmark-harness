@@ -8,7 +8,7 @@ xmlns='http://www.w3.org/2000/svg'
 xmlns:xlink='http://www.w3.org/1999/xlink'>"""
 
 html_svg_frame = """
-<svg class="func_g" x="{x_position}" y="{y_position}" width="{width}" height="25">
+<svg class="block" x="{x_position}" y="{y_position}" width="{width}" height="25">
 <g>
     <title>{function_name} {path} {cumulative_time}</title>
     <rect height="100%" width="100%" fill="rgb{color}" rx="2" ry="2" />
@@ -62,6 +62,9 @@ $(document).ready(function(){
     $('#baseline_sample_id').on('change', hide_all_unused_objects, show_selected_object);
 });
 </script>
+<style type="text/css">
+    .block:hover { stroke:black; stroke-width:0.5; cursor:pointer; }
+</style>
 <body>
     <div class="container-fluid">
         <div class="row">
