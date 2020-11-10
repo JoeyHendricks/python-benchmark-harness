@@ -1,5 +1,5 @@
 from QuickPotato.database.crud import DatabaseOperations
-from QuickPotato.utilities.html_templates import html_svg_header, html_svg_frame
+from QuickPotato.utilities.html_templates import html_template_svg_header, html_template_svg_frame
 from random import choice
 from string import ascii_uppercase, digits
 from jinja2 import Template
@@ -7,10 +7,10 @@ import pandas as pd
 import sys
 
 
-class FlameGraph(DatabaseOperations):
+class FlameGraphGenerator(DatabaseOperations):
 
     def __init__(self, test_case_name, sample_id, filter_external_libraries=False, filter_builtin=False):
-        super(FlameGraph, self).__init__()
+        super(FlameGraphGenerator, self).__init__()
 
         # Properties of the stack trace
         self._collected_stack_trace = self.select_call_stack(test_case_name, sample_id)
@@ -211,9 +211,9 @@ class FlameGraph(DatabaseOperations):
 
         :return:
         """
-        svg_image = html_svg_header.format(self.width, self.height, self.width, self.height + 25)
+        svg_image = html_template_svg_header.format(self.width, self.height, self.width, self.height + 25)
         for frame in self._generate_build_instructions():
             frame["color"] = self._pick_frame_color(frame['cumulative_time'])
-            svg_image += html_svg_frame.format(**frame)
+            svg_image += html_template_svg_frame.format(**frame)
         svg_image += "\n</svg>"
         return svg_image

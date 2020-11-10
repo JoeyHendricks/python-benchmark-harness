@@ -1,97 +1,124 @@
-from QuickPotato.visualization.flame_graphs import FlameGraph
+from QuickPotato.visualization.flame_graphs import FlameGraphGenerator
 from QuickPotato.database.crud import DatabaseOperations
-from QuickPotato.utilities.html_templates import html_test_report
+from QuickPotato.utilities.html_templates import *
 from jinja2 import Template
 from datetime import datetime
 
 
-class CompareFlameGraphs(DatabaseOperations):
+class FlameGraphs(DatabaseOperations):
 
-    def __init__(self, test_case_name, benchmark_test_id, baseline_test_id,
-                 filter_external_libraries=False, filter_builtin=False):
-        super(CompareFlameGraphs, self).__init__()
-
-        if benchmark_test_id == baseline_test_id:
-            raise NotImplementedError
+    def __init__(self, test_case_name, filter_external_libraries=False, filter_builtin=False):
+        super(FlameGraphs, self).__init__()
 
         self.test_case_name = test_case_name
-        self.benchmark_test_id = benchmark_test_id
-        self.baseline_test_id = baseline_test_id
         self.filter_external_libraries = filter_external_libraries
         self.filter_builtin = filter_builtin
 
-        self.benchmark_meta_data = self.select_all_meta_data(self.test_case_name, benchmark_test_id)
-        self.baseline_meta_data = self.select_all_meta_data(self.test_case_name, baseline_test_id)
-        self.benchmark_flame_graphs, self.baseline_flame_graphs = self._collect_all_flame_graphs()
-
-    def _generate_flame_graphs(self, sid_benchmark, sid_baseline):
+    def _generate_flame_graph(self, sample_id):
         """
 
-        :param sid_benchmark:
-        :param sid_baseline:
+        :param sample_id:
         :return:
         """
-        benchmark = FlameGraph(
+        return FlameGraphGenerator(
             self.test_case_name,
-            sid_benchmark,
+            sample_id,
             self.filter_external_libraries,
             self.filter_builtin
-        )
-        baseline = FlameGraph(
-            self.test_case_name,
-            sid_baseline,
-            self.filter_external_libraries,
-            self.filter_builtin
-        )
-        return benchmark.svg_flame_graph, baseline.svg_flame_graph
+        ).svg_flame_graph
 
-    def _collect_all_flame_graphs(self):
+    def _write_html_to_file(self, html, path):
         """
 
+        :param html:
+        :param path:
+        :return:
+        """
+        name = f"{self.test_case_name}-{datetime.now().timestamp()}"
+        with open(f"{path}{name}.html", 'a') as file:
+            file.write(html)
+
+    def _collect_benchmark_and_baseline_flame_graphs(self, benchmark_meta_data, baseline_meta_data):
+        """
+
+        :param benchmark_meta_data:
+        :param baseline_meta_data:
         :return:
         """
         rendered_benchmark_flame_graphs = []
         rendered_baseline_flame_graphs = []
 
-        for bench, base in zip(self.benchmark_meta_data, self.baseline_meta_data):
-            bench_flame_graph, base_flame_graph = self._generate_flame_graphs(bench["sample_id"], base["sample_id"])
-            rendered_benchmark_flame_graphs.append(bench_flame_graph)
-            rendered_baseline_flame_graphs.append(base_flame_graph)
+        for benchmark_data, baseline_data in zip(benchmark_meta_data, baseline_meta_data):
+
+            # collect benchmark and baseline flame graph
+            benchmark_flame_graph = self._generate_flame_graph(benchmark_data["sample_id"])
+            baseline_flame_graph = self._generate_flame_graph(baseline_data["sample_id"])
+
+            # Add flame graphs to their lists
+            rendered_benchmark_flame_graphs.append(benchmark_flame_graph)
+            rendered_baseline_flame_graphs.append(baseline_flame_graph)
 
         return rendered_benchmark_flame_graphs, rendered_baseline_flame_graphs
 
-    def export_html_flame_graphs_test_report(self, path):
+    def export_flame_graph_comparison(self, benchmark_test_id, baseline_test_id, path):
         """
 
+        :param benchmark_test_id:
+        :param baseline_test_id:
+        :param path:
         :return:
         """
-        name = f"{self.test_case_name}-{self.benchmark_test_id}Vs{self.baseline_test_id}-{datetime.now().timestamp()}"
-        with open(f"{path}{name}.html", 'a') as file:
-            file.write(self.html_flame_graphs_test_report)
-        return True
+        benchmark_rendered_flame_graphs = []
+        baseline_rendered_flame_graphs = []
 
-    @property
-    def html_flame_graphs_test_report(self):
-        """
+        # Collecting benchmark and baseline meta data (Sample ID, Name, Response time and timestamps)
+        benchmark_meta_data = self.select_all_meta_data(self.test_case_name, benchmark_test_id)
+        baseline_meta_data = self.select_all_meta_data(self.test_case_name, baseline_test_id)
 
-        :return:
-        """
-        template = Template(html_test_report)
+        # Render flame graphs
+        for benchmark_data, baseline_data in zip(benchmark_meta_data, baseline_meta_data):
+
+            # collect benchmark and baseline flame graph
+            benchmark_flame_graph = self._generate_flame_graph(benchmark_data["sample_id"])
+            baseline_flame_graph = self._generate_flame_graph(baseline_data["sample_id"])
+
+            # Add flame graphs to lists
+            benchmark_rendered_flame_graphs.append(benchmark_flame_graph)
+            baseline_rendered_flame_graphs.append(baseline_flame_graph)
+
+        # Render HTML template using jinja2
+        template = Template(html_template_flame_graph_comparison)
         html = template.render(
-            benchmark_test_id=self.benchmark_test_id,
-            baseline_test_id=self.baseline_test_id,
-            benchmark_meta_data=self.benchmark_meta_data,
-            baseline_meta_data=self.baseline_meta_data,
-            zipped_benchmark_data=zip(self.benchmark_meta_data, self.benchmark_flame_graphs),
-            zipped_baseline_data=zip(self.baseline_meta_data, self.baseline_flame_graphs)
+            benchmark_test_id=benchmark_test_id,
+            baseline_test_id=baseline_test_id,
+            benchmark_meta_data=benchmark_meta_data,
+            baseline_meta_data=baseline_meta_data,
+            zipped_benchmark_data=zip(benchmark_meta_data, benchmark_rendered_flame_graphs),
+            zipped_baseline_data=zip(baseline_meta_data, baseline_rendered_flame_graphs)
         )
-        return html
+        self._write_html_to_file(html, path)
 
+    def export_flame_graph(self, test_id, path):
+        """
 
-text = CompareFlameGraphs(
-    test_case_name="upt_of_complex_functions",
-    benchmark_test_id="YWM50MMZU9SM",
-    baseline_test_id="92COVFWCYFVA",
-    filter_external_libraries=False,
-    filter_builtin=False
-).export_html_flame_graphs_test_report(path="C:\\Temp\\")
+        :param test_id:
+        :param path:
+        :return:
+        """
+        rendered_flame_graphs = []
+
+        # Collecting test id meta data (Sample ID, Name, Response time and timestamps)
+        meta_data = self.select_all_meta_data(self.test_case_name, test_id)
+
+        # Render flame graphs
+        for data in meta_data:
+            rendered_flame_graphs.append(self._generate_flame_graph(data["sample_id"]))
+
+        # Render HTML template using jinja2
+        template = Template(html_template_single_flame_graph)
+        html = template.render(
+            test_id=test_id,
+            meta_data=meta_data,
+            zipped_data=zip(meta_data, rendered_flame_graphs)
+        )
+        self._write_html_to_file(html, path)
