@@ -156,7 +156,7 @@ class FlameGraphGenerator(DatabaseOperations):
 
         # Order folded stack alphabetically.
         folded_stack = pd.DataFrame(folded_stack)
-        folded_stack = folded_stack.sort_values(by=[n for n in range(0, int(folded_stack.shape[1] / 2))])
+        folded_stack = folded_stack.sort_values(by=[n for n in range(1, int(folded_stack.shape[1] / 2) + 1)])
         return folded_stack, meta_data
 
     def _generate_build_instructions(self):
@@ -165,6 +165,7 @@ class FlameGraphGenerator(DatabaseOperations):
         :return:
         """
         current_y_position = self.height
+
         for depth, frame in enumerate(self.folded_stack.transpose().values):
 
             width = self.width / len(frame)
@@ -173,7 +174,7 @@ class FlameGraphGenerator(DatabaseOperations):
             previous_function_id = None
             all_coordinates_of_row = {}
 
-            for number, function in enumerate(frame):
+            for function in frame:
 
                 if function is None:
                     current_x_position += width
