@@ -63,7 +63,7 @@ class UnitPerformanceTest(DatabaseOperations, Boundaries, Metrics, RegressionSet
 
         else:
             self._create_and_populate_test_case_database(default_test_case_name)
-            self.current_test_id = "collected_outside_unit_performance_test"
+            self.current_test_id = self._generate_random_test_id()
             return default_test_case_name
 
     @test_case_name.setter
@@ -104,6 +104,10 @@ class UnitPerformanceTest(DatabaseOperations, Boundaries, Metrics, RegressionSet
         self._save_results_to_test_report(regression_found=results)
         return results
 
+    @staticmethod
+    def _generate_random_test_id():
+        return ''.join(random.choices(string.ascii_uppercase + string.digits, k=12))
+
     def _create_and_populate_test_case_database(self, database_name):
         """
         Will populate the database with the necessary tables.
@@ -131,7 +135,7 @@ class UnitPerformanceTest(DatabaseOperations, Boundaries, Metrics, RegressionSet
             The name of the database also known as the test case name
         """
         self.previous_test_id = str(self.select_previous_passed_test_id(database_name))
-        self.current_test_id = ''.join(random.choices(string.ascii_uppercase + string.digits, k=12))
+        self.current_test_id = self._generate_random_test_id()
 
     def _inspect_benchmark_and_baseline(self):
         """

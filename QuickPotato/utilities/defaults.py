@@ -37,4 +37,4 @@ default_quick_potato_configuration = {
 
     }
 
-default_test_case_name = "qp_monitoring"
+default_test_case_name = "QuickProfiling"

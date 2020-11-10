@@ -1,13 +1,14 @@
 from QuickPotato.visualization.flame_graphs import FlameGraphGenerator
 from QuickPotato.database.crud import DatabaseOperations
 from QuickPotato.utilities.html_templates import *
+from QuickPotato.utilities.defaults import default_test_case_name
 from jinja2 import Template
 from datetime import datetime
 
 
 class FlameGraphs(DatabaseOperations):
 
-    def __init__(self, test_case_name, filter_external_libraries=False, filter_builtin=False):
+    def __init__(self, test_case_name=default_test_case_name, filter_external_libraries=False, filter_builtin=False):
         super(FlameGraphs, self).__init__()
 
         self.test_case_name = test_case_name
@@ -38,6 +39,24 @@ class FlameGraphs(DatabaseOperations):
         with open(f"{path}{name}.html", 'a') as file:
             file.write(html)
 
+    def _collect_test_ids(self, required_amount):
+        """
+
+        :return:
+        """
+        all_available_test_ids = self.select_all_test_ids(
+            table=self.performance_statistics_schema(),
+            database_name=self.test_case_name
+        )
+        if required_amount == 2 and len(all_available_test_ids) < 2:
+            raise NotImplementedError
+
+        elif required_amount == 1 and len(all_available_test_ids) == 0:
+            raise NotImplementedError
+
+        else:
+            return all_available_test_ids
+
     def _collect_benchmark_and_baseline_flame_graphs(self, benchmark_meta_data, baseline_meta_data):
         """
 
@@ -60,7 +79,7 @@ class FlameGraphs(DatabaseOperations):
 
         return rendered_benchmark_flame_graphs, rendered_baseline_flame_graphs
 
-    def export_flame_graph_comparison(self, benchmark_test_id, baseline_test_id, path):
+    def export_flame_graph_comparison(self, path, benchmark_test_id=None, baseline_test_id=None,):
         """
 
         :param benchmark_test_id:
@@ -70,6 +89,12 @@ class FlameGraphs(DatabaseOperations):
         """
         benchmark_rendered_flame_graphs = []
         baseline_rendered_flame_graphs = []
+
+        # Fetch the last two test-ids from the database (only if in Quick Profiling mode)
+        if None in [benchmark_test_id, baseline_test_id] and self.test_case_name == default_test_case_name:
+            all_available_test_ids = self._collect_test_ids(required_amount=2)
+            benchmark_test_id = all_available_test_ids[-1]
+            baseline_test_id = all_available_test_ids[-2]
 
         # Collecting benchmark and baseline meta data (Sample ID, Name, Response time and timestamps)
         benchmark_meta_data = self.select_all_meta_data(self.test_case_name, benchmark_test_id)
@@ -86,7 +111,7 @@ class FlameGraphs(DatabaseOperations):
             benchmark_rendered_flame_graphs.append(benchmark_flame_graph)
             baseline_rendered_flame_graphs.append(baseline_flame_graph)
 
-        # Render HTML template using jinja2
+        # Render HTML template
         template = Template(html_template_flame_graph_comparison)
         html = template.render(
             benchmark_test_id=benchmark_test_id,
@@ -98,7 +123,7 @@ class FlameGraphs(DatabaseOperations):
         )
         self._write_html_to_file(html, path)
 
-    def export_flame_graph(self, test_id, path):
+    def export_flame_graph(self, path, test_id=None):
         """
 
         :param test_id:
@@ -106,6 +131,11 @@ class FlameGraphs(DatabaseOperations):
         :return:
         """
         rendered_flame_graphs = []
+
+        # Fetch the last two test-ids from the database (only if in Quick Profiling mode)
+        if test_id is None and self.test_case_name == default_test_case_name:
+            all_available_test_ids = self._collect_test_ids(required_amount=2)
+            test_id = all_available_test_ids[-1]
 
         # Collecting test id meta data (Sample ID, Name, Response time and timestamps)
         meta_data = self.select_all_meta_data(self.test_case_name, test_id)
