@@ -67,7 +67,7 @@ Using the pattern shown above you can run your function and quickly pull out a f
 view where your performance bottleneck is situated. 
 My example code would generate the following flame graph:
 
-[![Couch Potato code in a lazy chair](/images/banner-with-text.jpg "Slow Potato Code")](https://github.com/JoeyHendricks/python-unit-level-performance-testing/blob/master/images/banner-with-text.jpg?raw=true)
+[![Example of simple flame graph](/images/fancy_code_flame_graph.svg "flame graph simple")](https://github.com/JoeyHendricks/python-unit-level-performance-testing/blob/master/images/banner-with-text.jpg?raw=true)
 
 
 ## Options
