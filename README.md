@@ -47,7 +47,7 @@ def fast_method():
     return int(math.log10(num))
 ```
 
-### Quick Profiling 
+## Quick Profiling 
 
 Quickly gaining insights into the performance of your code is relatively easy with QuickPotato.  
 Once you have imported and attached the "performance_critical" decorator to your function that you wish to profile.
