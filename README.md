@@ -175,9 +175,9 @@ if results is False:
 
 ```
 
-## Read More About Unit Performance Testing
+## Learn more about unit performance testing
 
 If you want to learn more about unit-level performance testing then check out the following resources:
 
-[Don’t lose your mind over slow code check your performance sanity.](https://www.linkedin.com/pulse/dont-lose-your-mind-over-slow-code-check-performance-sanity-joey/) 
-[My presentation on QuickPotato @NeotysPAC 2020 (English)](https://www.youtube.com/watch?v=AWlhalEywEw) 
+- [Don’t lose your mind over slow code check your performance sanity.](https://www.linkedin.com/pulse/dont-lose-your-mind-over-slow-code-check-performance-sanity-joey/) 
+- [My presentation on QuickPotato @NeotysPAC 2020 (English)](https://www.youtube.com/watch?v=AWlhalEywEw) 
