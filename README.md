@@ -19,12 +19,16 @@ pip install QuickPotato
 ### Intrusive Testing
 
 Using QuickPotato's intrusive performance testing method requires you to decorate your function. 
-By tagging your function with the "performance_critical" decorator, you are providing QuickPotato access to profile this function.  
+By tagging your function with the "performance_critical" decorator, you are providing QuickPotato access to profile
+your code from that point once that functions exits the profiler will stop running.
 
-Besides that, QuickPotato technically needs "performance_critical" decorator to be able to work. 
-It also serves a human purpose of decorating functions as performance-critical. 
-Thus, you remind yourself and your teammates to think about the performance of the code.
-An example of this concept can be found below:
+This method allows you to pick and choose which methods you wish to profile.  
+The "performance_critical" decorator also serves a human purpose by highlighting function 
+that are critical to your codes performance.
+ 
+This will remind you and your teammates to think about the performance of your code 
+and include performance into your teams way of working.
+An simple example of tagging your function with can be found below:
 
 ```python
 from QuickPotato.profiling.intrusive import performance_critical  # <-- Import the decorator
@@ -47,7 +51,8 @@ def fast_method():
 
 Quickly gaining insights into the performance of your code is relatively easy with QuickPotato.  
 Once you have imported and attached the "performance_critical" decorator to your function that you wish to profile.
-You are few lines of code away from pulling out detailed information about your code.
+
+With that achieved you are just a few lines of code away from pulling out detailed information about your code.
 The code snippet below, shows you the basics you need to know to get the performance information out of your code: 
 
 ```python
@@ -58,6 +63,7 @@ from QuickPotato.harness.analysis import FlameGraphs
 
 options.enable_intrusive_profiling = True  # <-- Make sure that profiling is enabled
 
+# Your fancy code :)
 FancyCode().say_my_name_and_more(name="joey hendricks")
 
 # Generate Flame Graph
@@ -65,9 +71,13 @@ FlameGraphs().export_flame_graph(path="C:\\Temp\\")
 ```
 Using the pattern shown above you can run your function and quickly pull out a flame graph to 
 view where your performance bottleneck is situated. 
-My example code would generate the following flame graph:
+The example code would generate the following flame graph:
 
-[![Example of simple flame graph](/images/fancy_code_flame_graph.svg "flame graph simple")](https://raw.githubusercontent.com/JoeyHendricks/python-unit-level-performance-testing/95132b0a0ebd61f57deb7ec2197d01e5c0d4829f/images/fancy_code_flame_graph.svg)
+[![Example of simple flame graph](/images/fancy_code_flame_graph.svg "flame graph simple")](
+https://raw.githubusercontent.com/JoeyHendricks/python-unit-level-performance-testing/95132b0a0ebd61f57deb7ec2197d01e5c0d4829f/images/fancy_code_flame_graph.svg)
+
+> Image is interactive
+
 
 
 ## Options
