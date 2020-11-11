@@ -45,29 +45,30 @@ def fast_method():
 
 ### Quick Profiling 
 
-Once you import and attach the "performance_critical" decorator to your function, you are just a few steps
-away from gaining insights into the performance of your code. 
-The code snippet below, shows you the basics you need to know to get the performance statistics out of your code: 
+Quickly gaining insights into the performance of your code is relatively easy with QuickPotato.  
+Once you have imported and attached the "performance_critical" decorator to your function that you wish to profile.
+You are few lines of code away from pulling out detailed information about your code.
+The code snippet below, shows you the basics you need to know to get the performance information out of your code: 
 
 ```python
-from demo.example_code import *
-from QuickPotato.configuration.management import options  # <-- Import the options object
-from QuickPotato.harness.export import PerformanceStatisticsExport
+from demo.example_code import FancyCode
+from QuickPotato.configuration.management import options
+from QuickPotato.harness.analysis import FlameGraphs
 
 
-options.enable_intrusive_profiling = True  # <-- Set to True to enable profiling
+options.enable_intrusive_profiling = True  # <-- Make sure that profiling is enabled
 
-fast_method()
+FancyCode().say_my_name_and_more(name="joey hendricks")
 
-options.enable_intrusive_profiling = False  # <-- Set to False to disable profiling
-
-# Export all results to csv
-TimeSpentStatisticsExport(
-    path="C:\\Temp\\",
-    purge_database_after_export=True  # <-- Optionally clean-up the database after use.
-).to_csv()
-
+# Generate Flame Graph
+FlameGraphs().export_flame_graph(path="C:\\Temp\\")
 ```
+Using the pattern shown above you can run your function and quickly pull out a flame graph to 
+view where your performance bottleneck is situated. 
+My example code would generate the following flame graph:
+
+[![Couch Potato code in a lazy chair](/images/banner-with-text.jpg "Slow Potato Code")](https://github.com/JoeyHendricks/python-unit-level-performance-testing/blob/master/images/banner-with-text.jpg?raw=true)
+
 
 ## Options
 

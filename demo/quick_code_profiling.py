@@ -1,5 +1,5 @@
 from demo.example_code import FancyCode
-from QuickPotato.configuration.management import options  # <-- Import the options object
+from QuickPotato.configuration.management import options
 from QuickPotato.harness.analysis import FlameGraphs
 
 
