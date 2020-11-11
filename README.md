@@ -22,7 +22,8 @@ Using QuickPotato's intrusive performance testing method requires you to decorat
 By tagging your function with the "performance_critical" decorator, you are providing QuickPotato access to profile
 your code from that point once that functions exits the profiler will stop running.
 
-This method allows you to pick and choose which methods you wish to profile.  
+This method allows you to pick and choose which methods you wish to profile, opening up opportunity 
+to turn profiling of certain key functions on or off on demand.  
 The "performance_critical" decorator also serves a human purpose by highlighting function 
 that are critical to your codes performance.
  
@@ -61,10 +62,10 @@ from QuickPotato.configuration.management import options
 from QuickPotato.harness.analysis import FlameGraphs
 
 
-options.enable_intrusive_profiling = True  # <-- Make sure that profiling is enabled
+options.enable_intrusive_profiling = True  # <-- Make sure that intrusive profiling is enabled
 
 # Your fancy code :)
-FancyCode().say_my_name_and_more(name="joey hendricks")
+FancyCode().say_my_name_and_more(name="joey hendricks")  # <-- This function is decorated
 
 # Generate Flame Graph
 FlameGraphs().export_flame_graph(path="C:\\Temp\\")
