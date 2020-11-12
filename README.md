@@ -170,7 +170,7 @@ for _ in range(0, 10):
 # Analyse results for change True if there is no change otherwise False
 results = upt.verify_benchmark_against_previous_baseline
 ```
-## visualization
+## Visualization
 
 Within QuickPotato I wish to include multiple different visual Html report that could be automatically generated.
 For now it supports the following visual representations of your code:
