@@ -1,9 +1,9 @@
 [![Couch Potato code in a lazy chair](/images/banner-with-text.jpg "Slow Potato Code")](https://github.com/JoeyHendricks/python-unit-level-performance-testing/blob/master/images/banner-with-text.jpg?raw=true)
 ---
 
-QuickPotato is a unit-level performance testing framework for the Python programming language. 
-It enables its users to define helpful test cases which can help catch problematic performance bottlenecks 
-in the early stages of the development life cycle.
+QuickPotato is a unit-level performance testing framework for the Python programming language.
+It paves the way for its users to define helpful automated test cases. 
+Which can help catch problematic performance bottlenecks in the early stages of the development life cycle.
 
 ## How it works
 
@@ -21,9 +21,13 @@ pip install QuickPotato
 Using QuickPotato's intrusive performance testing method requires you to decorate your function. 
 By tagging your function with the "performance_critical" decorator, you are providing QuickPotato access to profile
 your code from that point once that functions exits the profiler will stop running.
-
 The intrusive method allows you to pick and choose which methods you wish to profile, opening up opportunities
-to turn profiling on or off on command.  
+to turn profiling on or off on command.
+
+Also it is important to understand that the QuickPotato separates each testing session with an test-id. 
+Meaning that you will have test-id for each time you triggered QuickPotato to start recording.
+In quick profiling mode that would be the first time the decorator is executed and 
+within your tests each time you are defining a test case name.   
 
 The "performance_critical" decorator also serves a human purpose by highlighting function 
 that are critical to your codes performance. This will remind you and your teammates to think about 
@@ -114,6 +118,15 @@ options.maximum_number_of_saved_test_results = 10
 > States of options are saved in a static yaml options file.  
 > That is why settings can be defined just once or changed on the fly. 
 
+## Automated Testing
+
+Making sure that each component of your project runs lighting fast can very challenging. 
+Constantly testing the performance of your code manually is a tiresome and inaccurate task. 
+That is why QuickPotato allows you to define helpful test cases to completely automate the performance testing.
+
+Allowing you to only triggered when your changes have impacted the performance of your code.
+That way you can keep focusing on your awesome projects.  
+
 ### Boundary Testing
 
 Within QuickPotato, it is possible to create a performance test that validates if 
@@ -122,11 +135,13 @@ An example of this sort of test can be found in the snippet below:
 
 ```python
 from QuickPotato.profiling.intrusive import unit_performance_test as upt
-from QuickPotato.harness.export import PerformanceStatisticsExport
 from demo.example_code import fast_method
 
-upt.test_case_name = "test_performance"  # <-- Define test case name
-upt.max_and_min_boundary_for_average = {"max": 1, "min": 0.001}  # <-- Establish performance boundaries
+# Define test case name
+upt.test_case_name = "test_performance"
+
+# Establish performance boundaries
+upt.max_and_min_boundary_for_average = {"max": 1, "min": 0.001}
 
 # Execute method under test
 for _ in range(0, 10):
@@ -134,17 +149,6 @@ for _ in range(0, 10):
 
 # Analyse profiled results will output True if boundaries are not breached otherwise False
 results = upt.verify_benchmark_against_set_boundaries
-
-# Export time spent statistical to csv
-if results is False:
-    TimeSpentStatisticsExport(
-        test_case_name=upt.test_case_name,
-        test_id=upt.current_test_id,
-        delimiter=";",
-        path="C:\\Temp\\",
-        purge_database_after_export=True  # <-- Optionally clean-up the database after use.
-    ).to_csv()
-
 ```
 ### Regression Testing
 
@@ -154,11 +158,10 @@ The method for creating such a test can be found in the snippet below.
 
 ```python
 from QuickPotato.profiling.intrusive import unit_performance_test as upt
-from QuickPotato.harness.export import PerformanceStatisticsExport
 from demo.example_code import fast_method
 
-
-upt.test_case_name = "test_performance"  # <-- Define test case name
+# Define test case name
+upt.test_case_name = "test_performance"
 
 # Execute method under test
 for _ in range(0, 10):
@@ -166,16 +169,6 @@ for _ in range(0, 10):
 
 # Analyse results for change True if there is no change otherwise False
 results = upt.verify_benchmark_against_previous_baseline
-
-# Export time spent statistical to csv
-if results is False:
-    TimeSpentStatisticsExport(
-        test_case_name=upt.test_case_name,
-        test_id=upt.current_test_id,
-        delimiter=";",
-        path="C:\\Temp\\"
-    ).to_csv()
-
 ```
 
 ## Learn more about unit performance testing
@@ -183,4 +176,4 @@ if results is False:
 If you want to learn more about unit-level performance testing then check out the following resources:
 
 - [Don’t lose your mind over slow code check your performance sanity.](https://www.linkedin.com/pulse/dont-lose-your-mind-over-slow-code-check-performance-sanity-joey/) 
-- [My presentation on QuickPotato @NeotysPAC 2020 (English)](https://www.youtube.com/watch?v=AWlhalEywEw) 
+- [My presentation about QuickPotato @NeotysPAC 2020 (English)](https://www.youtube.com/watch?v=AWlhalEywEw) 
