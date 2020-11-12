@@ -79,7 +79,7 @@ class FlameGraphs(DatabaseOperations):
 
         return rendered_benchmark_flame_graphs, rendered_baseline_flame_graphs
 
-    def export_flame_graph_comparison(self, path, benchmark_test_id=None, baseline_test_id=None,):
+    def export_flame_graph_comparison(self, path, benchmark_test_id=None, baseline_test_id=None):
         """
 
         :param benchmark_test_id:
