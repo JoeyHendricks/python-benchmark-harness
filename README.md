@@ -120,11 +120,11 @@ options.maximum_number_of_saved_test_results = 10
 
 ## Automated Testing
 
-Making sure that each component of your project runs lighting fast can very challenging. 
+Making sure that each component of your project runs lighting fast can be very challenging. 
 Constantly testing the performance of your code manually is a tiresome and inaccurate task. 
-That is why QuickPotato allows you to define helpful test cases to completely automate the performance testing.
+That is why QuickPotato allows you to define helpful test cases to completely automate testing the performance of your code.
 
-Allowing you to only triggered when your changes have impacted the performance of your code.
+Allowing you to only be triggered when your changes have impacted the performance of your code.
 That way you can keep focusing on your awesome projects.  
 
 ### Boundary Testing
