@@ -25,8 +25,8 @@ The intrusive method allows you to pick and choose which methods you wish to pro
 to turn profiling on or off on command.
 
 Also it is important to understand that the QuickPotato separates each testing session with an test-id. 
-Meaning that you will have test-id for each time you triggered QuickPotato to start recording.
-In quick profiling mode that would be the first time the decorator is executed and 
+Meaning that you will have a test-id for each time you have triggered QuickPotato to start recording.
+In the quick profiling mode that would be the first time the decorator is executed and 
 within your tests each time you are defining a test case name.   
 
 The "performance_critical" decorator also serves a human purpose by highlighting function 
