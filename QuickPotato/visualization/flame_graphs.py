@@ -1,4 +1,4 @@
-from QuickPotato.database.crud import DatabaseOperations
+from QuickPotato.database.queries import Crud
 from QuickPotato.utilities.html_templates import html_template_svg_header, html_template_svg_frame
 from random import choice
 from string import ascii_uppercase, digits
@@ -7,13 +7,13 @@ import pandas as pd
 import sys
 
 
-class FlameGraphGenerator(DatabaseOperations):
+class FlameGraphGenerator(Crud):
 
     def __init__(self, test_case_name, sample_id, filter_external_libraries=False, filter_builtin=False):
         super(FlameGraphGenerator, self).__init__()
 
         # Properties of the stack trace
-        self._collected_stack_trace = self.select_call_stack(test_case_name, sample_id)
+        self._collected_stack_trace = self.select_call_stack_by_sample_id(test_case_name, sample_id)
         self.root_frame = self._collected_stack_trace[0]['parent_function_name']
 
         # Filters

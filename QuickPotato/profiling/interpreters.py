@@ -1,11 +1,11 @@
-from QuickPotato.database.crud import DatabaseOperations
+from QuickPotato.database.queries import Crud
 from QuickPotato.utilities.exceptions import *
 from QuickPotato.configuration.management import options
 from datetime import datetime
 import asyncio
 
 
-class PerformanceStatisticsInterpreter(DatabaseOperations):
+class PerformanceStatisticsInterpreter(Crud):
 
     def __init__(self, database_name, performance_statistics, total_response_time, method_name, sample_id, test_id):
         super(PerformanceStatisticsInterpreter, self).__init__()
@@ -50,7 +50,7 @@ class PerformanceStatisticsInterpreter(DatabaseOperations):
         :return:
         """
         payload = self.construct_writable_payload()
-        self.insert_performance_statistics(payload=payload, database_name=self.database_name)
+        self.insert_performance_statistics(payload=payload, database=self.database_name)
 
     def construct_writable_payload(self):
         """
@@ -97,7 +97,7 @@ class PerformanceStatisticsInterpreter(DatabaseOperations):
             raise AgentCannotProcessProfilerOutput()
 
 
-class SystemResourcesInterpreter(DatabaseOperations):
+class SystemResourcesInterpreter(Crud):
 
     def __init__(self, cpu_statistics, database_name, method_name, sample_id, test_id):
         super(SystemResourcesInterpreter, self).__init__()
@@ -153,4 +153,4 @@ class SystemResourcesInterpreter(DatabaseOperations):
         :return:
         """
         payload = self.construct_payload()
-        self.insert_system_resources_statistics(payload=payload, database_name=self.database_name)
+        self.insert_system_resources_statistics(payload=payload, database=self.database_name)

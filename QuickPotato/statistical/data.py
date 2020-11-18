@@ -1,16 +1,15 @@
-from QuickPotato.database.crud import DatabaseOperations
+from QuickPotato.database.queries import Crud
 import numpy as np
 
 
-class RawData(DatabaseOperations):
+class RawData(Crud):
 
     def __init__(self, test_id, database_name):
         super(RawData, self).__init__()
 
         self.test_id = test_id
         self.database_name = database_name
-        self._response_times = self.select_end_to_end_response_times(self.database_name, self.test_id)
-        self._cumulative_time_spent = self.select_cumulative_time(self.database_name, self.test_id)
+        self._response_times = self.select_response_times(self.database_name, self.test_id)
     
     def response_times(self):
         """
@@ -30,15 +29,6 @@ class RawData(DatabaseOperations):
         """
         measurements = np.array(self._response_times)
         return measurements[abs(measurements - np.mean(measurements)) < 2 * np.std(measurements)]
-
-    def cumulative_time_spent(self):
-        """
-
-        Returns
-        -------
-
-        """
-        return self._cumulative_time_spent
 
     def average_response_time(self):
         """

@@ -1,10 +1,10 @@
 from QuickPotato.utilities.defaults import default_test_case_name
-from QuickPotato.database.crud import DatabaseOperations
+from QuickPotato.database.queries import Crud
 from datetime import datetime
 import tempfile
 
 
-class PerformanceStatisticsExport(DatabaseOperations):
+class PerformanceStatisticsExport(Crud):
 
     def __init__(
             self,
@@ -31,15 +31,15 @@ class PerformanceStatisticsExport(DatabaseOperations):
         """
         if self.sample_id is not None:
 
-            return self.select_call_stack(
-                database_name=self.test_case_name,
+            return self.select_call_stack_by_sample_id(
+                database=self.test_case_name,
                 sample_id=self.sample_id
             )
 
         elif self.test_id is not None:
 
-            return self.select_all_call_stacks(
-                database_name=self.test_case_name,
+            return self.select_call_stacks_by_test_id(
+                database=self.test_case_name,
                 test_id=self.test_id
             )
 

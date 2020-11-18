@@ -3,7 +3,7 @@ from QuickPotato.utilities.defaults import default_test_case_name
 from QuickPotato.statistical.hypothesis_tests import TTest
 from QuickPotato.harness.measurements import Metrics
 from QuickPotato.statistical.verification import *
-from QuickPotato.database.crud import DatabaseOperations
+from QuickPotato.database.queries import Crud
 from QuickPotato.harness.results import TestReport
 from QuickPotato.harness.measurements import RawData
 from datetime import datetime
@@ -11,11 +11,11 @@ import string
 import random
 
 
-class UnitPerformanceTest(DatabaseOperations, Boundaries, Metrics, RegressionSettings):
+class UnitPerformanceTest(Crud, Boundaries, Metrics, RegressionSettings):
 
     def __init__(self):
 
-        DatabaseOperations.__init__(self)
+        Crud.__init__(self)
         Boundaries.__init__(self)
         Metrics.__init__(self)
         RegressionSettings.__init__(self)
@@ -117,12 +117,12 @@ class UnitPerformanceTest(DatabaseOperations, Boundaries, Metrics, RegressionSet
         database_name
             The name of the database_name also known as the test case name
         """
-        self.spawn_results_database(database_name)
-        self.spawn_time_spent_table(database_name)
-        self.spawn_system_resources_table(database_name)
-        self.spawn_test_report_table(database_name)
-        self.spawn_boundaries_test_evidence_table(database_name)
-        self.spawn_regression_test_evidence_table(database_name)
+        self.spawn_result_database(database_name)
+        self.spawn_performance_statistics_schema(database_name)
+        self.spawn_system_resources_schema(database_name)
+        self.spawn_test_report_schema(database_name)
+        self.spawn_boundaries_test_evidence_schema(database_name)
+        self.spawn_regression_test_evidence_schema(database_name)
         self.enforce_test_result_retention_policy(database_name)
 
     def _reset_unit_performance_test(self, database_name):

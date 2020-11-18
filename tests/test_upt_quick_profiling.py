@@ -1,4 +1,4 @@
-from QuickPotato.database.management import SchemaManager
+from QuickPotato.database.queries import Crud
 from QuickPotato.configuration.management import options
 from sqlalchemy_utils import database_exists
 from sqlalchemy import create_engine
@@ -6,7 +6,7 @@ from demo.example_code import *
 import unittest
 
 SAMPLE_SIZE = 1
-UNIT_TEST_DATABASE_NAME = "qp_monitoring"
+UNIT_TEST_DATABASE_NAME = "quickprofiling"
 
 
 class TestUsage(unittest.TestCase):
@@ -29,7 +29,7 @@ class TestUsage(unittest.TestCase):
         """
 
         """
-        database_manager = SchemaManager()
+        database_manager = Crud()
         database_manager.delete_result_database(UNIT_TEST_DATABASE_NAME)
 
     def test_profiling_outside_of_test_case(self):
@@ -38,8 +38,8 @@ class TestUsage(unittest.TestCase):
             fast_method()
 
         # Checking if a database has been spawned
-        database_manager = SchemaManager()
-        url = database_manager.validate_connection_url(UNIT_TEST_DATABASE_NAME)
+        database_manager = Crud()
+        url = database_manager._validate_connection_url(UNIT_TEST_DATABASE_NAME)
         engine = create_engine(url, echo=True)
 
         self.assertTrue(database_exists(engine.url))

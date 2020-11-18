@@ -1,5 +1,5 @@
 from QuickPotato.profiling.intrusive import unit_performance_test as upt
-from QuickPotato.database.management import SchemaManager
+from QuickPotato.database.queries import Crud
 from QuickPotato.configuration.management import options
 from demo.example_code import *
 import unittest
@@ -27,7 +27,7 @@ class TestRegressionDetectionTTest(unittest.TestCase):
         """
 
         """
-        database_manager = SchemaManager()
+        database_manager = Crud()
         database_manager.delete_result_database(UNIT_TEST_DATABASE_NAME)
 
     @staticmethod

@@ -1,7 +1,7 @@
 from sqlalchemy import MetaData, Table, Column, Integer, Float, String, Boolean
 
 
-class RawResultsSchemas(object):
+class RawStatisticsSchemas(object):
 
     @staticmethod
     def performance_statistics_schema():

@@ -6,7 +6,8 @@ import yaml
 class Configuration:
 
     FILE_NAME = "options.yaml"
-    PATH = dirname(realpath(__file__)) + "\\" if "\\" in dirname(realpath(__file__)) else dirname(realpath(__file__)) + "/"
+    PATH = dirname(realpath(__file__)) + "\\" if "\\" in dirname(realpath(__file__)) else \
+        dirname(realpath(__file__)) + "/"
 
     def __init__(self):
 
@@ -79,12 +80,12 @@ class Configuration:
         self.dump_configuration_to_yaml_file(self.contents)
 
     @property
-    def maximum_number_of_saved_test_results(self):
-        return self.contents["maximum_number_of_saved_test_results"]
+    def maximum_number_saved_test_results(self):
+        return self.contents["maximum_number_saved_test_results"]
 
-    @maximum_number_of_saved_test_results.setter
-    def maximum_number_of_saved_test_results(self, value):
-        self.contents["maximum_number_of_saved_test_results"] = value
+    @maximum_number_saved_test_results.setter
+    def maximum_number_saved_test_results(self, value):
+        self.contents["maximum_number_saved_test_results"] = value
         self.dump_configuration_to_yaml_file(self.contents)
 
 

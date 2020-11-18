@@ -1,12 +1,12 @@
 from QuickPotato.visualization.flame_graphs import FlameGraphGenerator
-from QuickPotato.database.crud import DatabaseOperations
+from QuickPotato.database.queries import Crud
 from QuickPotato.utilities.html_templates import *
 from QuickPotato.utilities.defaults import default_test_case_name
 from jinja2 import Template
 from datetime import datetime
 
 
-class FlameGraphs(DatabaseOperations):
+class FlameGraphs(Crud):
 
     def __init__(self, test_case_name=default_test_case_name, filter_external_libraries=False, filter_builtin=False):
         super(FlameGraphs, self).__init__()
@@ -44,10 +44,7 @@ class FlameGraphs(DatabaseOperations):
 
         :return:
         """
-        all_available_test_ids = self.select_all_test_ids(
-            table=self.performance_statistics_schema(),
-            database_name=self.test_case_name
-        )
+        all_available_test_ids = self.select_test_ids_with_performance_statistics(database=self.test_case_name)
         if required_amount == 2 and len(all_available_test_ids) < 2:
             raise NotImplementedError
 
@@ -97,8 +94,8 @@ class FlameGraphs(DatabaseOperations):
             baseline_test_id = all_available_test_ids[-2]
 
         # Collecting benchmark and baseline meta data (Sample ID, Name, Response time and timestamps)
-        benchmark_meta_data = self.select_all_meta_data(self.test_case_name, benchmark_test_id)
-        baseline_meta_data = self.select_all_meta_data(self.test_case_name, baseline_test_id)
+        benchmark_meta_data = self.select_test_id_description(self.test_case_name, benchmark_test_id)
+        baseline_meta_data = self.select_test_id_description(self.test_case_name, baseline_test_id)
 
         # Render flame graphs
         for benchmark_data, baseline_data in zip(benchmark_meta_data, baseline_meta_data):
@@ -134,11 +131,11 @@ class FlameGraphs(DatabaseOperations):
 
         # Fetch the last two test-ids from the database (only if in Quick Profiling mode)
         if test_id is None and self.test_case_name == default_test_case_name:
-            all_available_test_ids = self._collect_test_ids(required_amount=2)
+            all_available_test_ids = self._collect_test_ids(required_amount=1)
             test_id = all_available_test_ids[-1]
 
         # Collecting test id meta data (Sample ID, Name, Response time and timestamps)
-        meta_data = self.select_all_meta_data(self.test_case_name, test_id)
+        meta_data = self.select_test_id_description(self.test_case_name, test_id)
 
         # Render flame graphs
         for data in meta_data:

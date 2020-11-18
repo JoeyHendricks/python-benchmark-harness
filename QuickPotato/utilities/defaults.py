@@ -33,7 +33,7 @@ default_quick_potato_configuration = {
     "enable_database_echo": False,
     "enable_asynchronous_payload_delivery": True if sys.version_info[0:3] > (3, 8, 2) else False,
     "enable_auto_clean_up_old_test_results": True,
-    "maximum_number_of_saved_test_results": 100,
+    "maximum_number_saved_test_results": 100,
 
     }
 

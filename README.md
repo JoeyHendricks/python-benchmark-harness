@@ -111,7 +111,7 @@ options.enable_database_echo = False
 
 # Storage Maintenance 
 options.enable_auto_clean_up_old_test_results = True
-options.maximum_number_of_saved_test_results = 10
+options.maximum_number_saved_test_results = 10
 
 ```
 
