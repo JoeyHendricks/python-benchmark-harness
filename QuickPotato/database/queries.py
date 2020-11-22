@@ -16,7 +16,9 @@ class Create(StatementManager):
         :return:
         """
         table = self.performance_statistics_schema()
-        self.execute_query(database, query=table.insert().values(payload))
+        engine, connection = self.spawn_connection(database)
+        self.execute_query(connection, query=table.insert().values(payload))
+        self.close_connection(engine, connection)
         return True
 
     def insert_system_resources_statistics(self, database, payload):
@@ -27,7 +29,9 @@ class Create(StatementManager):
         :return:
         """
         table = self.system_resources_schema()
-        self.execute_query(database, query=table.insert().values(payload))
+        engine, connection = self.spawn_connection(database)
+        self.execute_query(connection, query=table.insert().values(payload))
+        self.close_connection(engine, connection)
         return True
 
     def insert_boundaries_test_evidence(self, database, payload):
@@ -38,7 +42,9 @@ class Create(StatementManager):
         :return:
         """
         table = self.boundaries_test_evidence_schema()
-        self.execute_query(database, query=table.insert().values(payload))
+        engine, connection = self.spawn_connection(database)
+        self.execute_query(connection, query=table.insert().values(payload))
+        self.close_connection(engine, connection)
         return True
 
     def insert_regression_test_evidence(self, database, payload):
@@ -49,7 +55,9 @@ class Create(StatementManager):
         :return:
         """
         table = self.regression_test_evidence_schema()
-        self.execute_query(database, query=table.insert().values(payload))
+        engine, connection = self.spawn_connection(database)
+        self.execute_query(connection, query=table.insert().values(payload))
+        self.close_connection(engine, connection)
         return True
 
     def insert_results_into_test_report(self, database, payload):
@@ -60,7 +68,9 @@ class Create(StatementManager):
         :return:
         """
         table = self.test_report_schema()
-        self.execute_query(database, query=table.insert().values(payload))
+        engine, connection = self.spawn_connection(database)
+        self.execute_query(connection, query=table.insert().values(payload))
+        self.close_connection(engine, connection)
         return True
 
     def spawn_performance_statistics_schema(self, database):
@@ -131,8 +141,11 @@ class Read(StatementManager):
         :return:
         """
         table = StatementManager.performance_statistics_schema()
+        engine, connection = self.spawn_connection(database)
         query = select([table.c.sample_id.distinct(), table.c.total_response_time]).where(table.c.test_id == test_id)
-        return [float(row.total_response_time) for row in self.execute_query(database=database, query=query)]
+        results = [float(row.total_response_time) for row in self.execute_query(connection, query)]
+        self.close_connection(engine, connection)
+        return results
 
     def select_test_ids_with_performance_statistics(self, database, number=options.maximum_number_saved_test_results):
         """
@@ -142,8 +155,11 @@ class Read(StatementManager):
         :return:
         """
         table = StatementManager.performance_statistics_schema()
+        engine, connection = self.spawn_connection(database)
         query = select([table.c.test_id]).distinct().limit(number)
-        return [str(row.test_id) for row in self.execute_query(database=database, query=query)]
+        results = [str(row.test_id) for row in self.execute_query(connection, query)]
+        self.close_connection(engine, connection)
+        return results
 
     def select_validated_test_ids(self, database, number=options.maximum_number_saved_test_results):
         """
@@ -153,8 +169,11 @@ class Read(StatementManager):
         :return:
         """
         table = StatementManager.test_report_schema()
+        engine, connection = self.spawn_connection(database)
         query = select([table.c.test_id]).distinct().limit(number)
-        return [str(row.test_id) for row in self.execute_query(database=database, query=query)]
+        results = [str(row.test_id) for row in self.execute_query(connection, query)]
+        self.close_connection(engine, connection)
+        return results
 
     def select_previous_test_id(self, database):
         """
@@ -163,8 +182,10 @@ class Read(StatementManager):
         :return:
         """
         table = StatementManager.performance_statistics_schema()
+        engine, connection = self.spawn_connection(database)
         query = select([table.c.test_id]).distinct()
-        results = [str(row.test_id) for row in self.execute_query(database=database, query=query)]
+        results = [str(row.test_id) for row in self.execute_query(connection, query)]
+        self.close_connection(engine, connection)
         return None if len(results) == 0 else results[-1]
 
     def select_previous_passed_test_id(self, database):
@@ -174,8 +195,10 @@ class Read(StatementManager):
         :return:
         """
         table = StatementManager.test_report_schema()
+        engine, connection = self.spawn_connection(database)
         query = select([table.c.test_id]).where(table.c.status == "1").order_by(table.c.id.desc()).limit(1)
-        results = [str(row.test_id) for row in self.execute_query(database=database, query=query)]
+        results = [str(row.test_id) for row in self.execute_query(connection, query)]
+        self.close_connection(engine, connection)
         return results[0] if len(results) == 1 else None
 
     def select_count_of_test_ids(self, database):
@@ -185,8 +208,11 @@ class Read(StatementManager):
         :return:
         """
         table = StatementManager.performance_statistics_schema()
+        engine, connection = self.spawn_connection(database)
         query = select([func.count(table.c.test_id.distinct())])
-        return int([row[0] for row in self.execute_query(database=database, query=query)][0])
+        results = int([row[0] for row in self.execute_query(connection, query)][0])
+        self.close_connection(engine, connection)
+        return results
 
     def select_call_stack_by_sample_id(self, database, sample_id):
         """
@@ -196,11 +222,12 @@ class Read(StatementManager):
         :return:
         """
         table = StatementManager.performance_statistics_schema()
+        engine, connection = self.spawn_connection(database)
         query = table.select().where(table.c.sample_id == str(sample_id)).order_by(
             table.c.cumulative_time.desc())
 
         results = []
-        for row in self.execute_query(database=database, query=query):
+        for row in self.execute_query(connection, query):
             results.append(
                 {
                     "id": row.id,
@@ -222,6 +249,7 @@ class Read(StatementManager):
                     "total_response_time": float(row.total_response_time)
                 }
             )
+        self.close_connection(engine, connection)
         return results
 
     def select_call_stacks_by_test_id(self, database, test_id):
@@ -232,9 +260,10 @@ class Read(StatementManager):
         """
         table = self.performance_statistics_schema()
         query = table.select().where(table.c.test_id == test_id)
+        engine, connection = self.spawn_connection(database)
 
         results = []
-        for row in self.execute_query(database=database, query=query):
+        for row in self.execute_query(connection, query):
             results.append(
                 {
                     "id": row.id,
@@ -256,6 +285,7 @@ class Read(StatementManager):
                     "total_response_time": float(row.total_response_time)
                 }
             )
+        self.close_connection(engine, connection)
         return results
 
     def select_test_id_description(self, database, test_id):
@@ -270,8 +300,10 @@ class Read(StatementManager):
                         table.c.name_of_method_under_test,
                         table.c.human_timestamp,
                         table.c.total_response_time]).distinct().where(table.c.test_id == test_id)
+        engine, connection = self.spawn_connection(database)
+
         results = []
-        for row in self.execute_query(database=database, query=query):
+        for row in self.execute_query(connection, query):
             results.append(
                 {
                     "sample_id": row.sample_id,
@@ -280,6 +312,7 @@ class Read(StatementManager):
                     "total_response_time": row.total_response_time
                 }
             )
+        self.close_connection(engine, connection)
         return results
 
 
@@ -298,7 +331,10 @@ class Update(StatementManager):
         """
         table = StatementManager.test_report_schema()
         query = table.update().where(table.c.test_id == str(test_id)).values(payload)
-        return self.execute_query(database=database, query=query)
+        engine, connection = self.spawn_connection(database)
+        results = self.execute_query(connection, query)
+        self.close_connection(engine, connection)
+        return results
 
 
 class Delete(StatementManager):
@@ -315,7 +351,10 @@ class Delete(StatementManager):
         """
         table = StatementManager.performance_statistics_schema()
         query = table.delete().where(table.c.test_id == str(test_id))
-        return self.execute_query(database=database, query=query)
+        engine, connection = self.spawn_connection(database)
+        results = self.execute_query(connection, query)
+        self.close_connection(engine, connection)
+        return results
 
     def delete_result_database(self, database_name):
         """

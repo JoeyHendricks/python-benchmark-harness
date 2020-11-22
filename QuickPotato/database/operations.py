@@ -15,7 +15,7 @@ class StatementManager(RawStatisticsSchemas, UnitPerformanceTestResultSchemas):
         RawStatisticsSchemas.__init__(self)
         UnitPerformanceTestResultSchemas.__init__(self)
 
-    def spawn_session(self, database_name):
+    def spawn_engine(self, database_name):
         """
         :return:
         """
@@ -27,24 +27,40 @@ class StatementManager(RawStatisticsSchemas, UnitPerformanceTestResultSchemas):
         except Exception:
             raise DatabaseConnectionCannotBeSpawned()
 
-    def execute_query(self, database, query):
+    def spawn_connection(self, database):
         """
 
         :param database:
+        :return:
+        """
+        try:
+            engine = self.spawn_engine(database)
+            return engine, engine.connect()
+
+        except Exception:
+            raise DatabaseConnectionCannotBeSpawned()
+
+    @staticmethod
+    def close_connection(engine, connection):
+        """
+
+        :param engine:
+        :param connection:
+        :return:
+        """
+        connection.close()
+        engine.dispose()
+        return True
+
+    @staticmethod
+    def execute_query(connection, query):
+        """
+
+        :param connection:
         :param query:
         :return:
         """
-        # Set-up connection
-        engine = self.spawn_session(database)
-        connection = engine.connect()
-
-        # Run query
-        results = connection.execute(query)
-
-        # Close connection
-        connection.close()
-        engine.dispose()
-        return results
+        return connection.execute(query)
 
     def create_schema(self, database, schema):
         """
@@ -53,7 +69,7 @@ class StatementManager(RawStatisticsSchemas, UnitPerformanceTestResultSchemas):
         :param schema:
         :return:
         """
-        engine = self.spawn_session(database)
+        engine = self.spawn_engine(database)
         schema.metadata.create_all(engine)
         engine.dispose()
         return True
@@ -66,7 +82,7 @@ class StatementManager(RawStatisticsSchemas, UnitPerformanceTestResultSchemas):
         """
         try:
             # Add check for SQLite
-            engine = self.spawn_session(database_name)
+            engine = self.spawn_engine(database_name)
             if not database_exists(engine.url):
                 create_database(engine.url)
             engine.dispose()
@@ -85,7 +101,7 @@ class StatementManager(RawStatisticsSchemas, UnitPerformanceTestResultSchemas):
         :param database_name:
         :return:
         """
-        engine = self.spawn_session(database_name)
+        engine = self.spawn_engine(database_name)
         if database_exists(engine.url):
             drop_database(engine.url)
         return True
