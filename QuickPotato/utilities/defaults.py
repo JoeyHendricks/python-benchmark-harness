@@ -28,7 +28,7 @@ template_for_service_level_agreement_threshold_policy = {
 default_quick_potato_configuration = {
 
     "enable_intrusive_profiling": True,
-    "enable_system_resource_collection": True,
+    "enable_system_resource_collection": False,
     "connection_url": None,
     "enable_database_echo": False,
     "enable_asynchronous_payload_delivery": True if sys.version_info[0:3] > (3, 8, 2) else False,
