@@ -1,6 +1,6 @@
 from QuickPotato.configuration.management import options
 from QuickPotato.utilities.exceptions import AgentCannotFindMethod
-from QuickPotato.profiling.interpreters import PerformanceStatisticsInterpreter, SystemResourcesInterpreter
+from QuickPotato.profiling.interpreters import PerformanceStatisticsInterpreter
 from QuickPotato.harness.testing import UnitPerformanceTest
 from QuickPotato.profiling.debugger import Profiler
 from functools import wraps, partial
@@ -38,14 +38,6 @@ def performance_critical(method=None, enabled=True):
             PerformanceStatisticsInterpreter(
                 performance_statistics=pf.performance_statistics,
                 total_response_time=pf.total_response_time,
-                database_name=unit_performance_test.test_case_name,
-                test_id=unit_performance_test.current_test_id,
-                method_name=method.__name__,
-                sample_id=method_id
-            )
-
-            SystemResourcesInterpreter(
-                cpu_statistics=pf.system_resource_utilization_measurements,
                 database_name=unit_performance_test.test_case_name,
                 test_id=unit_performance_test.current_test_id,
                 method_name=method.__name__,

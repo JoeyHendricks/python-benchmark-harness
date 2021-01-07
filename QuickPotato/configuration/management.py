@@ -31,15 +31,6 @@ class Configuration:
         self.dump_configuration_to_yaml_file(self.contents)
 
     @property
-    def enable_system_resource_collection(self):
-        return self.contents["enable_system_resource_collection"]
-
-    @enable_system_resource_collection.setter
-    def enable_system_resource_collection(self, value):
-        self.contents["enable_system_resource_collection"] = value
-        self.dump_configuration_to_yaml_file(self.contents)
-
-    @property
     def connection_url(self):
         """Specify which database vendor you want to use.
         For SQLite: "sqlite:///C:\\temp\\"
