@@ -1,6 +1,6 @@
 from demo.example_code import FancyCode
 from QuickPotato.configuration.management import options
-from QuickPotato.harness.analysis import FlameGraphs
+from QuickPotato.visualization.analysis import FlameGraphs
 
 
 options.enable_intrusive_profiling = True  # <-- Make sure that profiling is enabled
