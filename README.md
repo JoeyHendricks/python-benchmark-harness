@@ -1,9 +1,9 @@
 [![Couch Potato code in a lazy chair](/images/banner-with-text.jpg "Slow Potato Code")](https://github.com/JoeyHendricks/python-unit-level-performance-testing/blob/master/images/banner-with-text.jpg?raw=true)
 ---
 
-QuickPotato is a unit-level performance testing framework for the Python programming language.
-It paves the way for its users to define helpful automated test cases. 
-Which can help catch problematic performance bottlenecks in the early stages of the development life cycle.
+QuickPotato is a test driven performance testing framework for the Python programming language.
+It paves the way for its users to define helpful automated test cases to check the performance of their code. 
+This can help catch problematic performance bottlenecks in the early stages of the development life cycle.
 
 ## How it works
 
@@ -206,7 +206,10 @@ https://github.com/JoeyHendricks/QuickPotato/blob/master/images/flame-graphs-htm
 
 ## Learn more about unit performance testing
 
-If you want to learn more about unit-level performance testing then check out the following resources:
+If you want to learn more about test driven performance testing and want to 
+see how this project reached its current state? 
+Then I would encourage you to check out the following resources:
 
-- [Don’t lose your mind over slow code check your performance sanity.](https://www.linkedin.com/pulse/dont-lose-your-mind-over-slow-code-check-performance-sanity-joey/) 
-- [My presentation about QuickPotato @NeotysPAC 2020 (English)](https://www.youtube.com/watch?v=AWlhalEywEw) 
+- 11/07/2020: [Don’t lose your mind over slow code check your performance sanity.](https://www.linkedin.com/pulse/dont-lose-your-mind-over-slow-code-check-performance-sanity-joey/) 
+- 08/10/2020: [My recording about QuickPotato @NeotysPAC 2020 (English)](https://www.youtube.com/watch?v=AWlhalEywEw) 
+- 15/12/2020: [Interview about QuickPotato @TestGuild 2020 (English)](https://testguild.com/podcast/performance/p56-joey/)
