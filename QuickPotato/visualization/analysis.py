@@ -24,8 +24,7 @@ class FlameGraphs(Crud):
         return FlameGraphGenerator(
             self.test_case_name,
             sample_id,
-            self.filter_external_libraries,
-            self.filter_builtin
+            self.filter_external_libraries
         ).svg_flame_graph
 
     def _write_html_to_file(self, html, path):

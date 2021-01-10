@@ -18,7 +18,7 @@ class FlameGraphGenerator(Crud):
 
         # Filters
         self.filter_external_libraries = filter_noise
-        self.filter_builtin = filter_builtin
+        self.filter_builtin = filter_noise
 
         # Information collected and the mappings made out of the stack trace.
         self._unmatched_calls = []
