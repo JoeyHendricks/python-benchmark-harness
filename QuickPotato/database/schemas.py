@@ -28,23 +28,6 @@ class RawStatisticsSchemas(object):
         )
         return table
 
-    @staticmethod
-    def system_resources_schema():
-        meta = MetaData()
-        table = Table(
-            "system_resources_statistics", meta,
-            Column('id', Integer, primary_key=True),
-            Column('test_id', String(99)),
-            Column("test_case_name", String(999)),
-            Column('sample_id', String(99)),
-            Column("name_of_method_under_test", String(999)),
-            Column("epoch_timestamp", Integer),
-            Column("human_timestamp", String(99)),
-            Column("percentage_of_system_cpu_usage", Float),
-            Column("percentage_of_process_cpu_usage", Float),
-        )
-        return table
-
 
 class UnitPerformanceTestResultSchemas(object):
 

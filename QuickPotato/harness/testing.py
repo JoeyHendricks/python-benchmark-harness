@@ -119,7 +119,6 @@ class UnitPerformanceTest(Crud, Boundaries, Metrics, RegressionSettings):
         """
         self.spawn_result_database(database_name)
         self.spawn_performance_statistics_schema(database_name)
-        self.spawn_system_resources_schema(database_name)
         self.spawn_test_report_schema(database_name)
         self.spawn_boundaries_test_evidence_schema(database_name)
         self.spawn_regression_test_evidence_schema(database_name)

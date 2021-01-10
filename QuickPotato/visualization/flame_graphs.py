@@ -9,7 +9,7 @@ import sys
 
 class FlameGraphGenerator(Crud):
 
-    def __init__(self, test_case_name, sample_id, filter_external_libraries=False, filter_builtin=False):
+    def __init__(self, test_case_name, sample_id, filter_noise=False):
         super(FlameGraphGenerator, self).__init__()
 
         # Properties of the stack trace
@@ -17,7 +17,7 @@ class FlameGraphGenerator(Crud):
         self.discovered_root_frame = self._collected_stack_trace[0]['parent_function_name']
 
         # Filters
-        self.filter_external_libraries = filter_external_libraries
+        self.filter_external_libraries = filter_noise
         self.filter_builtin = filter_builtin
 
         # Information collected and the mappings made out of the stack trace.

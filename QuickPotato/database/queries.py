@@ -21,19 +21,6 @@ class Create(StatementManager):
         self.close_connection(engine, connection)
         return True
 
-    def insert_system_resources_statistics(self, database, payload):
-        """
-
-        :param database:
-        :param payload:
-        :return:
-        """
-        table = self.system_resources_schema()
-        engine, connection = self.spawn_connection(database)
-        self.execute_query(connection, query=table.insert().values(payload))
-        self.close_connection(engine, connection)
-        return True
-
     def insert_boundaries_test_evidence(self, database, payload):
         """
 
@@ -80,15 +67,6 @@ class Create(StatementManager):
         :return:
         """
         self.create_schema(database, self.performance_statistics_schema())
-        return True
-
-    def spawn_system_resources_schema(self, database):
-        """
-
-        :param database:
-        :return:
-        """
-        self.create_schema(database, self.system_resources_schema())
         return True
 
     def spawn_test_report_schema(self, database):

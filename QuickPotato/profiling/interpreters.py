@@ -87,7 +87,7 @@ class PerformanceStatisticsInterpreter(Crud):
                     "child_function_name": child_function_name,
                     "parent_path": "~",
                     "parent_line_number": 0,
-                    "parent_function_name": "all",
+                    "parent_function_name": f"id: {self.sample_id} size: {len(self.performance_statistics)}",
                     "number_of_calls": nc,
                     "total_time": tt,
                     "cumulative_time": ct,
