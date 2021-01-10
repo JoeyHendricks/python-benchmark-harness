@@ -14,7 +14,7 @@ class FlameGraphGenerator(Crud):
 
         # Properties of the stack trace
         self._collected_stack_trace = self.select_call_stack_by_sample_id(test_case_name, sample_id)
-        self.root_frame = self._collected_stack_trace[0]['parent_function_name']
+        self.discovered_root_frame = self._collected_stack_trace[0]['parent_function_name']
 
         # Filters
         self.filter_external_libraries = filter_external_libraries
@@ -66,13 +66,13 @@ class FlameGraphGenerator(Crud):
             # Do not add call to mapping
             pass
 
-        elif row['parent_function_name'] == self.root_frame:
-            function_inheritance[row['child_function_name']] = [self.root_frame]
+        elif row['parent_function_name'] == self.discovered_root_frame:
+            function_inheritance[row['child_function_name']] = [self.discovered_root_frame]
             self._mapping.append(
                 {
                     "child_function_name": row['child_function_name'],
                     "parent_function_name": row['parent_function_name'],
-                    "inheritance": [self.root_frame],
+                    "inheritance": [self.discovered_root_frame],
                     "path": row['child_path'],
                     "line_number": row['child_line_number'],
                     "number_of_calls": row['number_of_calls'],

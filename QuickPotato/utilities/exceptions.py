@@ -1,11 +1,3 @@
-class AgentCannotProcessProfilerOutput(Exception):
-    """
-    An exception occurred while trying to process the results of the profiler.
-    Please review the QuickPotato documentation and validate your raw profiled output.
-    """
-    def __str__(self):
-        return self.__doc__
-
 
 class AgentCannotFindMethod(Exception):
     """

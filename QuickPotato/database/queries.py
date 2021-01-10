@@ -223,8 +223,7 @@ class Read(StatementManager):
         """
         table = StatementManager.performance_statistics_schema()
         engine, connection = self.spawn_connection(database)
-        query = table.select().where(table.c.sample_id == str(sample_id)).order_by(
-            table.c.cumulative_time.desc())
+        query = table.select().where(table.c.sample_id == str(sample_id)).order_by(table.c.cumulative_time.desc())
 
         results = []
         for row in self.execute_query(connection, query):

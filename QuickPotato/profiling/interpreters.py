@@ -52,7 +52,6 @@ class PerformanceStatisticsInterpreter(Crud):
         """
         payload = []
         for row in self.iterate_through_profiled_stack():
-
             # Dividing payload into multiple inserts to work around server-less variable restrictions
             if self.using_server_less_database is True and len(payload) == 999:
                 # Sending and nuking payload variable when exceeding SQLite's max amount of variables.
@@ -69,36 +68,52 @@ class PerformanceStatisticsInterpreter(Crud):
 
         :return:
         """
-        try:
-            for function, (cc, nc, tt, ct, callers) in self.performance_statistics.items():
+        for function, (cc, nc, tt, ct, callers) in self.performance_statistics.items():
 
-                # will filter out the empty ends of the stack
-                if len(callers) == 0:
-                    continue
+            child_path = function[0]
+            child_line_number = function[1]
+            child_function_name = function[2]
 
-                child_path = function[0]
-                child_line_number = function[1]
-                child_function_name = function[2]
+            if len(callers) == 0 and str(function[2]) == self.method_name:
+                yield {
+                    "test_id": self.test_id,
+                    "sample_id": self.sample_id,
+                    "test_case_name": self.database_name,
+                    "name_of_method_under_test": self.method_name,
+                    "epoch_timestamp": self.epoch_timestamp,
+                    "human_timestamp": self.human_timestamp,
+                    "child_path": child_path,
+                    "child_line_number": child_line_number,
+                    "child_function_name": child_function_name,
+                    "parent_path": "~",
+                    "parent_line_number": 0,
+                    "parent_function_name": "all",
+                    "number_of_calls": nc,
+                    "total_time": tt,
+                    "cumulative_time": ct,
+                    "total_response_time": self.total_response_time
+                }
 
+            elif len(callers) == 0:
+                continue
+
+            else:
                 for row in callers:
-                        yield {
-                            "test_id": self.test_id,
-                            "sample_id": self.sample_id,
-                            "test_case_name": self.database_name,
-                            "name_of_method_under_test": self.method_name,
-                            "epoch_timestamp": self.epoch_timestamp,
-                            "human_timestamp": self.human_timestamp,
-                            "child_path": child_path,
-                            "child_line_number": child_line_number,
-                            "child_function_name": child_function_name,
-                            "parent_path": row[0],
-                            "parent_line_number": row[1],
-                            "parent_function_name": row[2],
-                            "number_of_calls": nc,
-                            "total_time": tt,
-                            "cumulative_time": ct,
-                            "total_response_time": self.total_response_time
-                        }
-
-        except Exception:
-            raise AgentCannotProcessProfilerOutput()
+                    yield {
+                        "test_id": self.test_id,
+                        "sample_id": self.sample_id,
+                        "test_case_name": self.database_name,
+                        "name_of_method_under_test": self.method_name,
+                        "epoch_timestamp": self.epoch_timestamp,
+                        "human_timestamp": self.human_timestamp,
+                        "child_path": child_path,
+                        "child_line_number": child_line_number,
+                        "child_function_name": child_function_name,
+                        "parent_path": row[0],
+                        "parent_line_number": row[1],
+                        "parent_function_name": row[2],
+                        "number_of_calls": nc,
+                        "total_time": tt,
+                        "cumulative_time": ct,
+                        "total_response_time": self.total_response_time
+                    }

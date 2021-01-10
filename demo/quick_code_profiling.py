@@ -8,4 +8,4 @@ options.enable_intrusive_profiling = True  # <-- Make sure that profiling is ena
 FancyCode().say_my_name_and_more(name="joey hendricks")
 
 # Generate Flame Graph
-FlameGraphs().export_flame_graph(path="C:\\Temp\\")
+FlameGraphs().export_flame_graph(path="C:\\temp\\")
