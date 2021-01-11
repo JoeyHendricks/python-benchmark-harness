@@ -8,12 +8,11 @@ from datetime import datetime
 
 class FlameGraphs(Crud):
 
-    def __init__(self, test_case_name=default_test_case_name, filter_external_libraries=False, filter_builtin=False):
+    def __init__(self, test_case_name=default_test_case_name, filter_noise=False):
         super(FlameGraphs, self).__init__()
 
         self.test_case_name = test_case_name
-        self.filter_external_libraries = filter_external_libraries
-        self.filter_builtin = filter_builtin
+        self.filter_noise = filter_noise
 
     def _generate_flame_graph(self, sample_id):
         """
@@ -24,7 +23,7 @@ class FlameGraphs(Crud):
         return FlameGraphGenerator(
             self.test_case_name,
             sample_id,
-            self.filter_external_libraries
+            self.filter_noise
         ).svg_flame_graph
 
     def _write_html_to_file(self, html, path):

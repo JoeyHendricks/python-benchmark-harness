@@ -17,8 +17,7 @@ class FlameGraphGenerator(Crud):
         self.discovered_root_frame = self._collected_stack_trace[0]['parent_function_name']
 
         # Filters
-        self.filter_external_libraries = filter_noise
-        self.filter_builtin = filter_noise
+        self.filter_noise = filter_noise
 
         # Information collected and the mappings made out of the stack trace.
         self._unmatched_calls = []
@@ -55,15 +54,35 @@ class FlameGraphGenerator(Crud):
             (r1, g1, b1), (r2, g2, b2) = self.colors[i], self.colors[i + 1]
             return int(r1 + f * (r2 - r1)), int(g1 + f * (g2 - g1)), int(b1 + f * (b2 - b1))
 
+    def _filter_out_noise(self, row):
+        """
+
+        :param row:
+        :return:
+        """
+        if self.filter_noise and "site-packages" in row["child_path"] or "Program Files" in row["child_path"]:
+            return None
+
+        elif self.filter_noise and "importlib" in row["child_path"] or "<string>" in row["child_path"]:
+            return None
+
+        elif self.filter_noise and "~" in row["child_path"]:
+            return None
+
+        else:
+            return row
+
     def _collect_inheritance_information(self, row, function_inheritance):
+        """
 
+        :param row:
+        :param function_inheritance:
+        :return:
+        """
         self._cumulative_time.append(row["cumulative_time"])
-        if self.filter_external_libraries and "site-packages" in row["child_path"]:
-            # Do not add call to mapping
-            pass
-
-        elif self.filter_builtin and "~" in row["child_path"]:
-            # Do not add call to mapping
+        row = self._filter_out_noise(row)
+        if row is None:
+            # Row needs to be filtered
             pass
 
         elif row['parent_function_name'] == self.discovered_root_frame:
