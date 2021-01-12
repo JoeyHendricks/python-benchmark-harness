@@ -1,5 +1,6 @@
 [![Couch Potato code in a lazy chair](/images/banner-with-text.jpg "Slow Potato Code")](https://github.com/JoeyHendricks/python-unit-level-performance-testing/blob/master/images/banner-with-text.jpg?raw=true)
 ---
+## What is QuickPotato in a nutshell?
 
 QuickPotato is a Python library that aims to make it easier to rapidly profile your software and produce powerful 
 code visualizations that enables you to quickly investigate where potential performance bottlenecks are hidden.
