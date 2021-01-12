@@ -121,7 +121,7 @@ options.maximum_number_saved_test_results = 10
 > States of options are saved in a static yaml options file.  
 > That is why settings can be defined just once or changed on the fly.
 
-## Learn more about test driven performance testing and QuickPotato with the links down below:
+## Learn more about test driven performance testing and QuickPotato through the links down below:
 
 If you want to learn more about test driven performance testing and want to 
 see how this project reached its current state? 
