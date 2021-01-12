@@ -77,7 +77,7 @@ for _ in range(0, 10):
 # Analyse profiled results will output True if boundaries are not breached otherwise False
 results = upt.verify_benchmark_against_set_boundaries
 ```
-## automated performance regression testing
+## Automated performance regression testing
 
 It is also possible to verify that there is no regression between the current benchmark and a previous baseline.
 The method for creating such a test can also be found in the snippet below:
