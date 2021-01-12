@@ -8,7 +8,7 @@ Also, QuickPotato is trying to provide you with a path to add an automated perfo
 your regular unit tests or test-driven development test cases allowing you to test your code early in the 
 development life cycle in a simple, reliable, and fast way.
 
-### Installation.
+## Installation.
 
 Install using [pip](https://pip.pypa.io/en/stable/) or download the source code from GitHub.
 ```bash
@@ -79,7 +79,7 @@ options.maximum_number_saved_test_results = 10
 > States of options are saved in a static yaml options file.  
 > That is why settings can be defined just once or changed on the fly.
 
-### Automated performance boundary testing.
+## Automated performance boundary testing.
 
 Within QuickPotato, it is possible to create a performance test that validates if your code breaches any 
 defined boundary or not. An example of this sort of test can be found in the snippet below: 
@@ -101,7 +101,7 @@ for _ in range(0, 10):
 # Analyse profiled results will output True if boundaries are not breached otherwise False
 results = upt.verify_benchmark_against_set_boundaries
 ```
-### automated performance regression testing
+## automated performance regression testing
 
 It is also possible to verify that there is no regression between the current benchmark and a previous baseline.
 The method for creating such a test can also be found in the snippet below:
