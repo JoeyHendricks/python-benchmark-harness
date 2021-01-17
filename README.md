@@ -14,30 +14,32 @@
 </p>
 
 <!-- TABLE OF CONTENTS -->
-<details open="open">
-  <summary>Table of Contents</summary>
-  <ol>
-    <li>
-      <a href="#QuickPotato-in-a-nutshell">QuickPotato in a nutshell</a>
-    </li>
-    <li>
-        <a>Getting Started</a>
-        <ul>
-            <li><a href="#Installation">Installation</a></li>
-            <li><a href="#Options-you-can-configure">Options</a></li>
-        </ul>
-    </li>
-    <li><a href="#Generating-visualizations">Generating visualizations</a></li>
-    <li>
-      <a>Test-driven performance testing</a>
-      <ul>
-        <li><a href="#Boundary-testing">Boundary testing</a></li>
-        <li><a href="#Regression-testing">Regression testing</a></li>
-      </ul>
-    </li>
-    <li><a href="#Learn-more-about-QuickPotato">Learn more about QuickPotato</a></li>
-  </ol>
-</details>
+<div align="center">
+    <details open="open" >
+      <summary>Table of Contents</summary>
+      <ol>
+        <li>
+          <a href="#QuickPotato-in-a-nutshell">QuickPotato in a nutshell</a>
+        </li>
+        <li>
+            <a>Getting Started</a>
+            <ul>
+                <li><a href="#Installation">Installation</a></li>
+                <li><a href="#Options-you-can-configure">Options</a></li>
+            </ul>
+        </li>
+        <li><a href="#Generating-visualizations">Generating visualizations</a></li>
+        <li>
+          <a>Test-driven performance testing</a>
+          <ul>
+            <li><a href="#Boundary-testing">Boundary testing</a></li>
+            <li><a href="#Regression-testing">Regression testing</a></li>
+          </ul>
+        </li>
+        <li><a href="#Learn-more-about-QuickPotato">Learn more about QuickPotato</a></li>
+      </ol>
+    </details>
+</div>
 
 ## QuickPotato in a nutshell
 
