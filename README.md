@@ -29,7 +29,7 @@
         <li><a href="#Regression-testing">Regression testing</a></li>
       </ul>
     </li>
-    <li><a href="#Learn-more-about-QuickPotato-through-the-links-down-below:">Learn more</a></li>
+    <li><a href="#Learn-more-about-QuickPotato">Learn more about QuickPotato</a></li>
   </ol>
 </details>
 
@@ -157,7 +157,7 @@ for _ in range(0, 10):
 results = upt.verify_benchmark_against_previous_baseline
 ```
 
-## Learn more about QuickPotato through the links down below:
+## Learn more about QuickPotato
 
 If you want to learn more about test driven performance testing and want to 
 see how this project reached its current state? 
