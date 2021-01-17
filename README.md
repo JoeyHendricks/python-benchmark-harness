@@ -21,6 +21,7 @@
 <a href="https://www.linkedin.com/in/joey-hendricks/"><img src="https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555"></a>
 </div>
 
+
 <!-- TABLE OF CONTENTS -->
 <details open="open" >
   <summary>Table of Contents</summary>
