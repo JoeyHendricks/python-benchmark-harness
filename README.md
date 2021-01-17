@@ -20,7 +20,7 @@
 <a href="https://github.com/JoeyHendricks/QuickPotato/blob/master/LICENSE.md"><img src="https://img.shields.io/github/license/JoeyHendricks/QuickPotato?style=for-the-badge"></a>
 <a href="https://www.linkedin.com/in/joey-hendricks/"><img src="https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555"></a>
 </div>
-
+<br>
 
 <!-- TABLE OF CONTENTS -->
 <details open="open" >
