@@ -1,5 +1,12 @@
 [![Couch Potato code in a lazy chair](/images/banner-with-text.jpg "Slow Potato Code")](https://github.com/JoeyHendricks/python-unit-level-performance-testing/blob/master/images/banner-with-text.jpg?raw=true)
 
+<h3 align="center">Profile and test to gain insights into the performance of your beautiful Python code</h3>
+<p align="center">
+    <a href="https://github.com/JoeyHendricks/QuickPotato">View Demo</a> -
+    <a href="https://github.com/JoeyHendricks/QuickPotato/issues">Report Bug</a> -
+    <a href="https://github.com/JoeyHendricks/QuickPotato/issues">Request Feature</a>
+</p>
+
 [![Contributors][contributors-shield]][contributors-url]
 [![Forks][forks-shield]][forks-url]
 [![Stargazers][stars-shield]][stars-url]
@@ -12,7 +19,7 @@
   <summary>Table of Contents</summary>
   <ol>
     <li>
-      <a href="#What-is-QuickPotato-in-a-nutshell?">About QuickPotato</a>
+      <a href="#QuickPotato-in-a-nutshell">QuickPotato in a nutshell</a>
     </li>
     <li>
         <a>Getting Started</a>
@@ -33,7 +40,7 @@
   </ol>
 </details>
 
-## What is QuickPotato in a nutshell?
+## QuickPotato in a nutshell
 
 QuickPotato is a Python library that aims to make it easier to rapidly profile your software and produce powerful 
 code visualizations that enables you to quickly investigate where potential performance bottlenecks are hidden.
