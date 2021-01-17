@@ -1,4 +1,11 @@
 [![Couch Potato code in a lazy chair](/images/banner-with-text.jpg "Slow Potato Code")](https://github.com/JoeyHendricks/python-unit-level-performance-testing/blob/master/images/banner-with-text.jpg?raw=true)
+
+[![Contributors][contributors-shield]][contributors-url]
+[![Forks][forks-shield]][forks-url]
+[![Stargazers][stars-shield]][stars-url]
+[![Issues][issues-shield]][issues-url]
+[![MIT License][license-shield]][license-url]
+[![LinkedIn][linkedin-shield]][linkedin-url]
 ---
 ## What is QuickPotato in a nutshell?
 
@@ -133,3 +140,22 @@ Then I would encourage you to check out the following resources:
 - 08/10/2020: [My recording about QuickPotato @NeotysPAC 2020. (English)](https://www.youtube.com/watch?v=AWlhalEywEw) 
 - 15/12/2020: [Interview about QuickPotato @TestGuild 2020. (English)](https://testguild.com/podcast/performance/p56-joey/)
 - 12/01/2020: [An article I wrote for Neotys about my @NeotysPAC 2020 presentation. (English)](https://www.neotys.com/blog/neotyspac-performance-testing-unit-level-joey-hendricks/)
+
+
+[contributors-shield]: https://img.shields.io/github/contributors/JoeyHendricks/QuickPotato?style=for-the-badge
+[contributors-url]: https://github.com/JoeyHendricks/QuickPotato/graphs/contributors
+
+[forks-shield]: https://img.shields.io/github/forks/JoeyHendricks/QuickPotato?style=for-the-badge
+[forks-url]: https://github.com/JoeyHendricks/QuickPotato/network/members
+
+[stars-shield]: https://img.shields.io/github/stars/JoeyHendricks/QuickPotato?style=for-the-badge
+[stars-url]: https://github.com/JoeyHendricks/QuickPotato/stargazers
+
+[issues-shield]: https://img.shields.io/github/issues/JoeyHendricks/QuickPotato?style=for-the-badge
+[issues-url]: https://github.com/JoeyHendricks/QuickPotato/issues
+
+[license-shield]: https://img.shields.io/github/license/JoeyHendricks/QuickPotato?style=for-the-badge
+[license-url]: https://github.com/JoeyHendricks/QuickPotato/blob/master/LICENSE.md
+
+[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
+[linkedin-url]: https://www.linkedin.com/in/joey-hendricks/
