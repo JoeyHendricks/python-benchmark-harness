@@ -6,6 +6,7 @@
     <a href="https://github.com/JoeyHendricks/QuickPotato/issues">Report Bug</a> -
     <a href="https://github.com/JoeyHendricks/QuickPotato/issues">Request Feature</a>
 </p>
+<div style="text-align:center">
 
 [![Contributors][contributors-shield]][contributors-url]
 [![Forks][forks-shield]][forks-url]
@@ -13,6 +14,7 @@
 [![Issues][issues-shield]][issues-url]
 [![MIT License][license-shield]][license-url]
 [![LinkedIn][linkedin-shield]][linkedin-url]
+</div>
 
 <!-- TABLE OF CONTENTS -->
 
