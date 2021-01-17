@@ -1,18 +1,17 @@
 [![Couch Potato code in a lazy chair](/images/banner-with-text.jpg "Slow Potato Code")](https://github.com/JoeyHendricks/python-unit-level-performance-testing/blob/master/images/banner-with-text.jpg?raw=true)
 
-<h3 align="center">Profile and test to gain insights into the performance of your beautiful Python code</h3>
-<p align="center">
-    <a href="https://github.com/JoeyHendricks/QuickPotato">View Demo</a> -
-    <a href="https://github.com/JoeyHendricks/QuickPotato/issues">Report Bug</a> -
-    <a href="https://github.com/JoeyHendricks/QuickPotato/issues">Request Feature</a>
-</p>
-
 [![Contributors][contributors-shield]][contributors-url]
 [![Forks][forks-shield]][forks-url]
 [![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
 [![MIT License][license-shield]][license-url]
 [![LinkedIn][linkedin-shield]][linkedin-url]
+<h3 align="center">Profile and test to gain insights into the performance of your beautiful Python code</h3>
+<p align="center">
+    <a href="https://github.com/JoeyHendricks/QuickPotato">View Demo</a> -
+    <a href="https://github.com/JoeyHendricks/QuickPotato/issues">Report Bug</a> -
+    <a href="https://github.com/JoeyHendricks/QuickPotato/issues">Request Feature</a>
+</p>
 
 <!-- TABLE OF CONTENTS -->
 <details open="open">
