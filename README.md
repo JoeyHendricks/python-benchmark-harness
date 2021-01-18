@@ -1,6 +1,6 @@
 <!-- LOGO -->
 <p align="center">
-  <img src="https://github.com/JoeyHendricks/python-unit-level-performance-testing/blob/master/images/banner-with-text.png?raw=true" width="300" height="300"/>
+  <img src="https://github.com/JoeyHendricks/python-unit-level-performance-testing/blob/master/images/banner-with-text.png?raw=true" width="500" height="500"/>
 </p>
 
 <!-- TAG LINE -->
