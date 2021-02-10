@@ -175,7 +175,7 @@ class FlameGraphGenerator(Crud):
 
         # Order folded stack alphabetically.
         folded_stack = pd.DataFrame(folded_stack)
-        folded_stack = folded_stack.sort_values(by=[n for n in range(1, int(folded_stack.shape[1] / 2) + 1)])
+        folded_stack = folded_stack.sort_values(by=[n for n in range(1, int(folded_stack.shape[1] / 2) + 2)])
         return folded_stack, meta_data
 
     def _generate_build_instructions(self):
