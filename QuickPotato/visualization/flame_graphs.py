@@ -1,6 +1,10 @@
 from QuickPotato.database.queries import Crud
-import json
 from QuickPotato.utilities.html_templates import html_template_svg_header, html_template_svg_frame
+from random import choice
+from string import ascii_uppercase, digits
+from jinja2 import Template
+import pandas as pd
+import sys
 
 
 class FlameGraphGenerator(Crud):
@@ -10,78 +14,45 @@ class FlameGraphGenerator(Crud):
 
         # Properties of the stack trace
         self._collected_stack_trace = self.select_call_stack_by_sample_id(test_case_name, sample_id)
-        self._root_frame = self._collected_stack_trace[0]['parent_function_name']
-        self.filter_noise = filter_noise
+        self.discovered_root_frame = self._collected_stack_trace[0]['parent_function_name']
         self._unmatched_calls = []
-
-        with open('C:\\temp\\test.json', 'w') as file:
-            json.dump(self.function_inheritance, file)
-
+        self.d3_json()
         exit()
 
-    @property
-    def function_inheritance(self):
+    def _collect_inheritance_information(self):
         """
 
         :return:
         """
-        return [line for line in self._discover_function_inheritance()]
-
-    def _filter_out_noise(self, row):
-        """
-
-        :param row:
-        :return:
-        """
-        if self.filter_noise and "site-packages" in row["child_path"] or "Program Files" in row["child_path"]:
-            return None
-
-        elif self.filter_noise and "importlib" in row["child_path"] or "<string>" in row["child_path"]:
-            return None
-
-        elif self.filter_noise and "~" in row["child_path"]:
-            return None
-
-        else:
-            return row
-
-    def _discover_function_inheritance(self):
-        """
-
-        :return:
-        """
-        inheritance_mapping = {}
-
-        for line in self._collected_stack_trace:
-
-            line = self._filter_out_noise(line)
-            if line is None:
+        function_inheritance = {}
+        for row in self._collected_stack_trace:
+            if row is None:
                 # Row needs to be filtered
                 pass
 
-            elif line['parent_function_name'] == self._root_frame:
-                inheritance_mapping[line['child_function_name']] = [self._root_frame]
-                yield {
-                        "name": line['child_function_name'],
-                        "value": "",
-                        "children": [self._root_frame]
-                    }
+            elif row['parent_function_name'] == self.discovered_root_frame:
+                function_inheritance[row['child_function_name']] = [self.discovered_root_frame]
 
             else:
-                if line['parent_function_name'] in inheritance_mapping:
+                if row['parent_function_name'] in function_inheritance:
 
                     # Remove duplicates from history
-                    frame = list(dict.fromkeys(inheritance_mapping[line['parent_function_name']]))
+                    frame = list(dict.fromkeys(function_inheritance[row['parent_function_name']]))
 
-                    if frame[-1] != line['parent_function_name']:
-                        frame.append(line['parent_function_name'])
+                    if frame[-1] != row['parent_function_name']:
+                        frame.append(row['parent_function_name'])
 
-                    inheritance_mapping[line['child_function_name']] = frame
-                    yield {
-                            "name": line['child_function_name'],
-                            "value": "",
-                            "children": frame
-                        }
+                    function_inheritance[row['child_function_name']] = frame
 
                 else:
-                    self._unmatched_calls.append(line)
+                    self._unmatched_calls.append(row)
+
+        return function_inheritance
+
+    def d3_json(self):
+
+        inheritance = self._collect_inheritance_information()
+        print("--------------------------------------------")
+        for i in inheritance:
+            print(f"child: {i} parents: {inheritance[i]}")
+
