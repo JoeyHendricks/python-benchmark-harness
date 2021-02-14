@@ -5,6 +5,7 @@ from string import ascii_uppercase, digits
 from jinja2 import Template
 import pandas as pd
 import sys
+import collections
 
 
 class FlameGraphGenerator(Crud):
@@ -15,44 +16,57 @@ class FlameGraphGenerator(Crud):
         # Properties of the stack trace
         self._collected_stack_trace = self.select_call_stack_by_sample_id(test_case_name, sample_id)
         self.discovered_root_frame = self._collected_stack_trace[0]['parent_function_name']
-        self._unmatched_calls = []
-        self.d3_json()
+        self._discover_parent_child_relationships()
         exit()
 
-    def _collect_inheritance_information(self):
+    def _recursively_update_parent_child_relationship(self, dic, parent, child):
+
+        if dic['name'] == parent:
+            dic['children'].append(
+                {
+                    "name": child,
+                    "children": []
+                }
+            )
+
+        else:
+            for item in dic['children']:
+                self._recursively_update_parent_child_relationship(item, parent, child)  # <-- recursion
+
+    def _recursively_count_relationships(self, dic):
+        print(dic['name'])
+        dic['value'] = 1 if len(dic["children"]) == 0 else len(dic["children"])
+        print(dic['value'])
+        print(len(dic['children']))
+        print(dic['children'])
+        exit()
+        for item in dic['children']:
+            self._recursively_count_relationships(item)  # <-- recursion
+
+    def _discover_parent_child_relationships(self):
         """
 
-        :return:
-        """
-        function_inheritance = {}
-        for row in self._collected_stack_trace:
-            if row is None:
-                # Row needs to be filtered
-                pass
+            :return:
+            """
 
-            elif row['parent_function_name'] == self.discovered_root_frame:
-                function_inheritance[row['child_function_name']] = [self.discovered_root_frame]
+        inheritance = {}
+        for line in self._collected_stack_trace:
+
+            if line["parent_function_name"] == self.discovered_root_frame:
+                inheritance["name"] = line["parent_function_name"]
+                inheritance["children"] = [
+                    {
+                        "name": line["child_function_name"],
+                        "children": []
+                    }
+                ]
 
             else:
-                if row['parent_function_name'] in function_inheritance:
-
-                    # Remove duplicates from history
-                    frame = list(dict.fromkeys(function_inheritance[row['parent_function_name']]))
-
-                    if frame[-1] != row['parent_function_name']:
-                        frame.append(row['parent_function_name'])
-
-                    function_inheritance[row['child_function_name']] = frame
-
-                else:
-                    self._unmatched_calls.append(row)
-
-        return function_inheritance
-
-    def d3_json(self):
-
-        inheritance = self._collect_inheritance_information()
-        print("--------------------------------------------")
-        for i in inheritance:
-            print(f"child: {i} parents: {inheritance[i]}")
-
+                self._recursively_update_parent_child_relationship(
+                    dic=inheritance,
+                    parent=line['parent_function_name'],
+                    child=line['child_function_name']
+                )
+        self._recursively_count_relationships(inheritance)
+        print(inheritance)
+        return inheritance
