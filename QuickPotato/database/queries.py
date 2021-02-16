@@ -187,7 +187,7 @@ class Read(StatementManager):
         """
         table = StatementManager.performance_statistics_schema()
         engine, connection = self.spawn_connection(database)
-        query = select([func.count(table.c.test_id.distinct())])
+        query = select([func._current_number_of_children(table.c.test_id.distinct())])
         results = int([row[0] for row in self.execute_query(connection, query)][0])
         self.close_connection(engine, connection)
         return results
