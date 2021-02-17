@@ -11,7 +11,7 @@ setup(
         'QuickPotato.utilities',
         'QuickPotato.statistical',
         'QuickPotato.configuration',
-        'QuickPotato.visualization'
+        'QuickPotato.analysis'
     ],
     install_requires=[
         'numpy',

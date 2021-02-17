@@ -1,24 +1,15 @@
 from QuickPotato.database.queries import Crud
 
 
-class HierarchicalFoldedStack(Crud):
+class FlameGraph(Crud):
 
     def __init__(self, test_case_name, sample_id):
-        super(HierarchicalFoldedStack, self).__init__()
+        super(FlameGraph, self).__init__()
 
         self.collected_stack_trace = self.select_call_stack_by_sample_id(test_case_name, sample_id)
         self.discovered_root_frame = self.collected_stack_trace[0]['parent_function_name']
         self._current_number_of_children = 0
-
-    @property
-    def json(self):
-        """
-        When accessed it wil generate a JSON data structure
-        suitable for rendering D3 flame graphs.
-
-        :return: An hierarchical data structure in JSON format.
-        """
-        return self._discover_relationships()
+        self.json = self._discover_relationships()
 
     def _recursively_update_parent_child_relationship(self, stack, parent, child):
         """

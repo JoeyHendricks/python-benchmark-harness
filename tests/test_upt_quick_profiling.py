@@ -2,7 +2,7 @@ from QuickPotato.database.queries import Crud
 from QuickPotato.configuration.management import options
 from sqlalchemy_utils import database_exists
 from sqlalchemy import create_engine
-from demo.example_code import *
+from example.example_code import *
 import unittest
 
 SAMPLE_SIZE = 1

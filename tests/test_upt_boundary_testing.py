@@ -1,7 +1,7 @@
 from QuickPotato.profiling.intrusive import unit_performance_test as upt
 from QuickPotato.database.queries import Crud
 from QuickPotato.configuration.management import options
-from demo.example_code import *
+from example.example_code import *
 import unittest
 
 SAMPLE_SIZE = 10

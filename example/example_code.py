@@ -17,7 +17,7 @@ def fast_method():
 
 class FancyCode:
     """
-    A totally random piece of code used to demo quick profiling.
+    A totally random piece of code used to example quick profiling.
     """
 
     @performance_critical
