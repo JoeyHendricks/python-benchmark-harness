@@ -8,6 +8,7 @@ flame_graph_template = """
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/spiermar/d3-flame-graph@2.0.3/dist/d3-flamegraph.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 
     <style>
 
@@ -38,8 +39,13 @@ flame_graph_template = """
     }
     </style>
 
-    <title>{{sample_information}}</title>
+    <title>d3-flame-graph</title>
 
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
   </head>
   <body>
     <div class="container">
@@ -47,6 +53,11 @@ flame_graph_template = """
         <nav>
           <div class="pull-right">
             <form class="form-inline" id="form">
+              <select id="sample" class="form-control">
+              {% for sample in list_of_samples %}
+                <option>{{sample}}</option>
+              {% endfor %}
+              </select>
               <a class="btn" href="javascript: resetZoom();">Reset zoom</a>
               <a class="btn" href="javascript: clear();">Clear</a>
               <div class="form-group">
@@ -56,7 +67,7 @@ flame_graph_template = """
             </form>
           </div>
         </nav>
-        <h3 class="text-muted">{{sample_information}}</h3>
+        <h3 class="text-muted">QuickPotato</h3>
       </div>
       <div id="chart">
       </div>
@@ -67,7 +78,7 @@ flame_graph_template = """
 
     <!-- D3.js -->
     <script src="https://d3js.org/d3.v4.min.js" charset="utf-8"></script>
-    
+
     <!-- d3-tip -->
     <script type="text/javascript" src=https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.9.1/d3-tip.min.js></script>
 
@@ -75,32 +86,23 @@ flame_graph_template = """
     <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/spiermar/d3-flame-graph@2.0.3/dist/d3-flamegraph.min.js"></script>
 
     <script type="text/javascript">
-    var flameGraph = d3.flamegraph()
-      .width(960)
-      .cellHeight(18)
-      .transitionDuration(750)
-      .minFrameSize(5)
-      .transitionEase(d3.easeCubic)
-      .sort(true)
-      //Example to sort in reverse order
-      //.sort(function(a,b){ return d3.descending(a.name, b.name);})
-      .title("")
-      .onClick(onClick)
-      .differential(false)
-      .selfValue(false);
 
-    var details = document.getElementById("details");
-    flameGraph.setDetailsElement(details);
-    
-    var data = {{json}}
-    
-    d3.select("#chart")
-    .datum(data)
-    .call(flameGraph);
+    var payload = {
+    {% for json in payload %}
+      '{{json["name"]}}': {{json}} 
+    {% endfor %}
+    };
+
+    var flameGraph = null;
+
+    $(document).ready(function(){
+      $(document).ready(render_flame_graph);
+      $('#sample').on('change', render_flame_graph);
+    });
 
     document.getElementById("form").addEventListener("submit", function(event){
-    event.preventDefault();
-    search();
+      event.preventDefault();
+      search();
     });
 
     function search() {
@@ -119,6 +121,31 @@ flame_graph_template = """
 
     function onClick(d) {
       console.info("Clicked on " + d.data.name);
+    }
+
+    function render_flame_graph(){
+
+      $("#chart").empty();
+      var selected_sample = $('select[id="sample"] option:selected').val()
+
+      flameGraph = d3.flamegraph()
+      .width(960)
+      .cellHeight(25)
+      .transitionDuration(750)
+      .minFrameSize(5)
+      .transitionEase(d3.easeCubic)
+      .sort(true)
+      .title("")
+      .onClick(onClick)
+      .differential(false)
+      .selfValue(false);
+
+      var details = document.getElementById("details");
+      flameGraph.setDetailsElement(details);
+
+      d3.select("#chart")
+      .datum(payload[selected_sample])
+      .call(flameGraph);
     }
     </script>
   </body>

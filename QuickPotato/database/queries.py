@@ -265,6 +265,20 @@ class Read(StatementManager):
         self.close_connection(engine, connection)
         return results
 
+    def select_all_sample_ids(self, database, test_id):
+        """
+
+        :param database:
+        :param test_id:
+        :return:
+        """
+        table = StatementManager.performance_statistics_schema()
+        engine, connection = self.spawn_connection(database)
+        query = select([table.c.sample_id]).where(table.c.test_id == test_id).distinct()
+        results = [str(row.sample_id) for row in self.execute_query(connection, query)]
+        self.close_connection(engine, connection)
+        return results
+
     def select_test_id_description(self, database, test_id):
         """
 
