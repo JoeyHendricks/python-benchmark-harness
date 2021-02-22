@@ -53,9 +53,9 @@
           <div class="pull-right">
             <form class="form-inline" id="form">
               <select id="sample" class="form-control">
-                <option>341a7bc6-6ecf-11eb-b31e-14dda977a447</option>
-                <option>341a7bc6-6ecf-11eb-b31e-14dda977a446</option>
-                <option>341a7bc6-6ecf-11eb-b31e-14dda977a445</option>
+
+                <option>b6f9636a-724e-11eb-b91c-14dda977a447</option>
+
               </select>
               <a class="btn" href="javascript: resetZoom();">Reset zoom</a>
               <a class="btn" href="javascript: clear();">Clear</a>
@@ -88,7 +88,7 @@
 
     var payload = {
 
-      '341a7bc6-6ecf-11eb-b31e-14dda977a447': {'name': '341a7bc6-6ecf-11eb-b31e-14dda977a447', 'children': [{'name': 'test_this', 'children': [{'name': 'root', 'children': [{'name': 'function_1', 'children': [{'name': '<built-in method time.sleep>', 'children': [], 'value': 1}, {'name': 'function_2', 'children': [{'name': 'function_3', 'children': [{'name': '<built-in method builtins.print>', 'children': [], 'value': 1}, {'name': 'function_4', 'children': [{'name': 'function_5', 'children': [{'name': 'function_x', 'children': [{'name': 'function_y', 'children': [], 'value': 1}], 'value': 2}], 'value': 3}, {'name': 'function_x', 'children': [{'name': 'function_y', 'children': [], 'value': 1}], 'value': 2}], 'value': 7}, {'name': 'function_x', 'children': [{'name': 'function_y', 'children': [], 'value': 1}], 'value': 2}, {'name': 'function_test', 'children': [], 'value': 1}], 'value': 15}, {'name': 'function_y', 'children': [], 'value': 1}], 'value': 18}, {'name': '<built-in method builtins.print>', 'children': [], 'value': 1}, {'name': 'function_x', 'children': [{'name': 'function_y', 'children': [], 'value': 1}], 'value': 2}], 'value': 26}], 'value': 27}, {'name': 'apes_strong_together', 'children': [{'name': 'function_4', 'children': [{'name': 'function_5', 'children': [{'name': 'function_x', 'children': [{'name': 'function_y', 'children': [], 'value': 1}], 'value': 2}], 'value': 3}, {'name': 'function_x', 'children': [{'name': 'function_y', 'children': [], 'value': 1}], 'value': 2}], 'value': 7}], 'value': 8}, {'name': 'joey_says', 'children': [], 'value': 1}], 'value': 39}], 'value': 40}
+      'b6f9636a-724e-11eb-b91c-14dda977a447': {'name': 'b6f9636a-724e-11eb-b91c-14dda977a447', 'children': [{'name': 'test_this', 'children': [{'name': 'root', 'children': [{'name': 'function_1', 'children': [{'name': '<built-in method time.sleep>', 'children': [], 'value': 1}, {'name': 'function_2', 'children': [{'name': 'function_3', 'children': [{'name': '<built-in method builtins.print>', 'children': [], 'value': 1}, {'name': 'function_4', 'children': [{'name': 'function_5', 'children': [{'name': 'function_x', 'children': [{'name': 'function_y', 'children': [], 'value': 1}], 'value': 2}], 'value': 3}, {'name': 'function_x', 'children': [{'name': 'function_y', 'children': [], 'value': 1}], 'value': 2}], 'value': 7}, {'name': 'function_x', 'children': [{'name': 'function_y', 'children': [], 'value': 1}], 'value': 2}, {'name': 'function_test', 'children': [], 'value': 1}], 'value': 15}, {'name': 'function_y', 'children': [], 'value': 1}], 'value': 18}, {'name': '<built-in method builtins.print>', 'children': [], 'value': 1}, {'name': 'function_x', 'children': [{'name': 'function_y', 'children': [], 'value': 1}], 'value': 2}], 'value': 26}], 'value': 27}, {'name': 'apes_strong_together', 'children': [{'name': 'function_4', 'children': [{'name': 'function_5', 'children': [{'name': 'function_x', 'children': [{'name': 'function_y', 'children': [], 'value': 1}], 'value': 2}], 'value': 3}, {'name': 'function_x', 'children': [{'name': 'function_y', 'children': [], 'value': 1}], 'value': 2}], 'value': 7}], 'value': 8}, {'name': 'joey_says', 'children': [], 'value': 1}], 'value': 39}], 'value': 40}
 
     };
 
@@ -129,7 +129,7 @@
 
       flameGraph = d3.flamegraph()
       .width(960)
-      .cellHeight(18)
+      .cellHeight(25)
       .transitionDuration(750)
       .minFrameSize(5)
       .transitionEase(d3.easeCubic)
@@ -143,11 +143,9 @@
       flameGraph.setDetailsElement(details);
 
       d3.select("#chart")
-	  .datum(payload[selected_sample])
-	  .call(flameGraph);
-
+      .datum(payload[selected_sample])
+      .call(flameGraph);
     }
-
     </script>
   </body>
 </html>
