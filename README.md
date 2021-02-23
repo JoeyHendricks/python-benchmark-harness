@@ -6,18 +6,18 @@
 <!-- TAG LINE -->
 <h3 align="center">Profile and test to gain insights into the performance of your beautiful Python code</h3>
 <p align="center">
-    <a href="https://github.com/JoeyHendricks/CouchPotato">View Demo</a> -
-    <a href="https://github.com/JoeyHendricks/CouchPotato/issues">Report Bug</a> -
-    <a href="https://github.com/JoeyHendricks/CouchPotato/issues">Request Feature</a>
+    <a href="https://github.com/JoeyHendricks/QuickPotato">View Demo</a> -
+    <a href="https://github.com/JoeyHendricks/QuickPotato/issues">Report Bug</a> -
+    <a href="https://github.com/JoeyHendricks/QuickPotato/issues">Request Feature</a>
 </p>
 
 <!-- BADGES -->
 <div align="center">
-<a href="https://github.com/JoeyHendricks/CouchPotato/graphs/contributors"><img src="https://img.shields.io/github/contributors/JoeyHendricks/CouchPotato?style=for-the-badge"></a>
-<a href="https://github.com/JoeyHendricks/CouchPotato/network/members"><img src="https://img.shields.io/github/forks/JoeyHendricks/CouchPotato?style=for-the-badge"></a>
-<a href="https://github.com/JoeyHendricks/CouchPotato/stargazers"><img src="https://img.shields.io/github/stars/JoeyHendricks/CouchPotato?style=for-the-badge"></a>
-<a href="https://github.com/JoeyHendricks/CouchPotato/issues"><img src="https://img.shields.io/github/issues/JoeyHendricks/CouchPotato?style=for-the-badge"></a>
-<a href="https://github.com/JoeyHendricks/CouchPotato/blob/master/LICENSE.md"><img src="https://img.shields.io/github/license/JoeyHendricks/CouchPotato?style=for-the-badge"></a>
+<a href="https://github.com/JoeyHendricks/QuickPotato/graphs/contributors"><img src="https://img.shields.io/github/contributors/JoeyHendricks/CouchPotato?style=for-the-badge"></a>
+<a href="https://github.com/JoeyHendricks/QuickPotato/network/members"><img src="https://img.shields.io/github/forks/JoeyHendricks/CouchPotato?style=for-the-badge"></a>
+<a href="https://github.com/JoeyHendricks/QuickPotato/stargazers"><img src="https://img.shields.io/github/stars/JoeyHendricks/CouchPotato?style=for-the-badge"></a>
+<a href="https://github.com/JoeyHendricks/QuickPotato/issues"><img src="https://img.shields.io/github/issues/JoeyHendricks/CouchPotato?style=for-the-badge"></a>
+<a href="https://github.com/JoeyHendricks/QuickPotato/blob/master/LICENSE.md"><img src="https://img.shields.io/github/license/JoeyHendricks/CouchPotato?style=for-the-badge"></a>
 <a href="https://www.linkedin.com/in/joey-hendricks/"><img src="https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555"></a>
 </div>
 <br>
