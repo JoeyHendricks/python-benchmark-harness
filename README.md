@@ -13,11 +13,11 @@
 
 <!-- BADGES -->
 <div align="center">
-<a href="https://github.com/JoeyHendricks/QuickPotato/graphs/contributors"><img src="https://img.shields.io/github/contributors/JoeyHendricks/CouchPotato?style=for-the-badge"></a>
-<a href="https://github.com/JoeyHendricks/QuickPotato/network/members"><img src="https://img.shields.io/github/forks/JoeyHendricks/CouchPotato?style=for-the-badge"></a>
-<a href="https://github.com/JoeyHendricks/QuickPotato/stargazers"><img src="https://img.shields.io/github/stars/JoeyHendricks/CouchPotato?style=for-the-badge"></a>
-<a href="https://github.com/JoeyHendricks/QuickPotato/issues"><img src="https://img.shields.io/github/issues/JoeyHendricks/CouchPotato?style=for-the-badge"></a>
-<a href="https://github.com/JoeyHendricks/QuickPotato/blob/master/LICENSE.md"><img src="https://img.shields.io/github/license/JoeyHendricks/CouchPotato?style=for-the-badge"></a>
+<a href="https://github.com/JoeyHendricks/QuickPotato/graphs/contributors"><img src="https://img.shields.io/github/contributors/JoeyHendricks/QuickPotato?style=for-the-badge"></a>
+<a href="https://github.com/JoeyHendricks/QuickPotato/network/members"><img src="https://img.shields.io/github/forks/JoeyHendricks/QuickPotato?style=for-the-badge"></a>
+<a href="https://github.com/JoeyHendricks/QuickPotato/stargazers"><img src="https://img.shields.io/github/stars/JoeyHendricks/QuickPotato?style=for-the-badge"></a>
+<a href="https://github.com/JoeyHendricks/QuickPotato/issues"><img src="https://img.shields.io/github/issues/JoeyHendricks/QuickPotato?style=for-the-badge"></a>
+<a href="https://github.com/JoeyHendricks/QuickPotato/blob/master/LICENSE.md"><img src="https://img.shields.io/github/license/JoeyHendricks/QuickPotato?style=for-the-badge"></a>
 <a href="https://www.linkedin.com/in/joey-hendricks/"><img src="https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555"></a>
 </div>
 <br>
