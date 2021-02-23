@@ -1,8 +1,8 @@
-from QuickPotato.configuration.management import options
-from QuickPotato.utilities.exceptions import AgentCannotFindMethod
-from QuickPotato.profiling.interpreters import PerformanceStatisticsInterpreter
-from QuickPotato.harness.testing import UnitPerformanceTest
-from QuickPotato.profiling.debugger import Profiler
+from CouchPotato.configuration.management import options
+from CouchPotato.utilities.exceptions import AgentCannotFindMethod
+from CouchPotato.profiling.interpreters import PerformanceStatisticsInterpreter
+from CouchPotato.harness.testing import UnitPerformanceTest
+from CouchPotato.profiling.debugger import Profiler
 from functools import wraps, partial
 import uuid
 

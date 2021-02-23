@@ -1,17 +1,17 @@
 from setuptools import setup
 
 setup(
-    name='QuickPotato',
+    name='CouchPotato',
     version='0.2',
     packages=[
-        'QuickPotato',
-        'QuickPotato.harness',
-        'QuickPotato.database',
-        'QuickPotato.profiling',
-        'QuickPotato.utilities',
-        'QuickPotato.statistical',
-        'QuickPotato.configuration',
-        'QuickPotato.analysis'
+        'CouchPotato',
+        'CouchPotato.harness',
+        'CouchPotato.database',
+        'CouchPotato.profiling',
+        'CouchPotato.utilities',
+        'CouchPotato.statistical',
+        'CouchPotato.configuration',
+        'CouchPotato.analysis'
     ],
     install_requires=[
         'numpy',

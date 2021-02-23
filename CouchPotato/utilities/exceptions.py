@@ -2,7 +2,7 @@
 class AgentCannotFindMethod(Exception):
     """
     The profiling agent has not detected any method to collect metrics from.
-    Please review the use of the 'profile' decorator in the QuickPotato documentation.
+    Please review the use of the 'profile' decorator in the CouchPotato documentation.
     """
     def __str__(self):
         return self.__doc__
@@ -12,7 +12,7 @@ class DatabaseSchemaCannotBeSpawned(Exception):
     """
     It was not possible to create a database with a specified connection URL, p
     lease review your URL and try again.
-    For more help, please consult the QuickPotato Documentation.
+    For more help, please consult the CouchPotato Documentation.
     """
     def __str__(self):
         return self.__doc__
@@ -22,7 +22,7 @@ class DatabaseTableCannotBeSpawned(Exception):
     """
     It was not possible to create a table within the test cases database.
     Please review your connection URL and database name.
-    For more help, please consult the QuickPotato Documentation.
+    For more help, please consult the CouchPotato Documentation.
     """
     def __str__(self):
         return self.__doc__
@@ -32,7 +32,7 @@ class DatabaseConnectionCannotBeSpawned(Exception):
     """
     It was not possible to create a connection to the database server.
     Please review your connection URL.
-    For more help, please consult the QuickPotato Documentation.
+    For more help, please consult the CouchPotato Documentation.
     """
     def __str__(self):
         return self.__doc__

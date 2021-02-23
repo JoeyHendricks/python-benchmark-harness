@@ -1,6 +1,6 @@
-from QuickPotato.profiling.intrusive import unit_performance_test as upt
-from QuickPotato.configuration.management import options
-from QuickPotato.harness.export import PerformanceStatisticsExport
+from CouchPotato.profiling.intrusive import unit_performance_test as upt
+from CouchPotato.configuration.management import options
+from CouchPotato.harness.export import PerformanceStatisticsExport
 from example.example_code import fast_method
 
 upt.test_case_name = "test_performance"  # <-- Define test case name

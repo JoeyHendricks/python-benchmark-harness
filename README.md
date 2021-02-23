@@ -62,7 +62,7 @@ development life cycle in a simple, reliable, and fast way.
 
 Install using [pip](https://pip.pypa.io/en/stable/) or download the source code from GitHub.
 ```bash
-pip install QuickPotato
+pip install CouchPotato
 ```
 > Do note that QuickPotato hasn't released (yet) on the Python Package Index
 > Please just grab the source code or the latest release from GitHub for now :).
@@ -73,7 +73,7 @@ QuickPotato comes equipped with some options you can configure to make sure Quic
 Below you can find a list of all basic options:
 
 ```python
-from QuickPotato.configuration.management import options
+from CouchPotato.configuration.management import options
 
 # Profiling Settings
 options.enable_intrusive_profiling = True 
@@ -98,9 +98,9 @@ be easy to understand and would require some digging to find out where a potenti
 To effortlessly generate a flame graph from your code do the following:
 
 ```python
-from QuickPotato.configuration.management import options
-from QuickPotato.analysis.analysis import FlameGraphs
-from QuickPotato.profiling.intrusive import performance_critical  # <-- Import the decorator
+from CouchPotato.configuration.management import options
+from CouchPotato.analysis.analysis import FlameGraphs
+from CouchPotato.profiling.intrusive import performance_critical  # <-- Import the decorator
 
 options.enable_intrusive_profiling = True  # <-- Make sure that intrusive profiling is enabled
 
@@ -138,7 +138,7 @@ Within QuickPotato, it is possible to create a performance test that validates i
 defined boundary or not. An example of this sort of test can be found in the snippet below:
 
 ```python
-from QuickPotato.profiling.intrusive import unit_performance_test as upt
+from CouchPotato.profiling.intrusive import unit_performance_test as upt
 from example.example_code import fast_method
 
 # Define test case name
@@ -161,7 +161,7 @@ It is also possible to verify that there is no regression between the current be
 The method for creating such a test can also be found in the snippet below:
 
 ```python
-from QuickPotato.profiling.intrusive import unit_performance_test as upt
+from CouchPotato.profiling.intrusive import unit_performance_test as upt
 from example.example_code import fast_method
 
 # Define test case name

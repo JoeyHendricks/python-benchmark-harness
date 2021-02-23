@@ -1,4 +1,4 @@
-from QuickPotato.profiling.intrusive import performance_critical
+from CouchPotato.profiling.intrusive import performance_critical
 import time
 import math
 

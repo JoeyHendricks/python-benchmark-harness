@@ -1,6 +1,7 @@
-from QuickPotato.database.queries import Crud
-from QuickPotato.utilities.html_templates import flame_graph_template
-from QuickPotato.utilities.defaults import default_test_case_name
+from CouchPotato.database.queries import Crud
+from CouchPotato.utilities.html_templates import flame_graph_template
+from CouchPotato.utilities.defaults import default_test_case_name
+from datetime import datetime
 from jinja2 import Template
 
 
@@ -30,9 +31,20 @@ class FlameGraph(Crud):
 
         self.list_of_samples = self.select_all_sample_ids(test_case_name, test_id)
         self._current_number_of_children = 0
+        self.test_case_name = test_case_name
 
         self.json = [self._discover_relationships(test_case_name, sample) for sample in self.list_of_samples]
         self.html = self._render_html()
+
+    def export(self, path):
+        """
+        Export the flame graph as a HTML report on disk.
+        :param path: The path on disk where the file needs to be written.
+                     Example: C:\\temp\\
+        """
+        name = f"{self.test_case_name}-{datetime.now().timestamp()}"
+        with open(f"{path}{name}.html", 'a') as file:
+            file.write(self.html)
 
     def _render_html(self):
         """

@@ -1,6 +1,6 @@
 from example.example_code import FancyCode
-from QuickPotato.configuration.management import options
-from QuickPotato.analysis.analysis import FlameGraphs
+from CouchPotato.configuration.management import options
+from CouchPotato.statistical.visualizations import FlameGraph
 
 
 options.enable_intrusive_profiling = True  # <-- Make sure that profiling is enabled
@@ -8,4 +8,4 @@ options.enable_intrusive_profiling = True  # <-- Make sure that profiling is ena
 FancyCode().say_my_name_and_more(name="joey hendricks")
 
 # Generate Flame Graph
-FlameGraphs().export_flame_graph(path="C:\\temp\\")
+FlameGraph().export("C:\\temp\\")

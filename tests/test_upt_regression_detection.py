@@ -1,6 +1,6 @@
-from QuickPotato.profiling.intrusive import unit_performance_test as upt
-from QuickPotato.database.queries import Crud
-from QuickPotato.configuration.management import options
+from CouchPotato.profiling.intrusive import unit_performance_test as upt
+from CouchPotato.database.queries import Crud
+from CouchPotato.configuration.management import options
 from example.example_code import *
 import unittest
 

@@ -1,4 +1,4 @@
-from QuickPotato.utilities.decorators import save_boundary_evidence
+from CouchPotato.utilities.decorators import save_boundary_evidence
 
 
 @save_boundary_evidence

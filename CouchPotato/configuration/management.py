@@ -1,5 +1,5 @@
 from os.path import isfile, dirname, realpath
-from QuickPotato.utilities.defaults import default_quick_potato_configuration
+from CouchPotato.utilities.defaults import default_quick_potato_configuration
 import yaml
 
 

@@ -1,5 +1,5 @@
-from QuickPotato.utilities.defaults import default_test_case_name
-from QuickPotato.database.queries import Crud
+from CouchPotato.utilities.defaults import default_test_case_name
+from CouchPotato.database.queries import Crud
 from datetime import datetime
 import tempfile
 
