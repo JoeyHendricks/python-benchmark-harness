@@ -6,18 +6,18 @@
 <!-- TAG LINE -->
 <h3 align="center">Profile and test to gain insights into the performance of your beautiful Python code</h3>
 <p align="center">
-    <a href="https://github.com/JoeyHendricks/QuickPotato">View Demo</a> -
-    <a href="https://github.com/JoeyHendricks/QuickPotato/issues">Report Bug</a> -
-    <a href="https://github.com/JoeyHendricks/QuickPotato/issues">Request Feature</a>
+    <a href="https://github.com/JoeyHendricks/CouchPotato">View Demo</a> -
+    <a href="https://github.com/JoeyHendricks/CouchPotato/issues">Report Bug</a> -
+    <a href="https://github.com/JoeyHendricks/CouchPotato/issues">Request Feature</a>
 </p>
 
 <!-- BADGES -->
 <div align="center">
-<a href="https://github.com/JoeyHendricks/QuickPotato/graphs/contributors"><img src="https://img.shields.io/github/contributors/JoeyHendricks/QuickPotato?style=for-the-badge"></a>
-<a href="https://github.com/JoeyHendricks/QuickPotato/network/members"><img src="https://img.shields.io/github/forks/JoeyHendricks/QuickPotato?style=for-the-badge"></a>
-<a href="https://github.com/JoeyHendricks/QuickPotato/stargazers"><img src="https://img.shields.io/github/stars/JoeyHendricks/QuickPotato?style=for-the-badge"></a>
-<a href="https://github.com/JoeyHendricks/QuickPotato/issues"><img src="https://img.shields.io/github/issues/JoeyHendricks/QuickPotato?style=for-the-badge"></a>
-<a href="https://github.com/JoeyHendricks/QuickPotato/blob/master/LICENSE.md"><img src="https://img.shields.io/github/license/JoeyHendricks/QuickPotato?style=for-the-badge"></a>
+<a href="https://github.com/JoeyHendricks/CouchPotato/graphs/contributors"><img src="https://img.shields.io/github/contributors/JoeyHendricks/CouchPotato?style=for-the-badge"></a>
+<a href="https://github.com/JoeyHendricks/CouchPotato/network/members"><img src="https://img.shields.io/github/forks/JoeyHendricks/CouchPotato?style=for-the-badge"></a>
+<a href="https://github.com/JoeyHendricks/CouchPotato/stargazers"><img src="https://img.shields.io/github/stars/JoeyHendricks/CouchPotato?style=for-the-badge"></a>
+<a href="https://github.com/JoeyHendricks/CouchPotato/issues"><img src="https://img.shields.io/github/issues/JoeyHendricks/CouchPotato?style=for-the-badge"></a>
+<a href="https://github.com/JoeyHendricks/CouchPotato/blob/master/LICENSE.md"><img src="https://img.shields.io/github/license/JoeyHendricks/CouchPotato?style=for-the-badge"></a>
 <a href="https://www.linkedin.com/in/joey-hendricks/"><img src="https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555"></a>
 </div>
 <br>
@@ -27,7 +27,7 @@
   <summary>Table of Contents</summary>
   <ol>
     <li>
-      <a href="#QuickPotato-in-a-nutshell">QuickPotato in a nutshell</a>
+      <a href="#CouchPotato-in-a-nutshell">CouchPotato in a nutshell</a>
     </li>
     <li>
         <a>Getting Started</a>
@@ -44,17 +44,17 @@
         <li><a href="#Regression-testing">Regression testing</a></li>
       </ul>
     </li>
-    <li><a href="#Learn-more-about-QuickPotato">Learn more about QuickPotato</a></li>
+    <li><a href="#Learn-more-about-CouchPotato">Learn more about CouchPotato</a></li>
   </ol>
 </details>
 
 <!-- CONTENT -->
-## QuickPotato in a nutshell
+## CouchPotato in a nutshell
 
-QuickPotato is a Python library that aims to make it easier to rapidly profile your software and produce powerful 
+CouchPotato is a Python library that aims to make it easier to rapidly profile your software and produce powerful 
 code visualizations that enables you to quickly investigate where potential performance bottlenecks are hidden.
 
-Also, QuickPotato is trying to provide you with a path to add an automated performance testing angle to 
+Also, CouchPotato is trying to provide you with a path to add an automated performance testing angle to 
 your regular unit tests or test-driven development test cases allowing you to test your code early in the 
 development life cycle in a simple, reliable, and fast way.
 
@@ -64,12 +64,12 @@ Install using [pip](https://pip.pypa.io/en/stable/) or download the source code 
 ```bash
 pip install CouchPotato
 ```
-> Do note that QuickPotato hasn't released (yet) on the Python Package Index
+> Do note that CouchPotato hasn't released (yet) on the Python Package Index
 > Please just grab the source code or the latest release from GitHub for now :).
 
 ## Options you can configure
 
-QuickPotato comes equipped with some options you can configure to make sure QuickPotato fits your needs.
+CouchPotato comes equipped with some options you can configure to make sure CouchPotato fits your needs.
 Below you can find a list of all basic options:
 
 ```python
@@ -93,13 +93,13 @@ options.maximum_number_saved_test_results = 10
 
 ## Generating visualizations
 
-Under the hood, QuickPotato uses C-profile to measure the speed of your code. These results might not always 
+Under the hood, CouchPotato uses C-profile to measure the speed of your code. These results might not always 
 be easy to understand and would require some digging to find out where a potential performance problem is hiding.
 To effortlessly generate a flame graph from your code do the following:
 
 ```python
 from CouchPotato.configuration.management import options
-from CouchPotato.analysis.analysis import FlameGraphs
+from CouchPotato.statistical.visualizations import FlameGraph
 from CouchPotato.profiling.intrusive import performance_critical  # <-- Import the decorator
 
 options.enable_intrusive_profiling = True  # <-- Make sure that intrusive profiling is enabled
@@ -112,11 +112,11 @@ def i_am_a_slow_function():
 
 
 # Generate Flame Graph
-FlameGraphs().export_flame_graph(path="C:\\Temp\\")
+FlameGraph().export(path="C:\\Temp\\")
 ```
 > It is possible to reduce the amount of noise with a parameter in the flame graph class.
 
-Below an example of a flame graph generated by QuickPotato **(Code that was used can be found under 
+Below an example of a flame graph generated by CouchPotato **(Code that was used can be found under 
 the folder demo in example_code.py)**:
 
 [![Example of a simple flame graph](/images/fancy-code-flame-graph.png "flame graph simple")](
@@ -124,17 +124,16 @@ https://raw.githubusercontent.com/JoeyHendricks/python-unit-level-performance-te
 
 > If you are unfamiliar with Flame Graphs you can best read about them on [Brendan Greg's website](http://www.brendangregg.com/flamegraphs.html).
 
-How to interpret the Flame Graphs generated by QuickPotato:
+How to interpret the Flame Graphs generated by CouchPotato:
 
 - Each box is a function in the stack
 - The y-axis shows the stack depth the top box shows what was on the CPU.
 - The x-axis **does not show time** but spans the population and is ordered alphabetically.
 - The width of the box show how long it was on-CPU or was part of an parent function that was on-CPU.
-- The color of a box is how much time relative to the maximum time was spent in that function. That means the more red a box is the more time was spent in that function.
 
 ## Boundary testing
 
-Within QuickPotato, it is possible to create a performance test that validates if your code breaches any 
+Within CouchPotato, it is possible to create a performance test that validates if your code breaches any 
 defined boundary or not. An example of this sort of test can be found in the snippet below:
 
 ```python
@@ -175,7 +174,7 @@ for _ in range(0, 10):
 results = upt.verify_benchmark_against_previous_baseline
 ```
 
-## Learn more about QuickPotato
+## Learn more about CouchPotato
 
 If you want to learn more about test driven performance testing and want to 
 see how this project reached its current state? 
@@ -183,5 +182,5 @@ Then I would encourage you to check out the following resources:
 
 - 11/07/2020: [Don’t lose your mind over slow code check your performance sanity.(English)](https://www.linkedin.com/pulse/dont-lose-your-mind-over-slow-code-check-performance-sanity-joey/) 
 - 08/10/2020: [My recording about QuickPotato @NeotysPAC 2020. (English)](https://www.youtube.com/watch?v=AWlhalEywEw) 
-- 15/12/2020: [Interview about QuickPotato @TestGuild 2020. (English)](https://testguild.com/podcast/performance/p56-joey/)
+- 15/12/2020: [Interview about CouchPotato @TestGuild 2020. (English)](https://testguild.com/podcast/performance/p56-joey/)
 - 12/01/2020: [An article I wrote for Neotys about my @NeotysPAC 2020 presentation. (English)](https://www.neotys.com/blog/neotyspac-performance-testing-unit-level-joey-hendricks/)
