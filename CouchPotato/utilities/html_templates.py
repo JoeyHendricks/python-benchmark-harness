@@ -89,7 +89,7 @@ flame_graph_template = """
 
     var payload = {
     {% for json in payload %}
-      '{{json["name"]}}': {{json}} 
+      '{{json["name"]}}': {{json}},
     {% endfor %}
     };
 

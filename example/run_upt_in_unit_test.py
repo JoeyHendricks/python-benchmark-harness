@@ -1,5 +1,5 @@
 from CouchPotato.profiling.intrusive import unit_performance_test as upt
-from CouchPotato.harness.export import PerformanceStatisticsExport
+from CouchPotato.statistical.visualizations import CsvFile, FlameGraph
 from CouchPotato.configuration.management import options
 from example.example_code import *
 import unittest
@@ -28,12 +28,8 @@ class TestPerformance(unittest.TestCase):
 
         # Export time spent statistical to csv
         if results is False:
-            PerformanceStatisticsExport(
-                test_case_name=upt.test_case_name,
-                test_id=upt.current_test_id,
-                delimiter=";",
-                path="C:\\Temp\\"
-            ).to_csv()
+            CsvFile(test_case_name="test_performance", test_id=upt.current_test_id).export(path="C:\\temp\\")
+            FlameGraph(test_case_name="test_performance", test_id=upt.current_test_id).export(path="C:\\temp\\")
 
         # Pass or fail the unit test
         self.assertTrue(results)

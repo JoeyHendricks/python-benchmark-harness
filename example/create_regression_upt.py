@@ -1,6 +1,6 @@
 from CouchPotato.profiling.intrusive import unit_performance_test as upt
 from CouchPotato.configuration.management import options
-from CouchPotato.harness.export import PerformanceStatisticsExport
+from CouchPotato.statistical.visualizations import CsvFile, FlameGraph
 from example.example_code import fast_method
 
 
@@ -17,11 +17,6 @@ options.enable_intrusive_profiling = False  # <-- Set to False to disable profil
 # Analyse results for change True if there is no change otherwise False
 results = upt.verify_benchmark_against_previous_baseline
 
-# Export time spent statistical to csv
-if results is False:
-    PerformanceStatisticsExport(
-        test_case_name=upt.test_case_name,
-        test_id=upt.current_test_id,
-        delimiter=";",
-        path="C:\\Temp\\"
-    ).to_csv()
+# Export visualizations
+CsvFile(test_case_name="test_performance", test_id=upt.current_test_id).export(path="C:\\temp\\")
+FlameGraph(test_case_name="test_performance", test_id=upt.current_test_id).export(path="C:\\temp\\")

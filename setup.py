@@ -19,7 +19,6 @@ setup(
         'scipy',
         'SQLAlchemy',
         'PyMySQL',
-        'psutil',
         'pandas',
         'PyYAML',
         'Jinja2'

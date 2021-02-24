@@ -3,6 +3,7 @@ from CouchPotato.utilities.html_templates import flame_graph_template
 from CouchPotato.utilities.defaults import default_test_case_name
 from datetime import datetime
 from jinja2 import Template
+import pandas as pd
 
 
 class FlameGraph(Crud):
@@ -26,8 +27,8 @@ class FlameGraph(Crud):
         if test_id is None and test_case_name == default_test_case_name:
             test_id = self.select_test_ids_with_performance_statistics(database=test_case_name)[-1]
 
-        else:
-            raise FileNotFoundError  # <-- Create better error
+        elif test_id is None:
+            raise NotImplementedError
 
         self.list_of_samples = self.select_all_sample_ids(test_case_name, test_id)
         self._current_number_of_children = 0
@@ -141,3 +142,49 @@ class FlameGraph(Crud):
                     child=line['child_function_name']
                 )
         return self._count_relationships(stack)
+
+
+class CsvFile(Crud):
+
+    def __init__(self, test_case_name=default_test_case_name, test_id=None, delimiter=","):
+        """
+
+        :param test_case_name:
+        :param delimiter:
+        :param test_id:
+        """
+        super(CsvFile, self).__init__()
+        self.test_case_name = test_case_name
+        self.delimiter = delimiter
+        self.test_id = test_id
+
+        if self.test_id is None and test_case_name == default_test_case_name:
+            self.test_id = self.select_test_ids_with_performance_statistics(database=test_case_name)[-1]
+
+        elif self.test_id is None:
+            raise NotImplementedError
+
+        self.list_of_samples = self.select_all_sample_ids(test_case_name, self.test_id)
+
+    def export(self, path):
+        """
+
+        :param path:
+        :return:
+        """
+        content = []
+        for sample_id in self.list_of_samples:
+            stack = self.select_call_stack_by_sample_id(self.test_case_name, sample_id)
+            for line in stack:
+                content.append(line)
+
+        pd.DataFrame(content).to_csv(
+            path_or_buf=f"{path}raw_export_of_{self.test_id}_{str(datetime.now().timestamp())}.csv",
+            sep=self.delimiter,
+            index=False
+        )
+        return True
+
+
+
+
