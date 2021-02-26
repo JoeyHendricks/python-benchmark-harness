@@ -6,7 +6,7 @@ from CouchPotato.profiling.debugger import Profiler
 from functools import wraps, partial
 import uuid
 
-unit_performance_test = PerformanceTest()
+performance_test = PerformanceTest()
 
 
 def performance_critical(method=None, enabled=True):
@@ -38,8 +38,8 @@ def performance_critical(method=None, enabled=True):
             StatisticsInterpreter(
                 performance_statistics=pf.performance_statistics,
                 total_response_time=pf.total_response_time,
-                database_name=unit_performance_test.test_case_name,
-                test_id=unit_performance_test.current_test_id,
+                database_name=performance_test.test_case_name,
+                test_id=performance_test.current_test_id,
                 method_name=method.__name__,
                 sample_id=method_id
             )

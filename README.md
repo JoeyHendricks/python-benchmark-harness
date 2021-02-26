@@ -137,21 +137,21 @@ Within CouchPotato, it is possible to create a performance test that validates i
 defined boundary or not. An example of this sort of test can be found in the snippet below:
 
 ```python
-from CouchPotato.profiling.intrusive import unit_performance_test as upt
+from CouchPotato.profiling.intrusive import performance_test as pt
 from example.example_code import fast_method
 
 # Define test case name
-upt.test_case_name = "test_performance"
+pt.test_case_name = "test_performance"
 
 # Establish performance boundaries
-upt.max_and_min_boundary_for_average = {"max": 1, "min": 0.001}
+pt.max_and_min_boundary_for_average = {"max": 1, "min": 0.001}
 
 # Execute method under test
 for _ in range(0, 10):
     fast_method()
 
 # Analyse profiled results will output True if boundaries are not breached otherwise False
-results = upt.verify_benchmark_against_set_boundaries
+results = pt.verify_benchmark_against_set_boundaries
 ```
 
 ## Regression testing
@@ -160,18 +160,18 @@ It is also possible to verify that there is no regression between the current be
 The method for creating such a test can also be found in the snippet below:
 
 ```python
-from CouchPotato.profiling.intrusive import unit_performance_test as upt
+from CouchPotato.profiling.intrusive import performance_test as pt
 from example.example_code import fast_method
 
 # Define test case name
-upt.test_case_name = "test_performance"
+pt.test_case_name = "test_performance"
 
 # Execute method under test
 for _ in range(0, 10):
     fast_method()
 
 # Analyse results for change True if there is no change otherwise False
-results = upt.verify_benchmark_against_previous_baseline
+results = pt.verify_benchmark_against_previous_baseline
 ```
 
 ## Learn more about CouchPotato

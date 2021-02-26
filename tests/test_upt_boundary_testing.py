@@ -1,4 +1,4 @@
-from CouchPotato.profiling.intrusive import unit_performance_test as upt
+from CouchPotato.profiling.intrusive import performance_test as upt
 from CouchPotato.database.queries import Crud
 from CouchPotato.configuration.management import options
 from example.example_code import *
