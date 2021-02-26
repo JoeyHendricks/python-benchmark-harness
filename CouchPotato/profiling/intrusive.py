@@ -1,12 +1,12 @@
 from CouchPotato.configuration.management import options
 from CouchPotato.utilities.exceptions import AgentCannotFindMethod
 from CouchPotato.profiling.interpreters import StatisticsInterpreter
-from CouchPotato.harness.testing import UnitPerformanceTest
+from CouchPotato.harness.testing import PerformanceTest
 from CouchPotato.profiling.debugger import Profiler
 from functools import wraps, partial
 import uuid
 
-unit_performance_test = UnitPerformanceTest()
+unit_performance_test = PerformanceTest()
 
 
 def performance_critical(method=None, enabled=True):
