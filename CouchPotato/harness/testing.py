@@ -24,7 +24,7 @@ class UnitPerformanceTest(Crud, Boundaries, Metrics, RegressionSettings):
         self.previous_test_id = None
         self.silence_warning_messages = False
 
-        self._test_case_name = None
+        self._test_case_name = default_test_case_name
         self._monitoring_mode = True
 
     @property

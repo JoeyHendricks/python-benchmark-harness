@@ -4,10 +4,10 @@ from datetime import datetime
 import asyncio
 
 
-class PerformanceStatisticsInterpreter(Crud):
+class StatisticsInterpreter(Crud):
 
     def __init__(self, database_name, performance_statistics, total_response_time, method_name, sample_id, test_id):
-        super(PerformanceStatisticsInterpreter, self).__init__()
+        super(StatisticsInterpreter, self).__init__()
 
         self.performance_statistics = performance_statistics
         self.total_response_time = total_response_time

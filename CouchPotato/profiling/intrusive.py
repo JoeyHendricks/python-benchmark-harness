@@ -1,6 +1,6 @@
 from CouchPotato.configuration.management import options
 from CouchPotato.utilities.exceptions import AgentCannotFindMethod
-from CouchPotato.profiling.interpreters import PerformanceStatisticsInterpreter
+from CouchPotato.profiling.interpreters import StatisticsInterpreter
 from CouchPotato.harness.testing import UnitPerformanceTest
 from CouchPotato.profiling.debugger import Profiler
 from functools import wraps, partial
@@ -35,7 +35,7 @@ def performance_critical(method=None, enabled=True):
             pf = Profiler()
             pf.profile_method_under_test(method, *args, **kwargs)
 
-            PerformanceStatisticsInterpreter(
+            StatisticsInterpreter(
                 performance_statistics=pf.performance_statistics,
                 total_response_time=pf.total_response_time,
                 database_name=unit_performance_test.test_case_name,

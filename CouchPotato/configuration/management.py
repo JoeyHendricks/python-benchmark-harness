@@ -1,5 +1,5 @@
-from os.path import isfile, dirname, realpath
 from CouchPotato.utilities.defaults import default_quick_potato_configuration
+from os.path import isfile, dirname, realpath
 import yaml
 
 
@@ -17,7 +17,6 @@ class Configuration:
         self.contents = yaml.safe_load(open(self.PATH + self.FILE_NAME))
 
     def dump_configuration_to_yaml_file(self, contents):
-
         with open(self.PATH + self.FILE_NAME, 'w') as file:
             yaml.dump(contents, file)
 
