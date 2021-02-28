@@ -300,14 +300,12 @@ class Update(StatementManager):
         :param database:
         :param test_id:
         :param payload:
-        :return:
         """
         table = StatementManager.test_report_schema()
         query = table.update().where(table.c.test_id == str(test_id)).values(payload)
         engine, connection = self.spawn_connection(database)
-        results = self.execute_query(connection, query)
+        self.execute_query(connection, query)
         self.close_connection(engine, connection)
-        return results
 
 
 class Delete(StatementManager):
@@ -320,23 +318,19 @@ class Delete(StatementManager):
 
         :param database:
         :param test_id:
-        :return:
         """
         table = StatementManager.performance_statistics_schema()
         query = table.delete().where(table.c.test_id == str(test_id))
         engine, connection = self.spawn_connection(database)
-        results = self.execute_query(connection, query)
+        self.execute_query(connection, query)
         self.close_connection(engine, connection)
-        return results
 
     def delete_result_database(self, database_name):
         """
 
         :param database_name:
-        :return:
         """
         self.delete_database(database_name)
-        return True
 
 
 class Crud(Create, Read, Update, Delete):
@@ -348,7 +342,6 @@ class Crud(Create, Read, Update, Delete):
         """
 
         :param database:
-        :return:
         """
         current_number_of_test_ids = self.select_count_of_test_ids(database)
         maximum_number_of_test_ids = options.maximum_number_saved_test_results
@@ -363,8 +356,6 @@ class Crud(Create, Read, Update, Delete):
 
             for test_id in oldest_test_ids:
                 self.delete_performance_statistics_that_match_test_id(database, test_id)
-
-        return True
 
     def check_if_test_id_exists_in_test_report(self, database_name, test_id):
         """
