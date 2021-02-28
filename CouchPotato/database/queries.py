@@ -13,97 +13,79 @@ class Create(StatementManager):
 
         :param database:
         :param payload:
-        :return:
         """
         table = self.performance_statistics_schema()
         engine, connection = self.spawn_connection(database)
         self.execute_query(connection, query=table.insert().values(payload))
         self.close_connection(engine, connection)
-        return True
 
     def insert_boundaries_test_evidence(self, database, payload):
         """
 
         :param database:
         :param payload:
-        :return:
         """
         table = self.boundaries_test_evidence_schema()
         engine, connection = self.spawn_connection(database)
         self.execute_query(connection, query=table.insert().values(payload))
         self.close_connection(engine, connection)
-        return True
 
     def insert_regression_test_evidence(self, database, payload):
         """
 
         :param database:
         :param payload:
-        :return:
         """
         table = self.regression_test_evidence_schema()
         engine, connection = self.spawn_connection(database)
         self.execute_query(connection, query=table.insert().values(payload))
         self.close_connection(engine, connection)
-        return True
 
     def insert_results_into_test_report(self, database, payload):
         """
 
         :param database:
         :param payload:
-        :return:
         """
         table = self.test_report_schema()
         engine, connection = self.spawn_connection(database)
         self.execute_query(connection, query=table.insert().values(payload))
         self.close_connection(engine, connection)
-        return True
 
     def spawn_performance_statistics_schema(self, database):
         """
 
         :param database:
-        :return:
         """
         self.create_schema(database, self.performance_statistics_schema())
-        return True
 
     def spawn_test_report_schema(self, database):
         """
 
         :param database:
-        :return:
         """
         self.create_schema(database, self.test_report_schema())
-        return True
 
     def spawn_boundaries_test_evidence_schema(self, database):
         """
 
         :param database:
-        :return:
         """
         self.create_schema(database, self.boundaries_test_evidence_schema())
-        return True
 
     def spawn_regression_test_evidence_schema(self, database):
         """
 
         :param database:
-        :return:
         """
         self.create_schema(database, self.regression_test_evidence_schema())
-        return True
 
     def spawn_result_database(self, database_name):
         """
 
         :param database_name:
-        :return:
         """
         self.create_database(database_name)
-        return True
 
 
 class Read(StatementManager):

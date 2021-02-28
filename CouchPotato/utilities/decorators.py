@@ -1,5 +1,4 @@
 from CouchPotato.harness.results import BoundariesTestEvidence
-from CouchPotato.utilities.exceptions import NeedsKeyWordArguments
 from functools import wraps
 from datetime import datetime
 
