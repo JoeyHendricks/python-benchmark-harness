@@ -1,6 +1,6 @@
 <!-- LOGO -->
 <p align="center">
-  <img src="https://github.com/JoeyHendricks/python-unit-level-performance-testing/blob/master/images/banner-with-text.png?raw=true"/>
+  <img src="https://github.com/JoeyHendricks/QuickPotato/blob/Trying-d3-flame-graphs/images/banner-with-text.png"/>
 </p>
 
 <!-- TAG LINE -->
