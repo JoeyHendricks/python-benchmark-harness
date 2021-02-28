@@ -58,7 +58,7 @@ Also, CouchPotato is trying to provide you with a path to add an automated perfo
 your regular unit tests or test-driven development test cases allowing you to test your code early in the 
 development life cycle in a simple, reliable, and fast way.
 
-## Getting Started
+## Installation
 
 Install using [pip](https://pip.pypa.io/en/stable/) or download the source code from GitHub.
 ```bash
@@ -92,7 +92,7 @@ In the following way you can generate a Python flame graph with CouchPotato:
 ```python
 from CouchPotato.configuration.management import options
 from CouchPotato.statistical.visualizations import FlameGraph
-from CouchPotato.profiling.intrusive import performance_critical  # <-- Import the performance critical decorator
+from CouchPotato.profiling.intrusive import performance_critical
 
 options.enable_intrusive_profiling = True  # <-- Make sure that when using intrusive profiling 
                                            #     that intrusive profiling is enabled.
