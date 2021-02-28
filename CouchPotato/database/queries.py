@@ -1,9 +1,9 @@
 from sqlalchemy import select, func
-from CouchPotato.database.operations import StatementManager
+from CouchPotato.database.operations import ContextManager
 from CouchPotato.configuration.management import options
 
 
-class Create(StatementManager):
+class Create(ContextManager):
 
     def __init__(self):
         super(Create, self).__init__()
@@ -88,7 +88,7 @@ class Create(StatementManager):
         self.create_database(database_name)
 
 
-class Read(StatementManager):
+class Read(ContextManager):
 
     def __init__(self):
         super(Read, self).__init__()
@@ -100,7 +100,7 @@ class Read(StatementManager):
         :param test_id:
         :return:
         """
-        table = StatementManager.performance_statistics_schema()
+        table = ContextManager.performance_statistics_schema()
         engine, connection = self.spawn_connection(database)
         query = select([table.c.sample_id.distinct(), table.c.total_response_time]).where(table.c.test_id == test_id)
         results = [float(row.total_response_time) for row in self.execute_query(connection, query)]
@@ -114,7 +114,7 @@ class Read(StatementManager):
         :param number:
         :return:
         """
-        table = StatementManager.performance_statistics_schema()
+        table = ContextManager.performance_statistics_schema()
         engine, connection = self.spawn_connection(database)
         query = select([table.c.test_id]).distinct().limit(number)
         results = [str(row.test_id) for row in self.execute_query(connection, query)]
@@ -128,7 +128,7 @@ class Read(StatementManager):
         :param number:
         :return:
         """
-        table = StatementManager.test_report_schema()
+        table = ContextManager.test_report_schema()
         engine, connection = self.spawn_connection(database)
         query = select([table.c.test_id]).distinct().limit(number)
         results = [str(row.test_id) for row in self.execute_query(connection, query)]
@@ -141,7 +141,7 @@ class Read(StatementManager):
         :param database:
         :return:
         """
-        table = StatementManager.performance_statistics_schema()
+        table = ContextManager.performance_statistics_schema()
         engine, connection = self.spawn_connection(database)
         query = select([table.c.test_id]).distinct()
         results = [str(row.test_id) for row in self.execute_query(connection, query)]
@@ -154,7 +154,7 @@ class Read(StatementManager):
         :param database:
         :return:
         """
-        table = StatementManager.test_report_schema()
+        table = ContextManager.test_report_schema()
         engine, connection = self.spawn_connection(database)
         query = select([table.c.test_id]).where(table.c.status == "1").order_by(table.c.id.desc()).limit(1)
         results = [str(row.test_id) for row in self.execute_query(connection, query)]
@@ -167,7 +167,7 @@ class Read(StatementManager):
         :param database:
         :return:
         """
-        table = StatementManager.performance_statistics_schema()
+        table = ContextManager.performance_statistics_schema()
         engine, connection = self.spawn_connection(database)
         query = select([func.count(table.c.test_id.distinct())])
         results = int([row[0] for row in self.execute_query(connection, query)][0])
@@ -181,7 +181,7 @@ class Read(StatementManager):
         :param sample_id:
         :return:
         """
-        table = StatementManager.performance_statistics_schema()
+        table = ContextManager.performance_statistics_schema()
         engine, connection = self.spawn_connection(database)
         query = table.select().where(table.c.sample_id == str(sample_id)).order_by(table.c.cumulative_time.desc())
 
@@ -254,7 +254,7 @@ class Read(StatementManager):
         :param test_id:
         :return:
         """
-        table = StatementManager.performance_statistics_schema()
+        table = ContextManager.performance_statistics_schema()
         engine, connection = self.spawn_connection(database)
         query = select([table.c.sample_id]).where(table.c.test_id == test_id).distinct()
         results = [str(row.sample_id) for row in self.execute_query(connection, query)]
@@ -268,7 +268,7 @@ class Read(StatementManager):
         :param test_id:
         :return:
         """
-        table = StatementManager.performance_statistics_schema()
+        table = ContextManager.performance_statistics_schema()
         query = select([table.c.sample_id,
                         table.c.name_of_method_under_test,
                         table.c.human_timestamp,
@@ -289,7 +289,7 @@ class Read(StatementManager):
         return results
 
 
-class Update(StatementManager):
+class Update(ContextManager):
 
     def __init__(self):
         super(Update, self).__init__()
@@ -301,14 +301,14 @@ class Update(StatementManager):
         :param test_id:
         :param payload:
         """
-        table = StatementManager.test_report_schema()
+        table = ContextManager.test_report_schema()
         query = table.update().where(table.c.test_id == str(test_id)).values(payload)
         engine, connection = self.spawn_connection(database)
         self.execute_query(connection, query)
         self.close_connection(engine, connection)
 
 
-class Delete(StatementManager):
+class Delete(ContextManager):
 
     def __init__(self):
         super(Delete, self).__init__()
@@ -319,7 +319,7 @@ class Delete(StatementManager):
         :param database:
         :param test_id:
         """
-        table = StatementManager.performance_statistics_schema()
+        table = ContextManager.performance_statistics_schema()
         query = table.delete().where(table.c.test_id == str(test_id))
         engine, connection = self.spawn_connection(database)
         self.execute_query(connection, query)

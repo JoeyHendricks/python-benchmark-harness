@@ -7,7 +7,7 @@ from sqlalchemy_utils import database_exists, create_database, drop_database
 import tempfile
 
 
-class StatementManager(RawStatisticsSchemas, UnitPerformanceTestResultSchemas):
+class ContextManager(RawStatisticsSchemas, UnitPerformanceTestResultSchemas):
 
     URL = options.connection_url
 
