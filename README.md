@@ -36,7 +36,12 @@
             <li><a href="#Options-you-can-configure">Options</a></li>
         </ul>
     </li>
-    <li><a href="#Generating-visualizations">Generating visualizations</a></li>
+    <li>
+        <a>Generating visualizations</a>
+        <ul>
+            <li><a href="#Generating-Flame-Graphs">Flame Graphs</a></li>
+        </ul>
+    </li>
     <li>
       <a>Test-driven performance testing</a>
       <ul>
@@ -67,13 +72,7 @@ pip install CouchPotato
 > Do note that CouchPotato hasn't released (yet) on the Python Package Index
 > Please just grab the source code or the latest release from GitHub for now :).
 
-## Generating powerful visualizations
-
-Under the hood, CouchPotato uses C-profile to measure the speed of your code. These results might not always 
-be easy to understand and would require some digging to find out where a potential performance problem is hiding.
-To make analysis of the rough data more easy and accessible CouchPotato can generate powerful visualizations.
-
-### Flame Graphs
+## Generating Flame Graphs
 
 [![Example of a Python flame graph](/images/python-code-flame-graph.png "flame graph Python")](
 https://raw.githubusercontent.com/JoeyHendricks/QuickPotato/Trying-d3-flame-graphs/example/example_basic_flame_graph.html)
