@@ -1,6 +1,6 @@
 <!-- LOGO -->
 <p align="center">
-  <img src="https://github.com/JoeyHendricks/QuickPotato/blob/Trying-d3-flame-graphs/images/banner-with-text.png"/>
+  <img src="https://github.com/JoeyHendricks/QuickPotato/blob/Trying-d3-flame-graphs/images/banner-with-text.png" width="500" height="600"/>
 </p>
 
 <!-- TAG LINE -->
