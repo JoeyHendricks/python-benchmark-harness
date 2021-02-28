@@ -40,6 +40,7 @@
         <a>Generating visualizations</a>
         <ul>
             <li><a href="#Generating-Flame-Graphs">Flame Graphs</a></li>
+            <li><a href="#Generating-a-CSV-file">CSV</a></li>
         </ul>
     </li>
     <li>
