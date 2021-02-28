@@ -1,5 +1,5 @@
 from CouchPotato.configuration.management import options
-from CouchPotato.utilities.exceptions import AgentCannotFindMethod
+from CouchPotato.utilities.exceptions import CouchPotatoCannotFindMethod
 from CouchPotato.profiling.interpreters import StatisticsInterpreter
 from CouchPotato.harness.testing import PerformanceTest
 from CouchPotato.profiling.debugger import Profiler
@@ -55,7 +55,7 @@ def performance_critical(method=None, enabled=True):
         return partial(performance_critical, enabled=enabled)
 
     elif callable(method) is not True:
-        AgentCannotFindMethod()
+        CouchPotatoCannotFindMethod()
 
     else:
         # Execute the method under test

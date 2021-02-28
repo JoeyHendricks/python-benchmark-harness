@@ -29,9 +29,6 @@ def save_boundary_evidence(fnc):
         -------
 
         """
-        if len(args) > 1:
-            raise NeedsKeyWordArguments()
-
         evidence = BoundariesTestEvidence()
         evidence.test_id = kwargs["test_id"]
         evidence.test_case_name = kwargs["test_case_name"]

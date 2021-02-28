@@ -1,9 +1,11 @@
 from CouchPotato.database.queries import Crud
 from CouchPotato.utilities.html_templates import flame_graph_template
 from CouchPotato.utilities.defaults import default_test_case_name
+from CouchPotato.utilities.exceptions import UnableToGenerateVisualizations, UnableToExportVisualization
 from datetime import datetime
 from jinja2 import Template
 import pandas as pd
+import os
 
 
 class FlameGraph(Crud):
@@ -28,7 +30,7 @@ class FlameGraph(Crud):
             test_id = self.select_test_ids_with_performance_statistics(database=test_case_name)[-1]
 
         elif test_id is None:
-            raise NotImplementedError
+            raise UnableToGenerateVisualizations()
 
         self.list_of_samples = self.select_all_sample_ids(test_case_name, test_id)
         self._current_number_of_children = 0
@@ -43,9 +45,12 @@ class FlameGraph(Crud):
         :param path: The path on disk where the file needs to be written.
                      Example: C:\\temp\\
         """
-        name = f"{self.test_case_name}-{datetime.now().timestamp()}"
-        with open(f"{path}{name}.html", 'a') as file:
-            file.write(self.html)
+        if os.path.isdir(path):
+            name = f"{self.test_case_name}-{datetime.now().timestamp()}"
+            with open(f"{path}{name}.html", 'a') as file:
+                file.write(self.html)
+        else:
+            raise UnableToExportVisualization()
 
     def _render_html(self):
         """
@@ -148,10 +153,12 @@ class CsvFile(Crud):
 
     def __init__(self, test_case_name=default_test_case_name, test_id=None, delimiter=","):
         """
+        Will build up the object, when no test id is given and when test case name is default.
+        It will take the last known test id.
 
-        :param test_case_name:
-        :param delimiter:
-        :param test_id:
+        :param test_case_name: The name of the test case
+        :param delimiter: The delimiter of the csv file
+        :param test_id: The test id within the test case
         """
         super(CsvFile, self).__init__()
         self.test_case_name = test_case_name
@@ -162,28 +169,31 @@ class CsvFile(Crud):
             self.test_id = self.select_test_ids_with_performance_statistics(database=test_case_name)[-1]
 
         elif self.test_id is None:
-            raise NotImplementedError
+            raise UnableToGenerateVisualizations()
 
         self.list_of_samples = self.select_all_sample_ids(test_case_name, self.test_id)
 
     def export(self, path):
         """
-
-        :param path:
-        :return:
+        Will export the csv file to a directory on the disk.
+        :param path: The path on disk where the file needs to be written.
+                     Example: C:\\temp\\
         """
-        content = []
-        for sample_id in self.list_of_samples:
-            stack = self.select_call_stack_by_sample_id(self.test_case_name, sample_id)
-            for line in stack:
-                content.append(line)
+        if os.path.isdir(path):
+            content = []
+            for sample_id in self.list_of_samples:
+                stack = self.select_call_stack_by_sample_id(self.test_case_name, sample_id)
+                for line in stack:
+                    content.append(line)
 
-        pd.DataFrame(content).to_csv(
-            path_or_buf=f"{path}raw_export_of_{self.test_id}_{str(datetime.now().timestamp())}.csv",
-            sep=self.delimiter,
-            index=False
-        )
-        return True
+            pd.DataFrame(content).to_csv(
+                path_or_buf=f"{path}raw_export_of_{self.test_id}_{str(datetime.now().timestamp())}.csv",
+                sep=self.delimiter,
+                index=False
+            )
+
+        else:
+            raise UnableToExportVisualization()
 
 
 

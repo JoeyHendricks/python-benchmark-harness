@@ -1,7 +1,7 @@
 
-class AgentCannotFindMethod(Exception):
+class CouchPotatoCannotFindMethod(Exception):
     """
-    The profiling agent has not detected any method to collect metrics from.
+    CouchPotato has not detected any method to collect metrics from.
     Please review the use of the 'profile' decorator in the CouchPotato documentation.
     """
     def __str__(self):
@@ -38,10 +38,21 @@ class DatabaseConnectionCannotBeSpawned(Exception):
         return self.__doc__
 
 
-class NeedsKeyWordArguments(Exception):
+class UnableToGenerateVisualizations(Exception):
     """
-    The decorator was called with positional arguments.
-    Please call the decorator with the keyword arguments.
+    It was not possible to generate the requested visualization.
+    Please review your input parameters.
+    For more help, please consult the CouchPotato Documentation.
+    """
+    def __str__(self):
+        return self.__doc__
+
+
+class UnableToExportVisualization(Exception):
+    """
+    It was not possible to export the requested visualization to the disk.
+    Please review your input parameters and verify if the folder exists.
+    For more help, please consult the CouchPotato Documentation.
     """
     def __str__(self):
         return self.__doc__
