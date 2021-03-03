@@ -110,14 +110,387 @@ FlameGraph().export(path="C:\\Temp\\")
 
 ## Generating a CSV file
 
-|id  |test_id     |test_case_name|sample_id                           |name_of_method_under_test|epoch_timestamp|human_timestamp           |child_path                                                                                      |child_line_number|child_function_name                   |parent_path                                                                                     |parent_line_number|parent_function_name                |number_of_calls|total_time|cumulative_time|total_response_time|
-|:--:|:----------:|:------------:|:----------------------------------:|:-----------------------:|:-------------:|:------------------------:|:----------------------------------------------------------------------------------------------:|:---------------:|:------------------------------------:|:----------------------------------------------------------------------------------------------:|:----------------:|:----------------------------------:|:-------------:|:--------:|:-------------:|:-----------------:|
-|2160|UMFN1LIHA8J8|QuickProfiling|3fa1314f-79ee-11eb-88ef-14dda977a447|  say_my_name_and_more   |  1614534988   |2021-02-28 18:56:28.415248|C:\Users\joeyh\Documents\Python Projects\python-unit-performance-testing\example\example_code.py|       23        |         say_my_name_and_more         |                                               ~                                                |        0         |3fa1314f-79ee-11eb-88ef-14dda977a447|       1       | 2.35e-05 |    14.0049    |      14.0048      |
-|2168|UMFN1LIHA8J8|QuickProfiling|3fa1314f-79ee-11eb-88ef-14dda977a447|  say_my_name_and_more   |  1614534988   |2021-02-28 18:56:28.415248|C:\Users\joeyh\Documents\Python Projects\python-unit-performance-testing\example\example_code.py|       68        |      sleep_based_on_name_length      |C:\Users\joeyh\Documents\Python Projects\python-unit-performance-testing\example\example_code.py|        23        |        say_my_name_and_more        |       1       | 6.8e-06  |    14.0048    |      14.0048      |
-|2171|UMFN1LIHA8J8|QuickProfiling|3fa1314f-79ee-11eb-88ef-14dda977a447|  say_my_name_and_more   |  1614534988   |2021-02-28 18:56:28.415248|                                               ~                                                |        0        |     <built-in method time.sleep>     |C:\Users\joeyh\Documents\Python Projects\python-unit-performance-testing\example\example_code.py|        68        |     sleep_based_on_name_length     |       1       | 14.0048  |    14.0048    |      14.0048      |
-|2176|UMFN1LIHA8J8|QuickProfiling|3fa1314f-79ee-11eb-88ef-14dda977a447|  say_my_name_and_more   |  1614534988   |2021-02-28 18:56:28.415248|                                               ~                                                |        0        |   <built-in method builtins.print>   |C:\Users\joeyh\Documents\Python Projects\python-unit-performance-testing\example\example_code.py|        23        |        say_my_name_and_more        |       8       | 3.77e-05 |   3.77e-05    |      14.0048      |
-|2177|UMFN1LIHA8J8|QuickProfiling|3fa1314f-79ee-11eb-88ef-14dda977a447|  say_my_name_and_more   |  1614534988   |2021-02-28 18:56:28.415248|                                               ~                                                |        0        |   <built-in method builtins.print>   |C:\Users\joeyh\Documents\Python Projects\python-unit-performance-testing\example\example_code.py|        51        |  show_message_when_name_very_long  |       8       | 3.77e-05 |   3.77e-05    |      14.0048      |
-|2178|UMFN1LIHA8J8|QuickProfiling|3fa1314f-79ee-11eb-88ef-14dda977a447|  say_my_name_and_more   |  1614534988   |2021-02-28 18:56:28.415248|                                               ~                                                |        0        |   <built-in method builtins.print>   |C:\Users\joeyh\Documents\Python Projects\python-unit-performance-testing\example\example_code.py|        59        |                 y                  |       8       | 3.77e-05 |   3.77e-05    |      14.0048      |
+<table class="table table-bordered table-hover table-condensed">
+<thead><tr><th title="Field #1">id</th>
+<th title="Field #2">test_id</th>
+<th title="Field #3">test_case_name</th>
+<th title="Field #4">sample_id</th>
+<th title="Field #5">name_of_method_under_test</th>
+<th title="Field #6">epoch_timestamp</th>
+<th title="Field #7">human_timestamp</th>
+<th title="Field #8">child_path</th>
+<th title="Field #9">child_line_number</th>
+<th title="Field #10">child_function_name</th>
+<th title="Field #11">parent_path</th>
+<th title="Field #12">parent_line_number</th>
+<th title="Field #13">parent_function_name</th>
+<th title="Field #14">number_of_calls</th>
+<th title="Field #15">total_time</th>
+<th title="Field #16">cumulative_time</th>
+<th title="Field #17">total_response_time</th>
+</tr></thead>
+<tbody><tr>
+<td align="right">2160</td>
+<td>UMFN1LIHA8J8</td>
+<td>QuickProfiling</td>
+<td>3fa1314f-79ee-11eb-88ef-14dda977a447</td>
+<td>say_my_name_and_more</td>
+<td align="right">1614534988</td>
+<td>2021-02-28 18:56:28.415248</td>
+<td>C:\Users\joeyh\Documents\Python Projects\python-unit-performance-testing\example\example_code.py</td>
+<td align="right">23</td>
+<td>say_my_name_and_more</td>
+<td>~</td>
+<td align="right">0</td>
+<td>3fa1314f-79ee-11eb-88ef-14dda977a447</td>
+<td align="right">1</td>
+<td align="right">2.35e-05</td>
+<td align="right">14.0049</td>
+<td align="right">14.0048</td>
+</tr>
+<tr>
+<td align="right">2168</td>
+<td>UMFN1LIHA8J8</td>
+<td>QuickProfiling</td>
+<td>3fa1314f-79ee-11eb-88ef-14dda977a447</td>
+<td>say_my_name_and_more</td>
+<td align="right">1614534988</td>
+<td>2021-02-28 18:56:28.415248</td>
+<td>C:\Users\joeyh\Documents\Python Projects\python-unit-performance-testing\example\example_code.py</td>
+<td align="right">68</td>
+<td>sleep_based_on_name_length</td>
+<td>C:\Users\joeyh\Documents\Python Projects\python-unit-performance-testing\example\example_code.py</td>
+<td align="right">23</td>
+<td>say_my_name_and_more</td>
+<td align="right">1</td>
+<td align="right">6.8e-06</td>
+<td align="right">14.0048</td>
+<td align="right">14.0048</td>
+</tr>
+<tr>
+<td align="right">2171</td>
+<td>UMFN1LIHA8J8</td>
+<td>QuickProfiling</td>
+<td>3fa1314f-79ee-11eb-88ef-14dda977a447</td>
+<td>say_my_name_and_more</td>
+<td align="right">1614534988</td>
+<td>2021-02-28 18:56:28.415248</td>
+<td>~</td>
+<td align="right">0</td>
+<td>&lt;built-in method time.sleep&gt;</td>
+<td>C:\Users\joeyh\Documents\Python Projects\python-unit-performance-testing\example\example_code.py</td>
+<td align="right">68</td>
+<td>sleep_based_on_name_length</td>
+<td align="right">1</td>
+<td align="right">14.0048</td>
+<td align="right">14.0048</td>
+<td align="right">14.0048</td>
+</tr>
+<tr>
+<td align="right">2176</td>
+<td>UMFN1LIHA8J8</td>
+<td>QuickProfiling</td>
+<td>3fa1314f-79ee-11eb-88ef-14dda977a447</td>
+<td>say_my_name_and_more</td>
+<td align="right">1614534988</td>
+<td>2021-02-28 18:56:28.415248</td>
+<td>~</td>
+<td align="right">0</td>
+<td>&lt;built-in method builtins.print&gt;</td>
+<td>C:\Users\joeyh\Documents\Python Projects\python-unit-performance-testing\example\example_code.py</td>
+<td align="right">23</td>
+<td>say_my_name_and_more</td>
+<td align="right">8</td>
+<td align="right">3.77e-05</td>
+<td align="right">3.77e-05</td>
+<td align="right">14.0048</td>
+</tr>
+<tr>
+<td align="right">2177</td>
+<td>UMFN1LIHA8J8</td>
+<td>QuickProfiling</td>
+<td>3fa1314f-79ee-11eb-88ef-14dda977a447</td>
+<td>say_my_name_and_more</td>
+<td align="right">1614534988</td>
+<td>2021-02-28 18:56:28.415248</td>
+<td>~</td>
+<td align="right">0</td>
+<td>&lt;built-in method builtins.print&gt;</td>
+<td>C:\Users\joeyh\Documents\Python Projects\python-unit-performance-testing\example\example_code.py</td>
+<td align="right">51</td>
+<td>show_message_when_name_very_long</td>
+<td align="right">8</td>
+<td align="right">3.77e-05</td>
+<td align="right">3.77e-05</td>
+<td align="right">14.0048</td>
+</tr>
+<tr>
+<td align="right">2178</td>
+<td>UMFN1LIHA8J8</td>
+<td>QuickProfiling</td>
+<td>3fa1314f-79ee-11eb-88ef-14dda977a447</td>
+<td>say_my_name_and_more</td>
+<td align="right">1614534988</td>
+<td>2021-02-28 18:56:28.415248</td>
+<td>~</td>
+<td align="right">0</td>
+<td>&lt;built-in method builtins.print&gt;</td>
+<td>C:\Users\joeyh\Documents\Python Projects\python-unit-performance-testing\example\example_code.py</td>
+<td align="right">59</td>
+<td>y</td>
+<td align="right">8</td>
+<td align="right">3.77e-05</td>
+<td align="right">3.77e-05</td>
+<td align="right">14.0048</td>
+</tr>
+<tr>
+<td align="right">2162</td>
+<td>UMFN1LIHA8J8</td>
+<td>QuickProfiling</td>
+<td>3fa1314f-79ee-11eb-88ef-14dda977a447</td>
+<td>say_my_name_and_more</td>
+<td align="right">1614534988</td>
+<td>2021-02-28 18:56:28.415248</td>
+<td>C:\Users\joeyh\Documents\Python Projects\python-unit-performance-testing\example\example_code.py</td>
+<td align="right">40</td>
+<td>length_of_name</td>
+<td>C:\Users\joeyh\Documents\Python Projects\python-unit-performance-testing\example\example_code.py</td>
+<td align="right">23</td>
+<td>say_my_name_and_more</td>
+<td align="right">2</td>
+<td align="right">2.8e-06</td>
+<td align="right">2.39e-05</td>
+<td align="right">14.0048</td>
+</tr>
+<tr>
+<td align="right">2163</td>
+<td>UMFN1LIHA8J8</td>
+<td>QuickProfiling</td>
+<td>3fa1314f-79ee-11eb-88ef-14dda977a447</td>
+<td>say_my_name_and_more</td>
+<td align="right">1614534988</td>
+<td>2021-02-28 18:56:28.415248</td>
+<td>C:\Users\joeyh\Documents\Python Projects\python-unit-performance-testing\example\example_code.py</td>
+<td align="right">40</td>
+<td>length_of_name</td>
+<td>C:\Users\joeyh\Documents\Python Projects\python-unit-performance-testing\example\example_code.py</td>
+<td align="right">68</td>
+<td>sleep_based_on_name_length</td>
+<td align="right">2</td>
+<td align="right">2.8e-06</td>
+<td align="right">2.39e-05</td>
+<td align="right">14.0048</td>
+</tr>
+<tr>
+<td align="right">2164</td>
+<td>UMFN1LIHA8J8</td>
+<td>QuickProfiling</td>
+<td>3fa1314f-79ee-11eb-88ef-14dda977a447</td>
+<td>say_my_name_and_more</td>
+<td align="right">1614534988</td>
+<td>2021-02-28 18:56:28.415248</td>
+<td>C:\Users\joeyh\Documents\Python Projects\python-unit-performance-testing\example\example_code.py</td>
+<td align="right">51</td>
+<td>show_message_when_name_very_long</td>
+<td>C:\Users\joeyh\Documents\Python Projects\python-unit-performance-testing\example\example_code.py</td>
+<td align="right">40</td>
+<td>length_of_name</td>
+<td align="right">2</td>
+<td align="right">2.1e-06</td>
+<td align="right">2.08e-05</td>
+<td align="right">14.0048</td>
+</tr>
+<tr>
+<td align="right">2165</td>
+<td>UMFN1LIHA8J8</td>
+<td>QuickProfiling</td>
+<td>3fa1314f-79ee-11eb-88ef-14dda977a447</td>
+<td>say_my_name_and_more</td>
+<td align="right">1614534988</td>
+<td>2021-02-28 18:56:28.415248</td>
+<td>C:\Users\joeyh\Documents\Python Projects\python-unit-performance-testing\example\example_code.py</td>
+<td align="right">55</td>
+<td>x</td>
+<td>C:\Users\joeyh\Documents\Python Projects\python-unit-performance-testing\example\example_code.py</td>
+<td align="right">51</td>
+<td>show_message_when_name_very_long</td>
+<td align="right">2</td>
+<td align="right">1.3e-06</td>
+<td align="right">1.08e-05</td>
+<td align="right">14.0048</td>
+</tr>
+<tr>
+<td align="right">2166</td>
+<td>UMFN1LIHA8J8</td>
+<td>QuickProfiling</td>
+<td>3fa1314f-79ee-11eb-88ef-14dda977a447</td>
+<td>say_my_name_and_more</td>
+<td align="right">1614534988</td>
+<td>2021-02-28 18:56:28.415248</td>
+<td>C:\Users\joeyh\Documents\Python Projects\python-unit-performance-testing\example\example_code.py</td>
+<td align="right">59</td>
+<td>y</td>
+<td>C:\Users\joeyh\Documents\Python Projects\python-unit-performance-testing\example\example_code.py</td>
+<td align="right">55</td>
+<td>x</td>
+<td align="right">2</td>
+<td align="right">2e-06</td>
+<td align="right">9.5e-06</td>
+<td align="right">14.0048</td>
+</tr>
+<tr>
+<td align="right">2161</td>
+<td>UMFN1LIHA8J8</td>
+<td>QuickProfiling</td>
+<td>3fa1314f-79ee-11eb-88ef-14dda977a447</td>
+<td>say_my_name_and_more</td>
+<td align="right">1614534988</td>
+<td>2021-02-28 18:56:28.415248</td>
+<td>C:\Users\joeyh\Documents\Python Projects\python-unit-performance-testing\example\example_code.py</td>
+<td align="right">31</td>
+<td>capitalize_name</td>
+<td>C:\Users\joeyh\Documents\Python Projects\python-unit-performance-testing\example\example_code.py</td>
+<td align="right">23</td>
+<td>say_my_name_and_more</td>
+<td align="right">1</td>
+<td align="right">6.9e-06</td>
+<td align="right">8.1e-06</td>
+<td align="right">14.0048</td>
+</tr>
+<tr>
+<td align="right">2170</td>
+<td>UMFN1LIHA8J8</td>
+<td>QuickProfiling</td>
+<td>3fa1314f-79ee-11eb-88ef-14dda977a447</td>
+<td>say_my_name_and_more</td>
+<td align="right">1614534988</td>
+<td>2021-02-28 18:56:28.415248</td>
+<td>C:\Users\joeyh\Documents\Python Projects\python-unit-performance-testing\example\example_code.py</td>
+<td align="right">87</td>
+<td>lowercase_name</td>
+<td>C:\Users\joeyh\Documents\Python Projects\python-unit-performance-testing\example\example_code.py</td>
+<td align="right">23</td>
+<td>say_my_name_and_more</td>
+<td align="right">1</td>
+<td align="right">1.6e-06</td>
+<td align="right">1.8e-06</td>
+<td align="right">14.0048</td>
+</tr>
+<tr>
+<td align="right">2169</td>
+<td>UMFN1LIHA8J8</td>
+<td>QuickProfiling</td>
+<td>3fa1314f-79ee-11eb-88ef-14dda977a447</td>
+<td>say_my_name_and_more</td>
+<td align="right">1614534988</td>
+<td>2021-02-28 18:56:28.415248</td>
+<td>C:\Users\joeyh\Documents\Python Projects\python-unit-performance-testing\example\example_code.py</td>
+<td align="right">78</td>
+<td>uppercase_name</td>
+<td>C:\Users\joeyh\Documents\Python Projects\python-unit-performance-testing\example\example_code.py</td>
+<td align="right">23</td>
+<td>say_my_name_and_more</td>
+<td align="right">1</td>
+<td align="right">1.1e-06</td>
+<td align="right">1.4e-06</td>
+<td align="right">14.0048</td>
+</tr>
+<tr>
+<td align="right">2172</td>
+<td>UMFN1LIHA8J8</td>
+<td>QuickProfiling</td>
+<td>3fa1314f-79ee-11eb-88ef-14dda977a447</td>
+<td>say_my_name_and_more</td>
+<td align="right">1614534988</td>
+<td>2021-02-28 18:56:28.415248</td>
+<td>~</td>
+<td align="right">0</td>
+<td>&lt;method &#39;capitalize&#39; of &#39;str&#39; objects&gt;</td>
+<td>C:\Users\joeyh\Documents\Python Projects\python-unit-performance-testing\example\example_code.py</td>
+<td align="right">31</td>
+<td>capitalize_name</td>
+<td align="right">1</td>
+<td align="right">1.2e-06</td>
+<td align="right">1.2e-06</td>
+<td align="right">14.0048</td>
+</tr>
+<tr>
+<td align="right">2167</td>
+<td>UMFN1LIHA8J8</td>
+<td>QuickProfiling</td>
+<td>3fa1314f-79ee-11eb-88ef-14dda977a447</td>
+<td>say_my_name_and_more</td>
+<td align="right">1614534988</td>
+<td>2021-02-28 18:56:28.415248</td>
+<td>C:\Users\joeyh\Documents\Python Projects\python-unit-performance-testing\example\example_code.py</td>
+<td align="right">64</td>
+<td>foo</td>
+<td>C:\Users\joeyh\Documents\Python Projects\python-unit-performance-testing\example\example_code.py</td>
+<td align="right">59</td>
+<td>y</td>
+<td align="right">2</td>
+<td align="right">3e-07</td>
+<td align="right">3e-07</td>
+<td align="right">14.0048</td>
+</tr>
+<tr>
+<td align="right">2174</td>
+<td>UMFN1LIHA8J8</td>
+<td>QuickProfiling</td>
+<td>3fa1314f-79ee-11eb-88ef-14dda977a447</td>
+<td>say_my_name_and_more</td>
+<td align="right">1614534988</td>
+<td>2021-02-28 18:56:28.415248</td>
+<td>~</td>
+<td align="right">0</td>
+<td>&lt;method &#39;upper&#39; of &#39;str&#39; objects&gt;</td>
+<td>C:\Users\joeyh\Documents\Python Projects\python-unit-performance-testing\example\example_code.py</td>
+<td align="right">78</td>
+<td>uppercase_name</td>
+<td align="right">1</td>
+<td align="right">3e-07</td>
+<td align="right">3e-07</td>
+<td align="right">14.0048</td>
+</tr>
+<tr>
+<td align="right">2175</td>
+<td>UMFN1LIHA8J8</td>
+<td>QuickProfiling</td>
+<td>3fa1314f-79ee-11eb-88ef-14dda977a447</td>
+<td>say_my_name_and_more</td>
+<td align="right">1614534988</td>
+<td>2021-02-28 18:56:28.415248</td>
+<td>~</td>
+<td align="right">0</td>
+<td>&lt;built-in method builtins.len&gt;</td>
+<td>C:\Users\joeyh\Documents\Python Projects\python-unit-performance-testing\example\example_code.py</td>
+<td align="right">40</td>
+<td>length_of_name</td>
+<td align="right">2</td>
+<td align="right">3e-07</td>
+<td align="right">3e-07</td>
+<td align="right">14.0048</td>
+</tr>
+<tr>
+<td align="right">2173</td>
+<td>UMFN1LIHA8J8</td>
+<td>QuickProfiling</td>
+<td>3fa1314f-79ee-11eb-88ef-14dda977a447</td>
+<td>say_my_name_and_more</td>
+<td align="right">1614534988</td>
+<td>2021-02-28 18:56:28.415248</td>
+<td>~</td>
+<td align="right">0</td>
+<td>&lt;method &#39;lower&#39; of &#39;str&#39; objects&gt;</td>
+<td>C:\Users\joeyh\Documents\Python Projects\python-unit-performance-testing\example\example_code.py</td>
+<td align="right">87</td>
+<td>lowercase_name</td>
+<td align="right">1</td>
+<td align="right">2e-07</td>
+<td align="right">2e-07</td>
+<td align="right">14.0048</td>
+</tr>
+</tbody></table>
 
 > The complete file can be found [here](https://github.com/JoeyHendricks/QuickPotato/blob/Trying-d3-flame-graphs/example/example_csv_file.csv).
 
