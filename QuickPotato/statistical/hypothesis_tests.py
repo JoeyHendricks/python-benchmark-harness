@@ -1,4 +1,4 @@
-from CouchPotato.harness.results import RegressionTestEvidence
+from QuickPotato.harness.results import RegressionTestEvidence
 from datetime import datetime
 import numpy as np
 from decimal import *

@@ -1,4 +1,4 @@
-from CouchPotato.statistical.data import RawData
+from QuickPotato.statistical.data import RawData
 
 
 class Metrics(object):

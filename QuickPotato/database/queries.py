@@ -1,6 +1,6 @@
 from sqlalchemy import select, func
-from CouchPotato.database.operations import ContextManager
-from CouchPotato.configuration.management import options
+from QuickPotato.database.operations import ContextManager
+from QuickPotato.configuration.management import options
 
 
 class Create(ContextManager):

@@ -1,6 +1,6 @@
-from CouchPotato.profiling.intrusive import performance_test as pt
-from CouchPotato.configuration.management import options
-from CouchPotato.statistical.visualizations import CsvFile, FlameGraph
+from QuickPotato.profiling.intrusive import performance_test as pt
+from QuickPotato.configuration.management import options
+from QuickPotato.statistical.visualizations import CsvFile, FlameGraph
 from example.example_code import FancyCode
 
 pt.test_case_name = "test_performance"  # <-- Define test case name

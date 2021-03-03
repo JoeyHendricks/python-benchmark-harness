@@ -1,4 +1,4 @@
-from CouchPotato.utilities.defaults import default_quick_potato_configuration
+from QuickPotato.utilities.defaults import default_quick_potato_configuration
 from os.path import isfile, dirname, realpath
 import yaml
 

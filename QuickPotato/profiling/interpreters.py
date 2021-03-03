@@ -1,5 +1,5 @@
-from CouchPotato.database.queries import Crud
-from CouchPotato.configuration.management import options
+from QuickPotato.database.queries import Crud
+from QuickPotato.configuration.management import options
 from datetime import datetime
 import asyncio
 

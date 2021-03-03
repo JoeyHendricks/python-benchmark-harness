@@ -1,11 +1,11 @@
-from CouchPotato.configuration.settings import Boundaries, RegressionSettings
-from CouchPotato.utilities.defaults import default_test_case_name
-from CouchPotato.statistical.hypothesis_tests import TTest
-from CouchPotato.harness.measurements import Metrics
-from CouchPotato.statistical.verification import *
-from CouchPotato.database.queries import Crud
-from CouchPotato.harness.results import TestReport
-from CouchPotato.harness.measurements import RawData
+from QuickPotato.configuration.settings import Boundaries, RegressionSettings
+from QuickPotato.utilities.defaults import default_test_case_name
+from QuickPotato.statistical.hypothesis_tests import TTest
+from QuickPotato.harness.measurements import Metrics
+from QuickPotato.statistical.verification import *
+from QuickPotato.database.queries import Crud
+from QuickPotato.harness.results import TestReport
+from QuickPotato.harness.measurements import RawData
 from datetime import datetime
 import string
 import random

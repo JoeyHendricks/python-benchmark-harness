@@ -1,8 +1,8 @@
-from CouchPotato.configuration.management import options
-from CouchPotato.database.schemas import *
+from QuickPotato.configuration.management import options
+from QuickPotato.database.schemas import *
 from sqlalchemy import create_engine
 from sqlalchemy.exc import ProgrammingError
-from CouchPotato.utilities.exceptions import *
+from QuickPotato.utilities.exceptions import *
 from sqlalchemy_utils import database_exists, create_database, drop_database
 import tempfile
 

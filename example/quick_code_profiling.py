@@ -1,6 +1,6 @@
 from example.example_code import FancyCode
-from CouchPotato.configuration.management import options
-from CouchPotato.statistical.visualizations import FlameGraph, CsvFile
+from QuickPotato.configuration.management import options
+from QuickPotato.statistical.visualizations import FlameGraph, CsvFile
 
 
 options.enable_intrusive_profiling = True  # <-- Make sure that profiling is enabled

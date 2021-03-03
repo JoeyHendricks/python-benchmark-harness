@@ -1,7 +1,7 @@
-from CouchPotato.database.queries import Crud
-from CouchPotato.utilities.html_templates import flame_graph_template
-from CouchPotato.utilities.defaults import default_test_case_name
-from CouchPotato.utilities.exceptions import UnableToGenerateVisualizations, UnableToExportVisualization
+from QuickPotato.database.queries import Crud
+from QuickPotato.utilities.html_templates import flame_graph_template
+from QuickPotato.utilities.defaults import default_test_case_name
+from QuickPotato.utilities.exceptions import UnableToGenerateVisualizations, UnableToExportVisualization
 from datetime import datetime
 from jinja2 import Template
 import pandas as pd

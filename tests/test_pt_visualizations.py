@@ -1,8 +1,8 @@
-from CouchPotato.profiling.intrusive import performance_test as pt
-from CouchPotato.statistical.visualizations import FlameGraph, CsvFile
-from CouchPotato.configuration.management import options
-from CouchPotato.utilities.defaults import default_test_case_name
-from CouchPotato.database.queries import Crud
+from QuickPotato.profiling.intrusive import performance_test as pt
+from QuickPotato.statistical.visualizations import FlameGraph, CsvFile
+from QuickPotato.configuration.management import options
+from QuickPotato.utilities.defaults import default_test_case_name
+from QuickPotato.database.queries import Crud
 from example.example_code import fast_method
 import unittest
 
