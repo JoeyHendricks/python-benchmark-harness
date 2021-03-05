@@ -36,7 +36,7 @@ class FlameGraph(Crud):
         self._current_number_of_children = 0
         self.test_case_name = test_case_name
 
-        self.json = [self._discover_relationships(test_case_name, sample) for sample in self.list_of_samples]
+        self.json = [self._discover_code_paths(test_case_name, sample) for sample in self.list_of_samples]
         self.html = self._render_html()
 
     def export(self, path):
@@ -100,7 +100,7 @@ class FlameGraph(Crud):
         for relationship in stack["children"]:
             self._recursively_count_samples(relationship, function_name)
 
-    def _count_relationships(self, stack):
+    def _count_code_path_length(self, stack):
         """
         Will travel down the discovered hierarchical stack and add the amount of samples per member.
 
@@ -114,10 +114,10 @@ class FlameGraph(Crud):
         stack['value'] = self._current_number_of_children
         self._current_number_of_children = 0
         for relationship in stack["children"]:
-            self._count_relationships(relationship)
+            self._count_code_path_length(relationship)
         return stack
 
-    def _discover_relationships(self, test_case_name, sample_id):
+    def _discover_code_paths(self, test_case_name, sample_id):
         """
         Will map out the parent child relationships for each function to form hierarchical data structure.
         This structure can than be used to generate D3 flame graphs.
@@ -128,10 +128,10 @@ class FlameGraph(Crud):
         :return: An hierarchical data structure in JSON format.
         """
         stack = {}
-        collected_stack_trace = self.select_call_stack_by_sample_id(test_case_name, sample_id)
-        for line in collected_stack_trace:
+        collected_stack = self.select_call_stack_by_sample_id(test_case_name, sample_id)
+        for line in collected_stack:
 
-            if line["parent_function_name"] == collected_stack_trace[0]['parent_function_name']:
+            if line["parent_function_name"] == collected_stack[0]['parent_function_name']:
                 stack["name"] = line["parent_function_name"]
                 stack["children"] = [
                     {
@@ -146,7 +146,7 @@ class FlameGraph(Crud):
                     parent=line['parent_function_name'],
                     child=line['child_function_name']
                 )
-        return self._count_relationships(stack)
+        return self._count_code_path_length(stack)
 
 
 class CsvFile(Crud):
@@ -196,5 +196,28 @@ class CsvFile(Crud):
             raise UnableToExportVisualization()
 
 
+class HeatMap(Crud):
 
+    def __init__(self, test_case_name=default_test_case_name, test_id=None):
+        """
 
+        :param test_case_name:
+        :param test_id:
+        """
+        super(HeatMap, self).__init__()
+
+        if test_id is None and test_case_name == default_test_case_name:
+            test_id = self.select_test_ids_with_performance_statistics(database=test_case_name)[-1]
+
+        elif test_id is None:
+            raise UnableToGenerateVisualizations()
+
+        self.list_of_samples = self.select_all_sample_ids(test_case_name, test_id)
+        self.test_case_name = test_case_name
+
+        self.json = [self._discover_code_paths(test_case_name, sample) for sample in self.list_of_samples]
+
+    def _discover_code_paths(self, test_case_name, sample_id):
+        collected_stack = self.select_call_stack_by_sample_id(test_case_name, sample_id)
+        for line in collected_stack:
+            print(f"{line['child_function_name']} {line['cumulative_time']}")
