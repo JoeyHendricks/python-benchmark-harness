@@ -201,6 +201,15 @@ options.maximum_number_saved_test_results = 10
 > States of options are saved in a static yaml options file.  
 > That is why settings can be defined just once or changed on the fly.
 
+## Coming soon
+
+Some features which I am planning to add to QuickPotato soon:
+
+- sample and code path heat map
+- Scatter plot
+- Creating a virtual map of your code
+- non-intrusive profiling by means of setting a start and stop point
+
 ## Learn more about QuickPotato
 
 If you want to learn more about test driven performance testing and want to 

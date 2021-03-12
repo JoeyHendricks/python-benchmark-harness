@@ -24,12 +24,11 @@ class TestPerformance(unittest.TestCase):
             fast_method()
 
         # Analyse results for change True if there is no change otherwise False
-        results = pt.check_difference_baseline_benchmark()
+        results = pt.verify_benchmark_against_previous_baseline
 
         # Export time spent statistical to csv
-        if results is False:
-            CsvFile(test_case_name="test_performance", test_id=pt.current_test_id).export(path="C:\\temp\\")
-            FlameGraph(test_case_name="test_performance", test_id=pt.current_test_id).export(path="C:\\temp\\")
+        CsvFile(test_case_name="test_performance", test_id=pt.current_test_id).export(path="C:\\temp\\")
+        FlameGraph(test_case_name="test_performance", test_id=pt.current_test_id).export(path="C:\\temp\\")
 
         # Pass or fail the unit test
         self.assertTrue(results)
