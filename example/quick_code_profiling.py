@@ -5,7 +5,7 @@ from QuickPotato.statistical.visualizations import FlameGraph, CsvFile, HeatMap
 
 options.enable_intrusive_profiling = True  # <-- Make sure that profiling is enabled
 
-fast_method()
+FancyCode().say_my_name_and_more(name="joey")
 
 
 HeatMap()

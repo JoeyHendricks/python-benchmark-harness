@@ -231,6 +231,11 @@ class RawData(Crud):
 
 class CodePaths(Crud):
 
+    def __init__(self):
+
+        super().__init__()
+        self.paths = []
+
     def _discover_code_paths(self, test_case_name, sample_id):
         """
         Will map out the parent child relationships for each function to form hierarchical data structure.
@@ -284,3 +289,35 @@ class CodePaths(Crud):
         else:
             for item in stack['children']:
                 self._recursively_update_parent_child_relationship(item, parent, child)
+
+    def _recursively_extract_discovered_code_paths(self, stack, history=None):
+        """
+        Used to map out all of the found code paths in hierarchical JSON call stack.
+
+        :param stack: The hierarchical JSON call stack.
+        :param history: The collected history until that point in the stack (Used recursively)
+        :return: All of the uniquely discovered code paths
+        """
+        if history is None:
+            history = []
+            self.paths = []
+
+        if len(stack["children"]) > 0:
+            history.append(stack["name"])
+
+            for child in stack["children"]:
+                path = history + [child['name']]
+                if path not in self.paths:
+                    self.paths.append(path)
+
+        else:
+            path = history + [stack['name']]
+            if path not in self.paths:
+                self.paths.append(path)
+
+        for child in stack["children"]:
+            self._recursively_extract_discovered_code_paths(child, history=history)
+
+        return self.paths
+
+
