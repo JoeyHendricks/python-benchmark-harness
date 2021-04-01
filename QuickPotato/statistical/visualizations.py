@@ -1,4 +1,5 @@
 from QuickPotato.database.queries import Crud
+from QuickPotato.statistical.data import CodePaths
 from QuickPotato.utilities.html_templates import flame_graph_template
 from QuickPotato.utilities.defaults import default_test_case_name
 from QuickPotato.utilities.exceptions import UnableToGenerateVisualizations, UnableToExportVisualization
@@ -8,7 +9,7 @@ import pandas as pd
 import os
 
 
-class FlameGraph(Crud):
+class FlameGraph(CodePaths):
 
     def __init__(self, test_case_name=default_test_case_name, test_id=None):
         """
@@ -36,7 +37,9 @@ class FlameGraph(Crud):
         self._current_number_of_children = 0
         self.test_case_name = test_case_name
 
-        self.json = [self._discover_code_paths(test_case_name, sample) for sample in self.list_of_samples]
+        self.json = [self._count_code_path_length(self._discover_code_paths(test_case_name, sample))
+                     for sample in self.list_of_samples
+                     ]
         self.html = self._render_html()
 
     def export(self, path):
@@ -62,29 +65,6 @@ class FlameGraph(Crud):
             list_of_samples=self.list_of_samples,
             payload=self.json,
         )
-
-    def _recursively_update_parent_child_relationship(self, stack, parent, child):
-        """
-        Helps map out the call stack by extending or updating the
-        hierarchical stack with new members.
-
-        (Function is recursive until there are no more objects in the stack.)
-
-        :param stack: The hierarchical JSON call stack.
-        :param parent: The name of the parent function.
-        :param child: The name of the child function.
-        """
-        if stack['name'] == parent:
-            stack['children'].append(
-                {
-                    "name": child,
-                    "children": []
-                }
-            )
-
-        else:
-            for item in stack['children']:
-                self._recursively_update_parent_child_relationship(item, parent, child)
 
     def _recursively_count_samples(self, stack, function_name):
         """
@@ -116,37 +96,6 @@ class FlameGraph(Crud):
         for relationship in stack["children"]:
             self._count_code_path_length(relationship)
         return stack
-
-    def _discover_code_paths(self, test_case_name, sample_id):
-        """
-        Will map out the parent child relationships for each function to form hierarchical data structure.
-        This structure can than be used to generate D3 flame graphs.
-
-        (Function uses recursion to travel through the hierarchical
-        JSON stack until no more row in the collected stack trace can be found.)
-
-        :return: An hierarchical data structure in JSON format.
-        """
-        stack = {}
-        collected_stack = self.select_call_stack_by_sample_id(test_case_name, sample_id)
-        for line in collected_stack:
-
-            if line["parent_function_name"] == collected_stack[0]['parent_function_name']:
-                stack["name"] = line["parent_function_name"]
-                stack["children"] = [
-                    {
-                        "name": line["child_function_name"],
-                        "children": []
-                    }
-                ]
-
-            else:
-                self._recursively_update_parent_child_relationship(
-                    stack=stack,
-                    parent=line['parent_function_name'],
-                    child=line['child_function_name']
-                )
-        return self._count_code_path_length(stack)
 
 
 class CsvFile(Crud):
@@ -196,7 +145,7 @@ class CsvFile(Crud):
             raise UnableToExportVisualization()
 
 
-class HeatMap(Crud):
+class HeatMap(CodePaths):
 
     def __init__(self, test_case_name=default_test_case_name, test_id=None):
         """
@@ -215,9 +164,11 @@ class HeatMap(Crud):
         self.list_of_samples = self.select_all_sample_ids(test_case_name, test_id)
         self.test_case_name = test_case_name
 
-        self.json = [self._discover_code_paths(test_case_name, sample) for sample in self.list_of_samples]
+        self.json = [self._add_child_function_timings(self._discover_code_paths(test_case_name, sample))
+                     for sample in self.list_of_samples
+                     ]
 
-    def _discover_code_paths(self, test_case_name, sample_id):
-        collected_stack = self.select_call_stack_by_sample_id(test_case_name, sample_id)
-        for line in collected_stack:
-            print(f"{line['child_function_name']} {line['cumulative_time']}")
+    def _add_child_function_timings(self, stack):
+        print(stack)
+
+

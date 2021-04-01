@@ -227,3 +227,60 @@ class RawData(Crud):
 
         """
         return np.percentile(np.array(self._response_times), 95)
+
+
+class CodePaths(Crud):
+
+    def _discover_code_paths(self, test_case_name, sample_id):
+        """
+        Will map out the parent child relationships for each function to form hierarchical data structure.
+        This structure can than be used to generate D3 flame graphs.
+
+        (Function uses recursion to travel through the hierarchical
+        JSON stack until no more row in the collected stack trace can be found.)
+
+        :return: An hierarchical data structure in JSON format.
+        """
+        stack = {}
+        collected_stack = self.select_call_stack_by_sample_id(test_case_name, sample_id)
+        for line in collected_stack:
+
+            if line["parent_function_name"] == collected_stack[0]['parent_function_name']:
+                stack["name"] = line["parent_function_name"]
+                stack["children"] = [
+                    {
+                        "name": line["child_function_name"],
+                        "children": []
+                    }
+                ]
+
+            else:
+                self._recursively_update_parent_child_relationship(
+                    stack=stack,
+                    parent=line['parent_function_name'],
+                    child=line['child_function_name']
+                )
+        return stack
+
+    def _recursively_update_parent_child_relationship(self, stack, parent, child):
+        """
+        Helps map out the call stack by extending or updating the
+        hierarchical stack with new members.
+
+        (Function is recursive until there are no more objects in the stack.)
+
+        :param stack: The hierarchical JSON call stack.
+        :param parent: The name of the parent function.
+        :param child: The name of the child function.
+        """
+        if stack['name'] == parent:
+            stack['children'].append(
+                {
+                    "name": child,
+                    "children": []
+                }
+            )
+
+        else:
+            for item in stack['children']:
+                self._recursively_update_parent_child_relationship(item, parent, child)
