@@ -164,11 +164,27 @@ class HeatMap(CodePaths):
         self.list_of_samples = self.select_all_sample_ids(test_case_name, test_id)
         self.test_case_name = test_case_name
 
-        self.code_paths_per_sample = [
-            self._recursively_extract_discovered_code_paths(self._discover_code_paths(test_case_name, sample))
-            for sample in self.list_of_samples
-            ]
+        for i in self.code_paths:
+            print(i)
 
-        for code_path in self.code_paths_per_sample:
-            for path in code_path:
-                print(path)
+    def look_up_method_time(self, method_name):
+        print(method_name)
+        return 0
+
+    @property
+    def code_paths(self):
+        code_paths = []
+        for sample in self.list_of_samples:
+            stack = self._discover_code_paths(self.test_case_name, sample)
+            paths = self._recursively_extract_discovered_code_paths(stack)
+            for line in paths:
+                code_paths.append(
+                    {
+                        "sample_id": sample,
+                        "path": line,
+                        "time": self.look_up_method_time(line[-1])
+                    }
+                )
+        return code_paths
+
+

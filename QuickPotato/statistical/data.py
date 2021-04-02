@@ -319,5 +319,3 @@ class CodePaths(Crud):
             self._recursively_extract_discovered_code_paths(child, history=history)
 
         return self.paths
-
-
