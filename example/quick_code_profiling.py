@@ -8,7 +8,7 @@ options.enable_intrusive_profiling = True  # <-- Make sure that profiling is ena
 FancyCode().say_my_name_and_more(name="joey")
 
 
-HeatMap()
+print(HeatMap().csv)
 exit()
 
 FlameGraph().export("C:\\temp\\")

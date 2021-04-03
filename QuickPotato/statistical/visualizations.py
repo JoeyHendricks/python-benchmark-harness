@@ -163,10 +163,16 @@ class HeatMap(CodePaths):
 
         self.list_of_samples = self.select_all_sample_ids(test_case_name, test_id)
         self.test_case_name = test_case_name
-        self.timings = self.select_unique_timings_per_function(test_case_name, test_id)
+        self._timings = self.select_unique_timings_per_function(test_case_name, test_id)
 
-        for i in self.code_paths:
-            print(i)
+        self.csv = self._render_csv()
+
+    def _render_csv(self):
+        content = "sample_id;path;time\n"
+        for path in self.code_paths:
+            path['path'] = str(path['path']).replace(', ', ' -> ')
+            content = content + f"{path['sample_id']};{path['path']};{path['time']}\n"
+        return content
 
     def look_up_method_time(self, name, sample_id):
         """
@@ -175,7 +181,7 @@ class HeatMap(CodePaths):
         :param sample_id:
         :return:
         """
-        for function in self.timings:
+        for function in self._timings:
             if function["sample_id"] == sample_id and name == function["function_name"]:
                 return function["time"]
 
