@@ -211,6 +211,29 @@ class Read(ContextManager):
         self.close_connection(engine, connection)
         return results
 
+    def select_unique_timings_per_function(self, database, test_id):
+        """
+
+        :param database:
+        :param test_id:
+        :return:
+        """
+        table = ContextManager.performance_statistics_schema()
+        engine, connection = self.spawn_connection(database)
+        query = select([table.c.sample_id, table.c.child_function_name, table.c.cumulative_time]).where(
+            table.c.test_id == test_id).distinct()
+        results = []
+        for row in self.execute_query(connection, query):
+            results.append(
+                {
+                    "sample_id": str(row.sample_id),
+                    "function_name": str(row.child_function_name),
+                    "time": row.cumulative_time
+                }
+            )
+        self.close_connection(engine, connection)
+        return results
+
     def select_call_stacks_by_test_id(self, database, test_id):
         """
         :param database:
@@ -371,7 +394,7 @@ class Crud(Create, Read, Update, Delete):
         all_test_ids = self.select_validated_test_ids(
             database=database_name,
             number=options.maximum_number_saved_test_results - 1
-            )
+        )
 
         if test_id in all_test_ids:
             return True
