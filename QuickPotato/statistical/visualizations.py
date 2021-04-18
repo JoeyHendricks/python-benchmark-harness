@@ -6,6 +6,8 @@ from QuickPotato.utilities.exceptions import UnableToGenerateVisualizations, Una
 from datetime import datetime
 from jinja2 import Template
 import pandas as pd
+import json
+import re
 import os
 
 
@@ -37,7 +39,7 @@ class FlameGraph(CodePaths):
         self._current_number_of_children = 0
         self.test_case_name = test_case_name
 
-        self.json = [self._count_code_path_length(self._discover_code_paths(test_case_name, sample))
+        self.json = [self._count_code_path_length(self._map_out_hierarchical_stack_relationships(test_case_name, sample))
                      for sample in self.list_of_samples
                      ]
         self.html = self._render_html()
@@ -161,18 +163,11 @@ class HeatMap(CodePaths):
         elif test_id is None:
             raise UnableToGenerateVisualizations()
 
+        self.response_times = []
+        self._decimals = 25
         self.list_of_samples = self.select_all_sample_ids(test_case_name, test_id)
         self.test_case_name = test_case_name
         self._timings = self.select_unique_timings_per_function(test_case_name, test_id)
-
-        self.csv = self._render_csv()
-
-    def _render_csv(self):
-        content = "sample_id;path;time\n"
-        for path in self.code_paths:
-            path['path'] = str(path['path']).replace(', ', ' -> ')
-            content = content + f"{path['sample_id']};{path['path']};{path['time']}\n"
-        return content
 
     def look_up_method_time(self, name, sample_id):
         """
@@ -183,25 +178,60 @@ class HeatMap(CodePaths):
         """
         for function in self._timings:
             if function["sample_id"] == sample_id and name == function["function_name"]:
-                return function["time"]
+                time = float(format(function["time"], f".{self._decimals}f").lstrip().rstrip('0'))
+                self.response_times.append(time)
+                return time
 
             else:
                 continue
 
+    @staticmethod
+    def generate_tool_tip_message(stack, time):
+        """
+
+        :param stack:
+        :param time:
+        :return:
+        """
+        parent = re.sub(r'[^\w]', ' ', str(stack[-2]))
+        function = re.sub(r'[^\w]', ' ', str(stack[-1]))
+        return f"{parent}/{function} ran for: {time} .Sec"
+
+    @staticmethod
+    def convert_code_path_to_unique_string(stack):
+        """
+
+        :param stack:
+        :return:
+        """
+        del stack[0]
+        text = "/"
+        for function in stack:
+            text = text + re.sub(r'[^\w]', ' ', str(function))
+            text.strip()
+        return text
+
     @property
     def code_paths(self):
-        code_paths = []
+        """
+
+        :return:
+        """
+        unique_code_paths = []
         for sample in self.list_of_samples:
-            stack = self._discover_code_paths(self.test_case_name, sample)
-            paths = self._recursively_extract_discovered_code_paths(stack)
-            for line in paths:
-                code_paths.append(
+            hierarchical_stack = self._map_out_hierarchical_stack_relationships(self.test_case_name, sample)
+            for path in self._discover_code_paths(hierarchical_stack):
+                function = path[-1]
+                time_spent = self.look_up_method_time(function, sample)
+                unique_code_paths.append(
                     {
+                        "tooltip": self.generate_tool_tip_message(path, time_spent),
                         "sample_id": sample,
-                        "path": line,
-                        "time": self.look_up_method_time(line[-1], sample)
+                        "path": self.convert_code_path_to_unique_string(path),
+                        "history": path,
+                        "time": time_spent,
                     }
                 )
-        return code_paths
+        return json.dumps(sorted(unique_code_paths, key=lambda k: k['time'], reverse=True))
 
 

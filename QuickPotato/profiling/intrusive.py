@@ -1,10 +1,12 @@
+import random
+import string
+from functools import wraps, partial
+
 from QuickPotato.configuration.management import options
-from QuickPotato.utilities.exceptions import CouchPotatoCannotFindMethod
-from QuickPotato.profiling.interpreters import StatisticsInterpreter
 from QuickPotato.harness.testing import PerformanceTest
 from QuickPotato.profiling.debugger import Profiler
-from functools import wraps, partial
-import uuid
+from QuickPotato.profiling.interpreters import StatisticsInterpreter
+from QuickPotato.utilities.exceptions import CouchPotatoCannotFindMethod
 
 performance_test = PerformanceTest()
 
@@ -31,7 +33,7 @@ def performance_critical(method=None, enabled=True):
         """
         if enabled and options.enable_intrusive_profiling:
 
-            method_id = str(uuid.uuid1())
+            sample_id = ''.join(random.choices(string.ascii_uppercase + string.digits, k=8))
             pf = Profiler()
             pf.profile_method_under_test(method, *args, **kwargs)
 
@@ -41,7 +43,7 @@ def performance_critical(method=None, enabled=True):
                 database_name=performance_test.test_case_name,
                 test_id=performance_test.current_test_id,
                 method_name=method.__name__,
-                sample_id=method_id
+                sample_id=sample_id
             )
 
             return pf.functional_output
