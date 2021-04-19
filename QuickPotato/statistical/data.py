@@ -320,7 +320,7 @@ class CodePaths(Crud):
         function = hierarchical_stack["name"]
         children = hierarchical_stack["children"]
 
-        if function not in history:
+        if function not in history and len(children) > 0:
             history.append(function)
 
         for child in children:
@@ -343,7 +343,6 @@ class CodePaths(Crud):
         :return:
         """
         code_path = []
-
         for entry in history:
             code_path.append(entry)
             if parent == entry:

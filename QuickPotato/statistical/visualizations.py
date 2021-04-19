@@ -207,7 +207,7 @@ class HeatMap(CodePaths):
         del stack[0]
         text = "/"
         for function in stack:
-            text = text + re.sub(r'[^\w]', ' ', str(function))
+            text = text + re.sub(r'[^\w\d]', ' ', str(function))
             text.strip()
         return text
 
@@ -228,7 +228,7 @@ class HeatMap(CodePaths):
                         "tooltip": self.generate_tool_tip_message(path, time_spent),
                         "sample_id": sample,
                         "path": self.convert_code_path_to_unique_string(path),
-                        "history": path,
+                        "hierarchy": path,
                         "time": time_spent,
                     }
                 )
