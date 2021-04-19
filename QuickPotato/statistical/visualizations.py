@@ -193,8 +193,8 @@ class HeatMap(CodePaths):
         :param time:
         :return:
         """
-        parent = re.sub(r'[^\w]', ' ', str(stack[-2]))
-        function = re.sub(r'[^\w]', ' ', str(stack[-1]))
+        parent = re.sub(r'[^\w\d]', ' ', str(stack[-2]))
+        function = re.sub(r'[^\w\d]', ' ', str(stack[-1]))
         return f"{parent}/{function} ran for: {time} .Sec"
 
     @staticmethod
