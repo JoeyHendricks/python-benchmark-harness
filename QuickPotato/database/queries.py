@@ -220,15 +220,54 @@ class Read(ContextManager):
         """
         table = ContextManager.performance_statistics_schema()
         engine, connection = self.spawn_connection(database)
-        query = select([table.c.sample_id, table.c.child_function_name, table.c.cumulative_time]).where(
-            table.c.test_id == test_id).distinct()
+        query = select([table.c.sample_id, table.c.parent_function_name, table.c.child_function_name,
+                        table.c.cumulative_time]).where(table.c.test_id == test_id).distinct()
         results = []
         for row in self.execute_query(connection, query):
             results.append(
                 {
                     "sample_id": str(row.sample_id),
-                    "function_name": str(row.child_function_name),
+                    "parent_function": str(row.parent_function_name),
+                    "child_function": str(row.child_function_name),
                     "time": row.cumulative_time
+                }
+            )
+        self.close_connection(engine, connection)
+        return results
+
+    def select_unique_meta_data_per_function(self, database, test_id):
+        """
+
+        :param database:
+        :param test_id:
+        :return:
+        """
+        table = ContextManager.performance_statistics_schema()
+        engine, connection = self.spawn_connection(database)
+        query = select(
+            [
+                table.c.sample_id,
+                table.c.child_function_name,
+                table.c.child_path,
+                table.c.child_line_number,
+                table.c.parent_function_name,
+                table.c.parent_path,
+                table.c.parent_line_number,
+                table.c.number_of_calls,
+            ]).where(table.c.test_id == test_id).distinct()
+
+        results = []
+        for row in self.execute_query(connection, query):
+            results.append(
+                {
+                    "sample_id": str(row.sample_id),
+                    "parent_function": str(row.parent_function_name),
+                    "parent_path": row.parent_path,
+                    "parent_line_number": row.parent_line_number,
+                    "child_function": str(row.child_function_name),
+                    "child_path": row.child_path,
+                    "child_line_number": row.child_line_number,
+                    "number_of_calls": row.number_of_calls,
                 }
             )
         self.close_connection(engine, connection)

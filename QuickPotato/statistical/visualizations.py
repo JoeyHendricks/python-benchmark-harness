@@ -39,9 +39,10 @@ class FlameGraph(CodePaths):
         self._current_number_of_children = 0
         self.test_case_name = test_case_name
 
-        self.json = [self._count_code_path_length(self._map_out_hierarchical_stack_relationships(test_case_name, sample))
-                     for sample in self.list_of_samples
-                     ]
+        self.json = [
+            self._count_code_path_length(self._map_out_hierarchical_stack_relationships(test_case_name, sample))
+            for sample in self.list_of_samples
+            ]
         self.html = self._render_html()
 
     def export(self, path):
@@ -168,19 +169,44 @@ class HeatMap(CodePaths):
         self.list_of_samples = self.select_all_sample_ids(test_case_name, test_id)
         self.test_case_name = test_case_name
         self._timings = self.select_unique_timings_per_function(test_case_name, test_id)
+        self._meta_data = self.select_unique_meta_data_per_function(test_case_name, test_id)
 
-    def look_up_method_time(self, name, sample_id):
+    def look_up_method_time(self, parent_function_name, child_function_name, sample_id):
         """
 
-        :param name:
+        :param parent_function_name:
+        :param child_function_name:
         :param sample_id:
         :return:
         """
         for function in self._timings:
-            if function["sample_id"] == sample_id and name == function["function_name"]:
+            if function["sample_id"] == sample_id and child_function_name == function["child_function"] \
+                    and parent_function_name == function["parent_function"]:
                 time = float(format(function["time"], f".{self._decimals}f").lstrip().rstrip('0'))
                 self.response_times.append(time)
                 return time
+
+            else:
+                continue
+
+    def look_up_method_meta_data(self, parent_function_name, child_function_name, sample_id):
+        """
+
+        :param parent_function_name:
+        :param child_function_name:
+        :param sample_id:
+        :return:
+        """
+        for function in self._meta_data:
+            if function["sample_id"] == sample_id and child_function_name == function["child_function"] \
+                    and parent_function_name == function["parent_function"]:
+                return {
+                    "parent_path": function["parent_path"],
+                    "parent_line_number": function["parent_line_number"],
+                    "child_path": function["child_path"],
+                    "child_line_number": function["child_line_number"],
+                    "number_of_calls": function["number_of_calls"],
+                }
 
             else:
                 continue
@@ -193,8 +219,8 @@ class HeatMap(CodePaths):
         :param time:
         :return:
         """
-        parent = re.sub(r'[^\w\d]', ' ', str(stack[-2]))
-        function = re.sub(r'[^\w\d]', ' ', str(stack[-1]))
+        parent = re.sub(r'[^\w\d]', '', str(stack[-2]))
+        function = re.sub(r'[^\w\d]', '', str(stack[-1]))
         return f"{parent}/{function} ran for: {time} .Sec"
 
     @staticmethod
@@ -207,7 +233,7 @@ class HeatMap(CodePaths):
         del stack[0]
         text = "/"
         for function in stack:
-            text = text + re.sub(r'[^\w\d]', ' ', str(function))
+            text = text + re.sub(r'[^\w\d]', '', str(function))
             text.strip()
         return text
 
@@ -222,16 +248,27 @@ class HeatMap(CodePaths):
             hierarchical_stack = self._map_out_hierarchical_stack_relationships(self.test_case_name, sample)
             for path in self._discover_code_paths(hierarchical_stack):
                 function = path[-1]
-                time_spent = self.look_up_method_time(function, sample)
+                parent = path[-2]
+                time_spent = self.look_up_method_time(
+                    parent_function_name=parent,
+                    child_function_name=function,
+                    sample_id=sample
+                )
+                meta_data = self.look_up_method_meta_data(
+                    parent_function_name=parent,
+                    child_function_name=function,
+                    sample_id=sample
+                )
                 unique_code_paths.append(
                     {
+                        "function": re.sub(r'[^\w\d]', '', str(function)),
+                        "parent": re.sub(r'[^\w\d]', '', str(parent)),
                         "tooltip": self.generate_tool_tip_message(path, time_spent),
                         "sample_id": sample,
                         "path": self.convert_code_path_to_unique_string(path),
                         "hierarchy": path,
                         "time": time_spent,
+                        "meta_data": meta_data
                     }
                 )
         return json.dumps(sorted(unique_code_paths, key=lambda k: k['time'], reverse=True))
-
-

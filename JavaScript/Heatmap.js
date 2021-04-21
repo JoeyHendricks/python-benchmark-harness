@@ -112,18 +112,19 @@ class HeatMap {
 
     }
 
-    create_mouse_click_event(meta_data) {
+    create_mouse_click_event(json) {
         /*
         The code below will change
         the heading with id = "myH"
         and the paragraph with id = "myP"
         in my web page:
         */
-        var meta_data_viewer = document.getElementById("meta_data_viewer")
+        console.log(json.hierarchy)
+        var explorer = document.getElementById("meta_data_viewer")
 
         // Generate human friendly code path
         var code_path = "";
-        for (const method of meta_data.hierarchy) {
+        for (var method of json.hierarchy) {
             method = method.replace(/[^\w\s]/gi, '')
             if (code_path == "") {
 
@@ -134,8 +135,33 @@ class HeatMap {
                 var code_path = code_path + " --> " + method;
             }
         }
-        console.log(code_path)
-        meta_data_viewer.innerHTML = code_path;
+        console.log(json.meta_data.parent_path)
+        var html = `
+        <div class="card-body">
+            <h5 class="card-title">Information:</h5>
+		    <p class="card-text">Name: ${json.parent}/${json.function}</p>
+            <p class="card-text">Time spend: ${json.time}</p>
+			<p class="card-text">Number of calls: ${json.meta_data.number_of_calls}</p>
+	    </div>
+        <ul class="list-group list-group-flush">
+		    <li class="list-group-item">
+                <h5 class="card-title">Detected Code Path</h5>
+                <p class="card-text">${code_path}</p>
+            </li>
+			<li class="list-group-item">
+                <h5 class="card-title">Function location</h5>
+                <p class="card-text">Path: ${json.meta_data.child_path}</p>
+                <p class="card-text">Line Number: ${json.meta_data.child_line_number}</p>
+            </li>
+            <li class="list-group-item">
+                <h5 class="card-title">Parent location</h5>
+			    <p class="card-text">Path: ${json.meta_data.parent_path}</p>
+                <p class="card-text">Line Number: ${json.meta_data.parent_line_number}</p>
+            </li>
+		</ul>
+        `;
+
+        explorer.innerHTML = html;
     }
 
     create_color_palette() {
