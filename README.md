@@ -22,38 +22,6 @@
 </div>
 <br>
 
-<!-- TABLE OF CONTENTS -->
-<details open="open" >
-  <summary>Table of Contents</summary>
-  <ol>
-    <li>
-      <a href="#QuickPotato-in-a-nutshell">QuickPotato in a nutshell</a>
-    </li>
-    <li>
-        <a>Getting Started</a>
-        <ul>
-            <li><a href="#Installation">Installation</a></li>
-            <li><a href="#Options-you-can-configure">Options</a></li>
-        </ul>
-    </li>
-    <li>
-        <a>Generating visualizations</a>
-        <ul>
-            <li><a href="#Generating-Flame-Graphs">Flame Graphs</a></li>
-            <li><a href="#Generating-a-CSV-file">CSV</a></li>
-        </ul>
-    </li>
-    <li>
-      <a>Test-driven performance testing</a>
-      <ul>
-        <li><a href="#Boundary-testing">Boundary testing</a></li>
-        <li><a href="#Regression-testing">Regression testing</a></li>
-      </ul>
-    </li>
-    <li><a href="#Learn-more-about-QuickPotato">Learn more about QuickPotato</a></li>
-  </ol>
-</details>
-
 <!-- CONTENT -->
 ## QuickPotato in a nutshell
 
