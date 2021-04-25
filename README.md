@@ -142,7 +142,10 @@ for _ in range(0, 100):
     FancyCode().say_my_name_and_more(name="joey hendricks")
 
 # Generate a heatmap
-HeatMap(test_case_name=pt.test_case_name, test_ids=[pt.previous_test_id, pt.current_test_id]).export("C:\\temp\\")
+HeatMap(
+  test_case_name=pt.test_case_name, 
+  test_ids=[pt.previous_test_id, pt.current_test_id]
+).export("C:\\temp\\")
 
 ```
 
