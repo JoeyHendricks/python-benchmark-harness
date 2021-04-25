@@ -111,7 +111,7 @@ FlameGraph().export(path="C:\\Temp\\")
 ## Generating Heatmaps (Beta)
 
 [![Example of a Python heatmap](/images/python-code-performance-heatmap.png "heatmap Python")](
-https://github.com/JoeyHendricks/QuickPotato/blob/master/images/python-code-flame-graph.png)
+https://github.com/JoeyHendricks/QuickPotato/blob/master/images/python-code-performance-heatmap.png)
 
 How does a by QuickPotato generated heatmap work:
 
