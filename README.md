@@ -108,6 +108,44 @@ def i_am_a_slow_function():
 FlameGraph().export(path="C:\\Temp\\")
 ```
 
+## Generating Heatmaps (Beta)
+
+[![Example of a Python heatmap](/images/python-code-performance-heatmap.png "heatmap Python")](
+https://github.com/JoeyHendricks/QuickPotato/blob/master/images/python-code-flame-graph.png)
+
+How does a by QuickPotato generated heatmap work:
+
+- Every box in the heatmap is a function
+- The y-axis is made up of functions ordered alphabetically.
+- The x-axis spans the amount of sample (one sample is on execution of your code) and is separated into 
+  columns of test id's (one test id is one completely executed test).
+- The color shows the speeds of the function to more red a box is the more time there was spent there.
+- All boxes are clickable and will give you information about that particular function.
+
+In the following way you can generate a Python heatmap with QuickPotato:
+
+```python
+from example.example_code import FancyCode
+from QuickPotato.profiling.intrusive import performance_test as pt
+from QuickPotato.configuration.management import options
+from QuickPotato.statistical.visualizations import HeatMap
+
+options.enable_intrusive_profiling = True  # <-- Make sure that profiling is enabled
+
+# Turn this setting on when to also include untested or failed test ids into your performance test.
+options.allow_the_selection_of_untested_or_failed_test_ids = True
+
+pt.test_case_name = "heatmap"  # <-- For recording multiple sample QuickPotato needs a test case name.
+
+# Run you code an X amount of times.
+for _ in range(0, 100):
+    FancyCode().say_my_name_and_more(name="joey hendricks")
+
+# Generate a heatmap
+HeatMap(test_case_name=pt.test_case_name, test_ids=[pt.previous_test_id, pt.current_test_id]).export("C:\\temp\\")
+
+```
+
 ## Generating a CSV file
 
 [![Example of a csv file](/images/csv-example.jpg "csv file")](

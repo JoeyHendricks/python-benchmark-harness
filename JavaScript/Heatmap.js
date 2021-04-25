@@ -9,7 +9,7 @@ class HeatMap {
         this.Tests = d3.map(this.data, d => d.x_axis_identifier_test_ids).keys();
 
         // Setting the dimensions, margins and the color palette of the graph
-        this.margin = { top: 110, right: 10, bottom: 100, left: 50 };
+        this.margin = { top: 110, right: 10, bottom: 100, left: 75 };
         this.width = 1800 - this.margin.left - this.margin.right;
         this.height = 1300 - this.margin.top - this.margin.bottom;
         this.ColorPalette = ['#f1bc31', '#e9731e', '#e4671f', '#df5a21', '#bc2d23'];
@@ -159,7 +159,7 @@ class HeatMap {
     create_tests_x_axis(svg) {
         // Build X axis:
         var axis = d3.scaleBand()
-            .range([-10, this.width])
+            .range([-30, this.width])
             .domain(this.Tests)
             .padding(0.05)
         return axis;
@@ -174,7 +174,7 @@ class HeatMap {
         // text label for the y axis
         svg.append("text")
             .attr("x", 550)
-            .attr("y", 25)
+            .attr("y", 50)
             .attr("transform", "rotate(90)")
             .style("font-size", 30)
             .style("text-anchor", "middle")

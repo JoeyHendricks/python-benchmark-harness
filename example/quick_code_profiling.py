@@ -9,7 +9,7 @@ options.allow_the_selection_of_untested_or_failed_test_ids = True  # <-- Used to
 pt.test_case_name = "exploratory performance test"
 test_data = ["joey", "joey hendricks"]
 
-for i in range(0, 10):
+for i in range(0, 100):
     FancyCode().say_my_name_and_more(name=test_data[1])
 
 HeatMap(test_case_name=pt.test_case_name, test_ids=[pt.previous_test_id, pt.current_test_id]).export("C:\\temp\\")
