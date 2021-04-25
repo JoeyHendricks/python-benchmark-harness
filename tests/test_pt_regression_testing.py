@@ -63,7 +63,7 @@ class TestRegressionTesting(unittest.TestCase):
         else:
             print(f"Fast baseline has been established first run status: {results}")
 
-        print(f"Raw Response Times: {pt.benchmark_measurements.method_latency()}")
+        print(f"Raw Response Times: {pt.benchmark_measurements.response_times()}")
         print(f"Average Response Time: {pt.benchmark_measurements.average_response_time()}")
 
         return results
@@ -89,7 +89,7 @@ class TestRegressionTesting(unittest.TestCase):
         # Print Details of this test
         print("------------------------------BENCHMARK-----------------------------")
         print(f"Benchmark test results: {results}")
-        print(f"Raw Response Times: {pt.benchmark_measurements.method_latency()}")
+        print(f"Raw Response Times: {pt.benchmark_measurements.response_times()}")
         print(f"Average Response Time: {pt.benchmark_measurements.average_response_time()}")
         print("--------------------------------------------------------------------")
 
@@ -117,7 +117,7 @@ class TestRegressionTesting(unittest.TestCase):
         # Print Details of this test
         print("------------------------------BENCHMARK-----------------------------")
         print(f"Benchmark test results: {results}")
-        print(f"Raw Response Times: {pt.benchmark_measurements.method_latency()}")
+        print(f"Raw Response Times: {pt.benchmark_measurements.response_times()}")
         print(f"Average Response Time: {pt.benchmark_measurements.average_response_time()}")
         print("--------------------------------------------------------------------")
 
@@ -145,7 +145,7 @@ class TestRegressionTesting(unittest.TestCase):
         # Print Details of this test
         print("------------------------------BENCHMARK-----------------------------")
         print(f"Benchmark test results: {results}")
-        print(f"Raw Response Times: {pt.benchmark_measurements.method_latency()}")
+        print(f"Raw Response Times: {pt.benchmark_measurements.response_times()}")
         print(f"Average Response Time: {pt.benchmark_measurements.average_response_time()}")
         print("--------------------------------------------------------------------")
 
@@ -180,7 +180,7 @@ class TestRegressionTesting(unittest.TestCase):
             print(f"Previous test id :{pt.previous_test_id}")
             print(f"Current  test id :{pt.current_test_id}")
             print(f"Benchmark test results: {results}")
-            print(f"Raw Response Times: {pt.benchmark_measurements.method_latency()}")
+            print(f"Raw Response Times: {pt.benchmark_measurements.response_times()}")
             print(f"Average Response Time: {pt.benchmark_measurements.average_response_time()}")
             print("----------------------------------------------------------------------")
 
@@ -205,7 +205,7 @@ class TestRegressionTesting(unittest.TestCase):
             print(f"Previous test id :{pt.previous_test_id}")
             print(f"Current  test id :{pt.current_test_id}")
             print(f"Benchmark test results: {results}")
-            print(f"Raw Response Times: {pt.benchmark_measurements.method_latency()}")
+            print(f"Raw Response Times: {pt.benchmark_measurements.response_times()}")
             print(f"Average Response Time: {pt.benchmark_measurements.average_response_time()}")
             print("----------------------------------------------------------------------")
             return results
