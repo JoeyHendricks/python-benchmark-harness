@@ -148,6 +148,8 @@ HeatMap(
 ).export("C:\\temp\\")
 
 ```
+> This visualization is still being tweaked and improved if you encounter any issue with it please open an issue. 
+> (Your feedback is appreciated!)
 
 ## Generating a CSV file
 
@@ -246,9 +248,10 @@ options.maximum_number_saved_test_results = 10
 
 Some features which I am planning to add to QuickPotato soon:
 
-- sample and code path heat map
+- Improving the heatmap
 - Scatter plot
 - Creating a virtual map of your code
+- Time Line (Showing from left to right the time spent per action in your code.)
 - non-intrusive profiling by means of setting a start and stop point
 
 ## Learn more about QuickPotato
