@@ -119,7 +119,7 @@ How does a by QuickPotato generated heatmap work:
 - The y-axis is made up of functions ordered alphabetically.
 - The x-axis spans the amount of sample (one sample is on execution of your code) and is separated into 
   columns of test id's (one test id is one completely executed test).
-- The color shows the speeds of the function to more red a box is the more time there was spent there.
+- The color shows the speeds of the function to more red a box is the more time there was spent.
 - All boxes are clickable and will give you information about that particular function.
 
 In the following way you can generate a Python heatmap with QuickPotato:
@@ -142,10 +142,8 @@ for _ in range(0, 100):
     FancyCode().say_my_name_and_more(name="joey hendricks")
 
 # Generate a heatmap
-HeatMap(
-  test_case_name=pt.test_case_name, 
-  test_ids=[pt.previous_test_id, pt.current_test_id]
-).export("C:\\temp\\")
+heatmap = HeatMap(test_case_name=pt.test_case_name, test_ids=[pt.previous_test_id, pt.current_test_id])
+heatmap.export("C:\\temp\\")
 
 ```
 > This visualization is still being tweaked and improved if you encounter any issue with it please open an issue. 
