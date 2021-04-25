@@ -1,13 +1,13 @@
 from QuickPotato.database.queries import Crud
 from QuickPotato.statistical.data import CodePaths
-from QuickPotato.utilities.html_templates import flame_graph_template
+from QuickPotato.utilities.html_templates import flame_graph_template, heatmap_template
 from QuickPotato.utilities.defaults import default_test_case_name
-from QuickPotato.utilities.exceptions import UnableToGenerateVisualizations, UnableToExportVisualization
+from QuickPotato.utilities.exceptions import UnableToGenerateVisualizations, \
+    UnableToExportVisualization, UnAcceptableTestIdFound
 from datetime import datetime
 from jinja2 import Template
 import pandas as pd
 import json
-import re
 import os
 
 
@@ -42,7 +42,7 @@ class FlameGraph(CodePaths):
         self.json = [
             self._count_code_path_length(self._map_out_hierarchical_stack_relationships(test_case_name, sample))
             for sample in self.list_of_samples
-            ]
+        ]
         self.html = self._render_html()
 
     def export(self, path):
@@ -52,7 +52,7 @@ class FlameGraph(CodePaths):
                      Example: C:\\temp\\
         """
         if os.path.isdir(path):
-            name = f"{self.test_case_name}-{datetime.now().timestamp()}"
+            name = f"FlameGraph-{self.test_case_name}-{datetime.now().timestamp()}"
             with open(f"{path}{name}.html", 'a') as file:
                 file.write(self.html)
         else:
@@ -150,125 +150,164 @@ class CsvFile(Crud):
 
 class HeatMap(CodePaths):
 
-    def __init__(self, test_case_name=default_test_case_name, test_id=None):
+    def __init__(self, test_case_name=default_test_case_name, test_ids=None, order_by="latency"):
         """
 
         :param test_case_name:
-        :param test_id:
+        :param test_ids:
+        :param order_by:
         """
         super(HeatMap, self).__init__()
+        self.list_of_test_ids = test_ids
+        if test_ids is None and test_case_name == default_test_case_name:
+            self.list_of_test_ids = [self.select_test_ids_with_performance_statistics(database=test_case_name)[-1]]
 
-        if test_id is None and test_case_name == default_test_case_name:
-            test_id = self.select_test_ids_with_performance_statistics(database=test_case_name)[-1]
-
-        elif test_id is None:
+        elif test_ids is None or type(test_ids) is not list:
             raise UnableToGenerateVisualizations()
 
-        self.response_times = []
         self._decimals = 25
-        self.list_of_samples = self.select_all_sample_ids(test_case_name, test_id)
+        self._order_by = order_by
         self.test_case_name = test_case_name
-        self._timings = self.select_unique_timings_per_function(test_case_name, test_id)
-        self._meta_data = self.select_unique_meta_data_per_function(test_case_name, test_id)
 
-    def look_up_method_time(self, parent_function_name, child_function_name, sample_id):
+        self.statistics = {}
+        self.sample_list = {}
+        for tid in test_ids:
+            self.sample_list[tid] = self.select_all_sample_ids(test_case_name, tid)
+            self.statistics[tid] = {}
+            for sample in self.sample_list[tid]:
+                self.statistics[tid][sample] = self.select_call_stack_by_sample_id(test_case_name, sample)
+
+        self.json = self.generate_json_payload()
+
+    def look_up_method_latency(self, parent_function_name, child_function_name, sample_id, test_id):
         """
 
         :param parent_function_name:
         :param child_function_name:
         :param sample_id:
+        :param test_id:
         :return:
         """
-        for function in self._timings:
-            if function["sample_id"] == sample_id and child_function_name == function["child_function"] \
-                    and parent_function_name == function["parent_function"]:
-                time = float(format(function["time"], f".{self._decimals}f").lstrip().rstrip('0'))
-                self.response_times.append(time)
+        for frame in self.statistics[test_id][sample_id]:
+            if frame["sample_id"] == sample_id and child_function_name == frame["child_function_name"] \
+                    and parent_function_name == frame["parent_function_name"]:
+                time = float(format(frame["cumulative_time"], f".{self._decimals}f").lstrip().rstrip('0'))
                 return time
 
             else:
                 continue
 
-    def look_up_method_meta_data(self, parent_function_name, child_function_name, sample_id):
+    def look_up_method_meta_data(self, parent_function_name, child_function_name, sample_id, test_id):
         """
 
         :param parent_function_name:
         :param child_function_name:
         :param sample_id:
+        :param test_id:
         :return:
         """
-        for function in self._meta_data:
-            if function["sample_id"] == sample_id and child_function_name == function["child_function"] \
-                    and parent_function_name == function["parent_function"]:
+        for frame in self.statistics[test_id][sample_id]:
+            if frame["sample_id"] == sample_id and child_function_name == frame["child_function_name"] \
+                    and parent_function_name == frame["parent_function_name"]:
                 return {
-                    "parent_path": function["parent_path"],
-                    "parent_line_number": function["parent_line_number"],
-                    "child_path": function["child_path"],
-                    "child_line_number": function["child_line_number"],
-                    "number_of_calls": function["number_of_calls"],
+                    "parent_path": frame["parent_path"],
+                    "parent_line_number": frame["parent_line_number"],
+                    "child_path": frame["child_path"],
+                    "child_line_number": frame["child_line_number"],
+                    "number_of_calls": frame["number_of_calls"],
                 }
 
             else:
                 continue
 
     @staticmethod
-    def generate_tool_tip_message(stack, time):
+    def generate_y_axis_identifier(parent, child, sample_id):
         """
-
-        :param stack:
-        :param time:
-        :return:
+        
+        :param parent: 
+        :param child: 
+        :param sample_id: 
+        :return: 
         """
-        parent = re.sub(r'[^\w\d]', '', str(stack[-2]))
-        function = re.sub(r'[^\w\d]', '', str(stack[-1]))
-        return f"{parent}/{function} ran for: {time} .Sec"
+        if parent == sample_id:
+            text = f"profiler/{child}".replace("<", " ")
+            text = text.replace(">", "")
+            return text
+        else:
+            text = f"{parent}/{child}".replace("<", " ")
+            text = text.replace(">", " ")
+            return text
 
-    @staticmethod
-    def convert_code_path_to_unique_string(stack):
-        """
-
-        :param stack:
-        :return:
-        """
-        del stack[0]
-        text = "/"
-        for function in stack:
-            text = text + re.sub(r'[^\w\d]', '', str(function))
-            text.strip()
-        return text
-
-    @property
-    def code_paths(self):
+    def generate_json_payload(self):
         """
 
         :return:
         """
-        unique_code_paths = []
-        for sample in self.list_of_samples:
-            hierarchical_stack = self._map_out_hierarchical_stack_relationships(self.test_case_name, sample)
-            for path in self._discover_code_paths(hierarchical_stack):
-                function = path[-1]
-                parent = path[-2]
-                time_spent = self.look_up_method_time(
-                    parent_function_name=parent,
-                    child_function_name=function,
-                    sample_id=sample
-                )
-                meta_data = self.look_up_method_meta_data(
-                    parent_function_name=parent,
-                    child_function_name=function,
-                    sample_id=sample
-                )
-                unique_code_paths.append(
-                    {
-                        "function": re.sub(r'[^\w\d]', '', str(function)),
-                        "parent": re.sub(r'[^\w\d]', '', str(parent)),
-                        "tooltip": self.generate_tool_tip_message(path, time_spent),
-                        "sample_id": sample,
-                        "path": self.convert_code_path_to_unique_string(path),
-                        "hierarchy": path,
-                        "time": time_spent,
-                        "meta_data": meta_data
-                    }
-                )
-        return json.dumps(sorted(unique_code_paths, key=lambda k: k['time'], reverse=True))
+        data = []
+        for test_id in self.list_of_test_ids:
+
+            if test_id == "None":
+                raise UnAcceptableTestIdFound()
+
+            for sample_id in self.sample_list[test_id]:
+                hierarchical_stack = self._map_out_hierarchical_stack_relationships(self.test_case_name, sample_id)
+                for frame in self.statistics[test_id][sample_id]:
+
+                    parent_function = frame['parent_function_name']
+                    child_function = frame['child_function_name']
+
+                    predicted_code_path = self._recursively_search_hierarchical_stack(
+                        hierarchical_stack,
+                        frame['parent_function_name'],
+                        frame['child_function_name'],
+                        history=[]
+                    )
+                    meta_data = self.look_up_method_meta_data(
+                        parent_function_name=frame['parent_function_name'],
+                        child_function_name=frame['child_function_name'],
+                        sample_id=sample_id,
+                        test_id=test_id
+                    )
+                    latency = self.look_up_method_latency(
+                        parent_function_name=frame['parent_function_name'],
+                        child_function_name=frame['child_function_name'],
+                        sample_id=sample_id,
+                        test_id=test_id
+                    )
+                    data.append(
+                        {
+                            "y_axis_identifier_parent_child_pair": self.generate_y_axis_identifier(
+                                parent_function,
+                                child_function,
+                                sample_id
+                            ),
+                            "x_axis_identifier_sample_ids": sample_id,
+                            "x_axis_identifier_test_ids": test_id,
+                            "predicted_code_path": predicted_code_path,
+                            "meta_data": meta_data,
+                            "latency": latency
+                        }
+                    )
+
+        return json.dumps(sorted(data, key=lambda k: k[self._order_by], reverse=True))
+
+    def render_html(self):
+        """
+
+        :return:
+        """
+        template = Template(heatmap_template)
+        return template.render(payload=self.json)
+
+    def export(self, path):
+        """
+        Export the heatmap as a HTML report on disk.
+        :param path: The path on disk where the file needs to be written.
+                     Example: C:\\temp\\
+        """
+        if os.path.isdir(path):
+            name = f"Heatmap-{self.test_case_name}-{datetime.now().timestamp()}"
+            with open(f"{path}{name}.html", 'a') as file:
+                file.write(self.render_html())
+        else:
+            raise UnableToExportVisualization()

@@ -232,11 +232,9 @@ class RawData(Crud):
 class CodePaths(Crud):
 
     def __init__(self):
-
         super().__init__()
-        self.inheritance = []
-        self.last_parent = None
-        self.paths = []
+
+        self._matched_code_path = None
 
     def _map_out_hierarchical_stack_relationships(self, test_case_name, sample_id):
         """
@@ -292,60 +290,32 @@ class CodePaths(Crud):
             for item in stack['children']:
                 self._recursively_update_parent_child_relationship(item, parent, child)
 
-    def _discover_code_paths(self, hierarchical_stack):
-        """
-        Used to map out all of the found code paths in hierarchical JSON call stack.
-
-        :param hierarchical_stack: The hierarchical JSON call stack.
-        :return: All of the uniquely discovered code paths
-        """
-        if len(self.paths) > 0:
-            self.paths = []
-
-        self._recursively_search_hierarchical_stack_for_code_paths(
-            hierarchical_stack=hierarchical_stack,
-            parent=hierarchical_stack["name"],
-            history=[]
-        )
-        return self.paths
-
-    def _recursively_search_hierarchical_stack_for_code_paths(self, hierarchical_stack, parent, history):
+    def _recursively_search_hierarchical_stack(self, hierarchical_stack, parent, child, history):
         """
 
         :param hierarchical_stack:
         :param parent:
-        :param history:
         :return:
         """
-        function = hierarchical_stack["name"]
-        children = hierarchical_stack["children"]
+        if len(hierarchical_stack["children"]) != 0 and hierarchical_stack["name"] not in history:
+            history.append(hierarchical_stack["name"])
+        if hierarchical_stack["name"] == parent:
+            matched_code_path = history
+            matched_code_path.append(child)
+            return matched_code_path
 
-        if function not in history and len(children) > 0:
-            history.append(function)
+        else:
+            for current_point_in_stack in hierarchical_stack["children"]:
+                match = self._recursively_search_hierarchical_stack(
+                    current_point_in_stack,
+                    parent,
+                    child,
+                    history
+                )
+                if match is not None:
+                    return match
 
-        for child in children:
-            code_path = self._find_logical_code_path(child["name"], function, parent, history)
-            self.paths.append(code_path)
+                else:
+                    continue
 
-        for child in children:
-            self._recursively_search_hierarchical_stack_for_code_paths(
-                hierarchical_stack=child,
-                parent=hierarchical_stack["name"],
-                history=history
-            )
 
-    @staticmethod
-    def _find_logical_code_path(child, function, parent, history):
-        """
-
-        :param child:
-        :param parent:
-        :return:
-        """
-        code_path = []
-        for entry in history:
-            code_path.append(entry)
-            if parent == entry:
-                code_path.append(function)
-                code_path.append(child)
-                return list(dict.fromkeys(code_path))

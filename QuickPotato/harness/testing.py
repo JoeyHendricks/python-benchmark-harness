@@ -1,4 +1,5 @@
 from QuickPotato.configuration.settings import Boundaries, RegressionSettings
+from QuickPotato.configuration.management import options
 from QuickPotato.utilities.defaults import default_test_case_name
 from QuickPotato.statistical.hypothesis_tests import TTest
 from QuickPotato.harness.measurements import Metrics
@@ -25,7 +26,8 @@ class PerformanceTest(Crud, Boundaries, Metrics, RegressionSettings):
         self.silence_warning_messages = False
 
         self._test_case_name = default_test_case_name
-        self._monitoring_mode = True
+        self._no_test_case_mode = True
+        self.enable_untested_or_failed_test_selection = False
 
     @property
     def benchmark_measurements(self):
@@ -58,7 +60,7 @@ class PerformanceTest(Crud, Boundaries, Metrics, RegressionSettings):
         -------
             AgentCannotFindTestCase If no test case is found
         """
-        if self._monitoring_mode is False:
+        if self._no_test_case_mode is False:
             return self._test_case_name
 
         else:
@@ -86,7 +88,8 @@ class PerformanceTest(Crud, Boundaries, Metrics, RegressionSettings):
         """
         value = value
         self._create_and_populate_test_case_database(value)
-        self._monitoring_mode = False
+        self._no_test_case_mode = False
+        self.enable_untested_or_failed_test_selection = options.allow_the_selection_of_untested_or_failed_test_ids
 
         # Refresh Test ID's
         self._reset_unit_performance_test(database_name=value)
@@ -133,7 +136,11 @@ class PerformanceTest(Crud, Boundaries, Metrics, RegressionSettings):
         database_name
             The name of the database also known as the test case name
         """
-        self.previous_test_id = str(self.select_previous_passed_test_id(database_name))
+        if self.enable_untested_or_failed_test_selection is False:
+            self.previous_test_id = str(self.select_previous_passed_test_id(database_name))
+        else:
+            self.previous_test_id = str(self.select_previous_test_id(database_name))
+
         self.current_test_id = self._generate_random_test_id()
 
     def _inspect_benchmark_and_baseline(self):

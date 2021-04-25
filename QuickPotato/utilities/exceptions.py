@@ -1,3 +1,14 @@
+class UnAcceptableTestIdFound(Exception):
+    """
+    QuickPotato has detected that your selected test are not found or are untested with
+    boundary or regression test. If the latter is true you can bypass this check by enabling:
+
+    options.allow_the_selection_of_untested_or_failed_test_ids = True
+
+    """
+    def __str__(self):
+        return self.__doc__
+
 
 class CouchPotatoCannotFindMethod(Exception):
     """

@@ -152,76 +152,74 @@ flame_graph_template = """
 </html>
 """
 
-sample_heatmap_template = """"
+heatmap_template = """
 <!DOCTYPE html>
 <meta charset="utf-8">
 
-<!-- Load d3.js -->
-<script src="https://d3js.org/d3.v4.js"></script>
+<head>
+    <script src="https://d3js.org/d3.v4.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" 
+    rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" 
+    crossorigin="anonymous">
+</head>
 
-<!-- Create a div where the graph will take place -->
-<center>
-  <div id="heatmap">
-    
-  </div>
-</center>
+<body>
 
-<!-- Load color palettes -->
-<script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+    <div class="container-fluid">
+        <br>
+        <div class="row">
+            <div class="col-8">
+                <div id="analytics">
 
+                </div>
+            </div>
+            <div class="col-4">
+                <div id="sample" style="margin-right: 10px; margin-top: 75px;">
+                    <div class="card" id="meta_data_viewer" style="overflow-y: auto; max-height: 800px;">
+                        <div class="card-body">
+                            <h5 class="card-title">Click on a box to explore it's information</h5>
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">Code Path will be displayed here.</li>
+                            <li class="list-group-item">Function information will be displayed here.</li>
+                            <li class="list-group-item">Parent function information will be displayed here.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
 
 <script>
-    var payload = [{"sample_id": "GL1QNS5H", "path": "say_my_name_and_more", "time": 14.014}, {"sample_id": "GL1QNS5H", "path": "say_my_name_and_more/sleep_based_on_name_length", "time": 14.0139}, {"sample_id": "GL1QNS5H", "path": "say_my_name_and_more/sleep_based_on_name_length/ built in method time sleep", "time": 14.0138}, {"sample_id": "KF19PSAC", "path": "say_my_name_and_more", "time": 14.0135}, {"sample_id": "KF19PSAC", "path": "say_my_name_and_more/sleep_based_on_name_length", "time": 14.0133}, {"sample_id": "KF19PSAC", "path": "say_my_name_and_more/sleep_based_on_name_length/ built in method time sleep", "time": 14.0132}, {"sample_id": "J7MIIB81", "path": "say_my_name_and_more", "time": 14.0126}, {"sample_id": "J7MIIB81", "path": "say_my_name_and_more/sleep_based_on_name_length", "time": 14.0125}, {"sample_id": "J7MIIB81", "path": "say_my_name_and_more/sleep_based_on_name_length/ built in method time sleep", "time": 14.0125}, {"sample_id": "09ELLFYK", "path": "say_my_name_and_more", "time": 14.0124}, {"sample_id": "09ELLFYK", "path": "say_my_name_and_more/sleep_based_on_name_length", "time": 14.0122}, {"sample_id": "09ELLFYK", "path": "say_my_name_and_more/sleep_based_on_name_length/ built in method time sleep", "time": 14.0122}, {"sample_id": "2FQ69V0N", "path": "say_my_name_and_more", "time": 14.0101}, {"sample_id": "2FQ69V0N", "path": "say_my_name_and_more/sleep_based_on_name_length", "time": 14.0099}, {"sample_id": "2FQ69V0N", "path": "say_my_name_and_more/sleep_based_on_name_length/ built in method time sleep", "time": 14.0098}, {"sample_id": "HUFC7K9V", "path": "say_my_name_and_more", "time": 14.0086}, {"sample_id": "HUFC7K9V", "path": "say_my_name_and_more/sleep_based_on_name_length", "time": 14.0084}, {"sample_id": "HUFC7K9V", "path": "say_my_name_and_more/sleep_based_on_name_length/ built in method time sleep", "time": 14.0083}, {"sample_id": "M94AHDHE", "path": "say_my_name_and_more", "time": 14.0053}, {"sample_id": "M94AHDHE", "path": "say_my_name_and_more/sleep_based_on_name_length", "time": 14.0051}, {"sample_id": "M94AHDHE", "path": "say_my_name_and_more/sleep_based_on_name_length/ built in method time sleep", "time": 14.0051}, {"sample_id": "RZE7D9T5", "path": "say_my_name_and_more", "time": 14.0045}, {"sample_id": "RZE7D9T5", "path": "say_my_name_and_more/sleep_based_on_name_length", "time": 14.0044}, {"sample_id": "RZE7D9T5", "path": "say_my_name_and_more/sleep_based_on_name_length/ built in method time sleep", "time": 14.0044}, {"sample_id": "DA5F9J87", "path": "say_my_name_and_more", "time": 14.0022}, {"sample_id": "DA5F9J87", "path": "say_my_name_and_more/sleep_based_on_name_length", "time": 14.002}, {"sample_id": "DA5F9J87", "path": "say_my_name_and_more/sleep_based_on_name_length/ built in method time sleep", "time": 14.002}, {"sample_id": "84E6CUPX", "path": "say_my_name_and_more", "time": 14.0007}, {"sample_id": "84E6CUPX", "path": "say_my_name_and_more/sleep_based_on_name_length", "time": 14.0005}, {"sample_id": "84E6CUPX", "path": "say_my_name_and_more/sleep_based_on_name_length/ built in method time sleep", "time": 14.0005}, {"sample_id": "KF19PSAC", "path": "say_my_name_and_more/ built in method builtins print", "time": 0.0001608}, {"sample_id": "2FQ69V0N", "path": "say_my_name_and_more/ built in method builtins print", "time": 0.0001548}, {"sample_id": "09ELLFYK", "path": "say_my_name_and_more/ built in method builtins print", "time": 0.0001548}, {"sample_id": "HUFC7K9V", "path": "say_my_name_and_more/ built in method builtins print", "time": 0.0001519}, {"sample_id": "M94AHDHE", "path": "say_my_name_and_more/ built in method builtins print", "time": 0.0001511}, {"sample_id": "84E6CUPX", "path": "say_my_name_and_more/ built in method builtins print", "time": 0.0001045}, {"sample_id": "2FQ69V0N", "path": "say_my_name_and_more/length_of_name", "time": 9.93e-05}, {"sample_id": "2FQ69V0N", "path": "say_my_name_and_more/sleep_based_on_name_length/length_of_name", "time": 9.93e-05}, {"sample_id": "09ELLFYK", "path": "say_my_name_and_more/length_of_name", "time": 9.8e-05}, {"sample_id": "09ELLFYK", "path": "say_my_name_and_more/sleep_based_on_name_length/length_of_name", "time": 9.8e-05}, {"sample_id": "HUFC7K9V", "path": "say_my_name_and_more/length_of_name", "time": 9.74e-05}, {"sample_id": "HUFC7K9V", "path": "say_my_name_and_more/sleep_based_on_name_length/length_of_name", "time": 9.74e-05}, {"sample_id": "KF19PSAC", "path": "say_my_name_and_more/length_of_name", "time": 9.72e-05}, {"sample_id": "KF19PSAC", "path": "say_my_name_and_more/sleep_based_on_name_length/length_of_name", "time": 9.72e-05}, {"sample_id": "M94AHDHE", "path": "say_my_name_and_more/length_of_name", "time": 9.57e-05}, {"sample_id": "M94AHDHE", "path": "say_my_name_and_more/sleep_based_on_name_length/length_of_name", "time": 9.57e-05}, {"sample_id": "DA5F9J87", "path": "say_my_name_and_more/ built in method builtins print", "time": 8.82e-05}, {"sample_id": "2FQ69V0N", "path": "say_my_name_and_more/sleep_based_on_name_length/length_of_name/show_message_when_name_very_long", "time": 8.73e-05}, {"sample_id": "2FQ69V0N", "path": "say_my_name_and_more/length_of_name/show_message_when_name_very_long", "time": 8.73e-05}, {"sample_id": "GL1QNS5H", "path": "say_my_name_and_more/ built in method builtins print", "time": 8.57e-05}, {"sample_id": "HUFC7K9V", "path": "say_my_name_and_more/sleep_based_on_name_length/length_of_name/show_message_when_name_very_long", "time": 8.57e-05}, {"sample_id": "HUFC7K9V", "path": "say_my_name_and_more/length_of_name/show_message_when_name_very_long", "time": 8.57e-05}, {"sample_id": "09ELLFYK", "path": "say_my_name_and_more/sleep_based_on_name_length/length_of_name/show_message_when_name_very_long", "time": 8.53e-05}, {"sample_id": "09ELLFYK", "path": "say_my_name_and_more/length_of_name/show_message_when_name_very_long", "time": 8.53e-05}, {"sample_id": "KF19PSAC", "path": "say_my_name_and_more/sleep_based_on_name_length/length_of_name/show_message_when_name_very_long", "time": 8.38e-05}, {"sample_id": "KF19PSAC", "path": "say_my_name_and_more/length_of_name/show_message_when_name_very_long", "time": 8.38e-05}, {"sample_id": "M94AHDHE", "path": "say_my_name_and_more/sleep_based_on_name_length/length_of_name/show_message_when_name_very_long", "time": 8.35e-05}, {"sample_id": "M94AHDHE", "path": "say_my_name_and_more/length_of_name/show_message_when_name_very_long", "time": 8.35e-05}, {"sample_id": "J7MIIB81", "path": "say_my_name_and_more/ built in method builtins print", "time": 8.35e-05}, {"sample_id": "RZE7D9T5", "path": "say_my_name_and_more/ built in method builtins print", "time": 6.83e-05}, {"sample_id": "84E6CUPX", "path": "say_my_name_and_more/length_of_name", "time": 6.7e-05}, {"sample_id": "84E6CUPX", "path": "say_my_name_and_more/sleep_based_on_name_length/length_of_name", "time": 6.7e-05}, {"sample_id": "84E6CUPX", "path": "say_my_name_and_more/sleep_based_on_name_length/length_of_name/show_message_when_name_very_long", "time": 5.85e-05}, {"sample_id": "84E6CUPX", "path": "say_my_name_and_more/length_of_name/show_message_when_name_very_long", "time": 5.85e-05}, {"sample_id": "DA5F9J87", "path": "say_my_name_and_more/length_of_name", "time": 5.35e-05}, {"sample_id": "DA5F9J87", "path": "say_my_name_and_more/sleep_based_on_name_length/length_of_name", "time": 5.35e-05}, {"sample_id": "GL1QNS5H", "path": "say_my_name_and_more/length_of_name", "time": 5.31e-05}, {"sample_id": "GL1QNS5H", "path": "say_my_name_and_more/sleep_based_on_name_length/length_of_name", "time": 5.31e-05}, {"sample_id": "J7MIIB81", "path": "say_my_name_and_more/length_of_name", "time": 5.22e-05}, {"sample_id": "J7MIIB81", "path": "say_my_name_and_more/sleep_based_on_name_length/length_of_name", "time": 5.22e-05}, {"sample_id": "DA5F9J87", "path": "say_my_name_and_more/sleep_based_on_name_length/length_of_name/show_message_when_name_very_long", "time": 4.66e-05}, {"sample_id": "DA5F9J87", "path": "say_my_name_and_more/length_of_name/show_message_when_name_very_long", "time": 4.66e-05}, {"sample_id": "HUFC7K9V", "path": "say_my_name_and_more/sleep_based_on_name_length/ built in method time sleep/ length_of_name/show_message_when_name_very_long/x", "time": 4.63e-05}, {"sample_id": "HUFC7K9V", "path": "say_my_name_and_more/sleep_based_on_name_length/ built in method time sleep/ length_of_name/show_message_when_name_very_long/x", "time": 4.63e-05}, {"sample_id": "GL1QNS5H", "path": "say_my_name_and_more/sleep_based_on_name_length/length_of_name/show_message_when_name_very_long", "time": 4.62e-05}, {"sample_id": "GL1QNS5H", "path": "say_my_name_and_more/length_of_name/show_message_when_name_very_long", "time": 4.62e-05}, {"sample_id": "2FQ69V0N", "path": "say_my_name_and_more/sleep_based_on_name_length/ built in method time sleep/ length_of_name/show_message_when_name_very_long/x", "time": 4.6e-05}, {"sample_id": "2FQ69V0N", "path": "say_my_name_and_more/sleep_based_on_name_length/ built in method time sleep/ length_of_name/show_message_when_name_very_long/x", "time": 4.6e-05}, {"sample_id": "J7MIIB81", "path": "say_my_name_and_more/sleep_based_on_name_length/length_of_name/show_message_when_name_very_long", "time": 4.53e-05}, {"sample_id": "J7MIIB81", "path": "say_my_name_and_more/length_of_name/show_message_when_name_very_long", "time": 4.53e-05}, {"sample_id": "09ELLFYK", "path": "say_my_name_and_more/sleep_based_on_name_length/ built in method time sleep/ length_of_name/show_message_when_name_very_long/x", "time": 4.46e-05}, {"sample_id": "09ELLFYK", "path": "say_my_name_and_more/sleep_based_on_name_length/ built in method time sleep/ length_of_name/show_message_when_name_very_long/x", "time": 4.46e-05}, {"sample_id": "KF19PSAC", "path": "say_my_name_and_more/sleep_based_on_name_length/ built in method time sleep/ length_of_name/show_message_when_name_very_long/x", "time": 4.4e-05}, {"sample_id": "KF19PSAC", "path": "say_my_name_and_more/sleep_based_on_name_length/ built in method time sleep/ length_of_name/show_message_when_name_very_long/x", "time": 4.4e-05}, {"sample_id": "M94AHDHE", "path": "say_my_name_and_more/sleep_based_on_name_length/ built in method time sleep/ length_of_name/show_message_when_name_very_long/x", "time": 4.37e-05}, {"sample_id": "M94AHDHE", "path": "say_my_name_and_more/sleep_based_on_name_length/ built in method time sleep/ length_of_name/show_message_when_name_very_long/x", "time": 4.37e-05}, {"sample_id": "RZE7D9T5", "path": "say_my_name_and_more/length_of_name", "time": 4.31e-05}, {"sample_id": "RZE7D9T5", "path": "say_my_name_and_more/sleep_based_on_name_length/length_of_name", "time": 4.31e-05}, {"sample_id": "HUFC7K9V", "path": "say_my_name_and_more/sleep_based_on_name_length/ built in method time sleep/ length_of_name/show_message_when_name_very_long/x/y", "time": 4.16e-05}, {"sample_id": "HUFC7K9V", "path": "say_my_name_and_more/sleep_based_on_name_length/ built in method time sleep/ length_of_name/show_message_when_name_very_long/x/y", "time": 4.16e-05}, {"sample_id": "2FQ69V0N", "path": "say_my_name_and_more/sleep_based_on_name_length/ built in method time sleep/ length_of_name/show_message_when_name_very_long/x/y", "time": 4.11e-05}, {"sample_id": "2FQ69V0N", "path": "say_my_name_and_more/sleep_based_on_name_length/ built in method time sleep/ length_of_name/show_message_when_name_very_long/x/y", "time": 4.11e-05}, {"sample_id": "09ELLFYK", "path": "say_my_name_and_more/sleep_based_on_name_length/ built in method time sleep/ length_of_name/show_message_when_name_very_long/x/y", "time": 3.98e-05}, {"sample_id": "09ELLFYK", "path": "say_my_name_and_more/sleep_based_on_name_length/ built in method time sleep/ length_of_name/show_message_when_name_very_long/x/y", "time": 3.98e-05}, {"sample_id": "KF19PSAC", "path": "say_my_name_and_more/sleep_based_on_name_length/ built in method time sleep/ length_of_name/show_message_when_name_very_long/x/y", "time": 3.96e-05}, {"sample_id": "KF19PSAC", "path": "say_my_name_and_more/sleep_based_on_name_length/ built in method time sleep/ length_of_name/show_message_when_name_very_long/x/y", "time": 3.96e-05}, {"sample_id": "M94AHDHE", "path": "say_my_name_and_more/sleep_based_on_name_length/ built in method time sleep/ length_of_name/show_message_when_name_very_long/x/y", "time": 3.93e-05}, {"sample_id": "M94AHDHE", "path": "say_my_name_and_more/sleep_based_on_name_length/ built in method time sleep/ length_of_name/show_message_when_name_very_long/x/y", "time": 3.93e-05}, {"sample_id": "RZE7D9T5", "path": "say_my_name_and_more/sleep_based_on_name_length/length_of_name/show_message_when_name_very_long", "time": 3.75e-05}, {"sample_id": "RZE7D9T5", "path": "say_my_name_and_more/length_of_name/show_message_when_name_very_long", "time": 3.75e-05}, {"sample_id": "84E6CUPX", "path": "say_my_name_and_more/sleep_based_on_name_length/ built in method time sleep/ length_of_name/show_message_when_name_very_long/x", "time": 3.02e-05}, {"sample_id": "84E6CUPX", "path": "say_my_name_and_more/sleep_based_on_name_length/ built in method time sleep/ length_of_name/show_message_when_name_very_long/x", "time": 3.02e-05}, {"sample_id": "84E6CUPX", "path": "say_my_name_and_more/sleep_based_on_name_length/ built in method time sleep/ length_of_name/show_message_when_name_very_long/x/y", "time": 2.71e-05}, {"sample_id": "84E6CUPX", "path": "say_my_name_and_more/sleep_based_on_name_length/ built in method time sleep/ length_of_name/show_message_when_name_very_long/x/y", "time": 2.71e-05}, {"sample_id": "DA5F9J87", "path": "say_my_name_and_more/sleep_based_on_name_length/ built in method time sleep/ length_of_name/show_message_when_name_very_long/x", "time": 2.52e-05}, {"sample_id": "DA5F9J87", "path": "say_my_name_and_more/sleep_based_on_name_length/ built in method time sleep/ length_of_name/show_message_when_name_very_long/x", "time": 2.52e-05}, {"sample_id": "GL1QNS5H", "path": "say_my_name_and_more/sleep_based_on_name_length/ built in method time sleep/ length_of_name/show_message_when_name_very_long/x", "time": 2.45e-05}, {"sample_id": "GL1QNS5H", "path": "say_my_name_and_more/sleep_based_on_name_length/ built in method time sleep/ length_of_name/show_message_when_name_very_long/x", "time": 2.45e-05}, {"sample_id": "J7MIIB81", "path": "say_my_name_and_more/sleep_based_on_name_length/ built in method time sleep/ length_of_name/show_message_when_name_very_long/x", "time": 2.42e-05}, {"sample_id": "J7MIIB81", "path": "say_my_name_and_more/sleep_based_on_name_length/ built in method time sleep/ length_of_name/show_message_when_name_very_long/x", "time": 2.42e-05}, {"sample_id": "DA5F9J87", "path": "say_my_name_and_more/sleep_based_on_name_length/ built in method time sleep/ length_of_name/show_message_when_name_very_long/x/y", "time": 2.2e-05}, {"sample_id": "DA5F9J87", "path": "say_my_name_and_more/sleep_based_on_name_length/ built in method time sleep/ length_of_name/show_message_when_name_very_long/x/y", "time": 2.2e-05}, {"sample_id": "GL1QNS5H", "path": "say_my_name_and_more/sleep_based_on_name_length/ built in method time sleep/ length_of_name/show_message_when_name_very_long/x/y", "time": 2.2e-05}, {"sample_id": "GL1QNS5H", "path": "say_my_name_and_more/sleep_based_on_name_length/ built in method time sleep/ length_of_name/show_message_when_name_very_long/x/y", "time": 2.2e-05}, {"sample_id": "J7MIIB81", "path": "say_my_name_and_more/sleep_based_on_name_length/ built in method time sleep/ length_of_name/show_message_when_name_very_long/x/y", "time": 2.15e-05}, {"sample_id": "J7MIIB81", "path": "say_my_name_and_more/sleep_based_on_name_length/ built in method time sleep/ length_of_name/show_message_when_name_very_long/x/y", "time": 2.15e-05}, {"sample_id": "RZE7D9T5", "path": "say_my_name_and_more/sleep_based_on_name_length/ built in method time sleep/ length_of_name/show_message_when_name_very_long/x", "time": 1.98e-05}, {"sample_id": "RZE7D9T5", "path": "say_my_name_and_more/sleep_based_on_name_length/ built in method time sleep/ length_of_name/show_message_when_name_very_long/x", "time": 1.98e-05}, {"sample_id": "KF19PSAC", "path": "say_my_name_and_more/capitalize_name", "time": 1.83e-05}, {"sample_id": "RZE7D9T5", "path": "say_my_name_and_more/sleep_based_on_name_length/ built in method time sleep/ length_of_name/show_message_when_name_very_long/x/y", "time": 1.77e-05}, {"sample_id": "RZE7D9T5", "path": "say_my_name_and_more/sleep_based_on_name_length/ built in method time sleep/ length_of_name/show_message_when_name_very_long/x/y", "time": 1.77e-05}, {"sample_id": "DA5F9J87", "path": "say_my_name_and_more/capitalize_name", "time": 1.68e-05}, {"sample_id": "09ELLFYK", "path": "say_my_name_and_more/capitalize_name", "time": 1.24e-05}, {"sample_id": "M94AHDHE", "path": "say_my_name_and_more/capitalize_name", "time": 1.18e-05}, {"sample_id": "2FQ69V0N", "path": "say_my_name_and_more/capitalize_name", "time": 1.17e-05}, {"sample_id": "HUFC7K9V", "path": "say_my_name_and_more/capitalize_name", "time": 1.15e-05}, {"sample_id": "84E6CUPX", "path": "say_my_name_and_more/capitalize_name", "time": 8.8e-06}, {"sample_id": "GL1QNS5H", "path": "say_my_name_and_more/capitalize_name", "time": 7.5e-06}, {"sample_id": "J7MIIB81", "path": "say_my_name_and_more/capitalize_name", "time": 6.9e-06}, {"sample_id": "2FQ69V0N", "path": "say_my_name_and_more/lowercase_name", "time": 6.8e-06}, {"sample_id": "HUFC7K9V", "path": "say_my_name_and_more/lowercase_name", "time": 6.6e-06}, {"sample_id": "09ELLFYK", "path": "say_my_name_and_more/lowercase_name", "time": 6.6e-06}, {"sample_id": "M94AHDHE", "path": "say_my_name_and_more/lowercase_name", "time": 6.5e-06}, {"sample_id": "KF19PSAC", "path": "say_my_name_and_more/lowercase_name", "time": 6.2e-06}, {"sample_id": "RZE7D9T5", "path": "say_my_name_and_more/capitalize_name", "time": 5.7e-06}, {"sample_id": "KF19PSAC", "path": "say_my_name_and_more/uppercase_name", "time": 5.5e-06}, {"sample_id": "HUFC7K9V", "path": "say_my_name_and_more/uppercase_name", "time": 5.1e-06}, {"sample_id": "M94AHDHE", "path": "say_my_name_and_more/uppercase_name", "time": 5e-06}, {"sample_id": "2FQ69V0N", "path": "say_my_name_and_more/uppercase_name", "time": 4.9e-06}, {"sample_id": "09ELLFYK", "path": "say_my_name_and_more/uppercase_name", "time": 4.8e-06}, {"sample_id": "84E6CUPX", "path": "say_my_name_and_more/lowercase_name", "time": 4.6e-06}, {"sample_id": "KF19PSAC", "path": "say_my_name_and_more/capitalize_name/ method  capitalize  of  str  objects", "time": 4.1e-06}, {"sample_id": "GL1QNS5H", "path": "say_my_name_and_more/lowercase_name", "time": 3.9e-06}, {"sample_id": "DA5F9J87", "path": "say_my_name_and_more/lowercase_name", "time": 3.8e-06}, {"sample_id": "84E6CUPX", "path": "say_my_name_and_more/uppercase_name", "time": 3.6e-06}, {"sample_id": "J7MIIB81", "path": "say_my_name_and_more/lowercase_name", "time": 3.6e-06}, {"sample_id": "J7MIIB81", "path": "say_my_name_and_more/uppercase_name", "time": 3.1e-06}, {"sample_id": "GL1QNS5H", "path": "say_my_name_and_more/uppercase_name", "time": 3e-06}, {"sample_id": "DA5F9J87", "path": "say_my_name_and_more/uppercase_name", "time": 2.9e-06}, {"sample_id": "2FQ69V0N", "path": "say_my_name_and_more/capitalize_name/ method  capitalize  of  str  objects", "time": 2.9e-06}, {"sample_id": "09ELLFYK", "path": "say_my_name_and_more/capitalize_name/ method  capitalize  of  str  objects", "time": 2.9e-06}, {"sample_id": "RZE7D9T5", "path": "say_my_name_and_more/lowercase_name", "time": 2.8e-06}, {"sample_id": "M94AHDHE", "path": "say_my_name_and_more/capitalize_name/ method  capitalize  of  str  objects", "time": 2.8e-06}, {"sample_id": "HUFC7K9V", "path": "say_my_name_and_more/capitalize_name/ method  capitalize  of  str  objects", "time": 2.8e-06}, {"sample_id": "RZE7D9T5", "path": "say_my_name_and_more/uppercase_name", "time": 2.5e-06}, {"sample_id": "84E6CUPX", "path": "say_my_name_and_more/capitalize_name/ method  capitalize  of  str  objects", "time": 2.1e-06}, {"sample_id": "GL1QNS5H", "path": "say_my_name_and_more/capitalize_name/ method  capitalize  of  str  objects", "time": 2e-06}, {"sample_id": "DA5F9J87", "path": "say_my_name_and_more/capitalize_name/ method  capitalize  of  str  objects", "time": 1.9e-06}, {"sample_id": "2FQ69V0N", "path": "say_my_name_and_more/sleep_based_on_name_length/ built in method time sleep/ length_of_name/show_message_when_name_very_long/x/y/foo", "time": 1.8e-06}, {"sample_id": "2FQ69V0N", "path": "say_my_name_and_more/sleep_based_on_name_length/ built in method time sleep/ length_of_name/show_message_when_name_very_long/x/y/foo", "time": 1.8e-06}, {"sample_id": "09ELLFYK", "path": "say_my_name_and_more/sleep_based_on_name_length/length_of_name/ built in method builtins len", "time": 1.7e-06}, {"sample_id": "09ELLFYK", "path": "say_my_name_and_more/length_of_name/ built in method builtins len", "time": 1.7e-06}, {"sample_id": "J7MIIB81", "path": "say_my_name_and_more/capitalize_name/ method  capitalize  of  str  objects", "time": 1.6e-06}, {"sample_id": "M94AHDHE", "path": "say_my_name_and_more/sleep_based_on_name_length/ built in method time sleep/ length_of_name/show_message_when_name_very_long/x/y/foo", "time": 1.5e-06}, {"sample_id": "M94AHDHE", "path": "say_my_name_and_more/sleep_based_on_name_length/ built in method time sleep/ length_of_name/show_message_when_name_very_long/x/y/foo", "time": 1.5e-06}, {"sample_id": "RZE7D9T5", "path": "say_my_name_and_more/capitalize_name/ method  capitalize  of  str  objects", "time": 1.4e-06}, {"sample_id": "KF19PSAC", "path": "say_my_name_and_more/sleep_based_on_name_length/length_of_name/ built in method builtins len", "time": 1.4e-06}, {"sample_id": "KF19PSAC", "path": "say_my_name_and_more/length_of_name/ built in method builtins len", "time": 1.4e-06}, {"sample_id": "M94AHDHE", "path": "say_my_name_and_more/sleep_based_on_name_length/length_of_name/ built in method builtins len", "time": 1.4e-06}, {"sample_id": "M94AHDHE", "path": "say_my_name_and_more/length_of_name/ built in method builtins len", "time": 1.4e-06}, {"sample_id": "HUFC7K9V", "path": "say_my_name_and_more/sleep_based_on_name_length/ built in method time sleep/ length_of_name/show_message_when_name_very_long/x/y/foo", "time": 1.4e-06}, {"sample_id": "HUFC7K9V", "path": "say_my_name_and_more/sleep_based_on_name_length/ built in method time sleep/ length_of_name/show_message_when_name_very_long/x/y/foo", "time": 1.4e-06}, {"sample_id": "09ELLFYK", "path": "say_my_name_and_more/sleep_based_on_name_length/ built in method time sleep/ length_of_name/show_message_when_name_very_long/x/y/foo", "time": 1.4e-06}, {"sample_id": "09ELLFYK", "path": "say_my_name_and_more/sleep_based_on_name_length/ built in method time sleep/ length_of_name/show_message_when_name_very_long/x/y/foo", "time": 1.4e-06}, {"sample_id": "2FQ69V0N", "path": "say_my_name_and_more/sleep_based_on_name_length/length_of_name/ built in method builtins len", "time": 1.3e-06}, {"sample_id": "2FQ69V0N", "path": "say_my_name_and_more/length_of_name/ built in method builtins len", "time": 1.3e-06}, {"sample_id": "KF19PSAC", "path": "say_my_name_and_more/uppercase_name/ method  upper  of  str  objects", "time": 1.3e-06}, {"sample_id": "HUFC7K9V", "path": "say_my_name_and_more/sleep_based_on_name_length/length_of_name/ built in method builtins len", "time": 1.3e-06}, {"sample_id": "HUFC7K9V", "path": "say_my_name_and_more/length_of_name/ built in method builtins len", "time": 1.3e-06}, {"sample_id": "KF19PSAC", "path": "say_my_name_and_more/sleep_based_on_name_length/ built in method time sleep/ length_of_name/show_message_when_name_very_long/x/y/foo", "time": 1.2e-06}, {"sample_id": "KF19PSAC", "path": "say_my_name_and_more/sleep_based_on_name_length/ built in method time sleep/ length_of_name/show_message_when_name_very_long/x/y/foo", "time": 1.2e-06}, {"sample_id": "KF19PSAC", "path": "say_my_name_and_more/lowercase_name/ method  lower  of  str  objects", "time": 1e-06}, {"sample_id": "M94AHDHE", "path": "say_my_name_and_more/uppercase_name/ method  upper  of  str  objects", "time": 1e-06}, {"sample_id": "J7MIIB81", "path": "say_my_name_and_more/sleep_based_on_name_length/ built in method time sleep/ length_of_name/show_message_when_name_very_long/x/y/foo", "time": 1e-06}, {"sample_id": "J7MIIB81", "path": "say_my_name_and_more/sleep_based_on_name_length/ built in method time sleep/ length_of_name/show_message_when_name_very_long/x/y/foo", "time": 1e-06}, {"sample_id": "GL1QNS5H", "path": "say_my_name_and_more/sleep_based_on_name_length/length_of_name/ built in method builtins len", "time": 9e-07}, {"sample_id": "GL1QNS5H", "path": "say_my_name_and_more/sleep_based_on_name_length/ built in method time sleep/ length_of_name/show_message_when_name_very_long/x/y/foo", "time": 9e-07}, {"sample_id": "GL1QNS5H", "path": "say_my_name_and_more/length_of_name/ built in method builtins len", "time": 9e-07}, {"sample_id": "GL1QNS5H", "path": "say_my_name_and_more/sleep_based_on_name_length/ built in method time sleep/ length_of_name/show_message_when_name_very_long/x/y/foo", "time": 9e-07}, {"sample_id": "2FQ69V0N", "path": "say_my_name_and_more/uppercase_name/ method  upper  of  str  objects", "time": 9e-07}, {"sample_id": "09ELLFYK", "path": "say_my_name_and_more/lowercase_name/ method  lower  of  str  objects", "time": 9e-07}, {"sample_id": "09ELLFYK", "path": "say_my_name_and_more/uppercase_name/ method  upper  of  str  objects", "time": 9e-07}, {"sample_id": "84E6CUPX", "path": "say_my_name_and_more/sleep_based_on_name_length/ built in method time sleep/ length_of_name/show_message_when_name_very_long/x/y/foo", "time": 9e-07}, {"sample_id": "84E6CUPX", "path": "say_my_name_and_more/sleep_based_on_name_length/ built in method time sleep/ length_of_name/show_message_when_name_very_long/x/y/foo", "time": 9e-07}, {"sample_id": "DA5F9J87", "path": "say_my_name_and_more/sleep_based_on_name_length/length_of_name/ built in method builtins len", "time": 8e-07}, {"sample_id": "DA5F9J87", "path": "say_my_name_and_more/length_of_name/ built in method builtins len", "time": 8e-07}, {"sample_id": "2FQ69V0N", "path": "say_my_name_and_more/lowercase_name/ method  lower  of  str  objects", "time": 8e-07}, {"sample_id": "M94AHDHE", "path": "say_my_name_and_more/lowercase_name/ method  lower  of  str  objects", "time": 8e-07}, {"sample_id": "HUFC7K9V", "path": "say_my_name_and_more/lowercase_name/ method  lower  of  str  objects", "time": 8e-07}, {"sample_id": "HUFC7K9V", "path": "say_my_name_and_more/uppercase_name/ method  upper  of  str  objects", "time": 8e-07}, {"sample_id": "84E6CUPX", "path": "say_my_name_and_more/sleep_based_on_name_length/length_of_name/ built in method builtins len", "time": 8e-07}, {"sample_id": "84E6CUPX", "path": "say_my_name_and_more/length_of_name/ built in method builtins len", "time": 8e-07}, {"sample_id": "DA5F9J87", "path": "say_my_name_and_more/sleep_based_on_name_length/ built in method time sleep/ length_of_name/show_message_when_name_very_long/x/y/foo", "time": 7e-07}, {"sample_id": "DA5F9J87", "path": "say_my_name_and_more/sleep_based_on_name_length/ built in method time sleep/ length_of_name/show_message_when_name_very_long/x/y/foo", "time": 7e-07}, {"sample_id": "RZE7D9T5", "path": "say_my_name_and_more/sleep_based_on_name_length/ built in method time sleep/ length_of_name/show_message_when_name_very_long/x/y/foo", "time": 7e-07}, {"sample_id": "RZE7D9T5", "path": "say_my_name_and_more/sleep_based_on_name_length/ built in method time sleep/ length_of_name/show_message_when_name_very_long/x/y/foo", "time": 7e-07}, {"sample_id": "84E6CUPX", "path": "say_my_name_and_more/uppercase_name/ method  upper  of  str  objects", "time": 7e-07}, {"sample_id": "J7MIIB81", "path": "say_my_name_and_more/sleep_based_on_name_length/length_of_name/ built in method builtins len", "time": 7e-07}, {"sample_id": "J7MIIB81", "path": "say_my_name_and_more/length_of_name/ built in method builtins len", "time": 7e-07}, {"sample_id": "GL1QNS5H", "path": "say_my_name_and_more/uppercase_name/ method  upper  of  str  objects", "time": 6e-07}, {"sample_id": "RZE7D9T5", "path": "say_my_name_and_more/sleep_based_on_name_length/length_of_name/ built in method builtins len", "time": 6e-07}, {"sample_id": "RZE7D9T5", "path": "say_my_name_and_more/length_of_name/ built in method builtins len", "time": 6e-07}, {"sample_id": "84E6CUPX", "path": "say_my_name_and_more/lowercase_name/ method  lower  of  str  objects", "time": 6e-07}, {"sample_id": "J7MIIB81", "path": "say_my_name_and_more/uppercase_name/ method  upper  of  str  objects", "time": 6e-07}, {"sample_id": "DA5F9J87", "path": "say_my_name_and_more/lowercase_name/ method  lower  of  str  objects", "time": 5e-07}, {"sample_id": "DA5F9J87", "path": "say_my_name_and_more/uppercase_name/ method  upper  of  str  objects", "time": 5e-07}, {"sample_id": "GL1QNS5H", "path": "say_my_name_and_more/lowercase_name/ method  lower  of  str  objects", "time": 4e-07}, {"sample_id": "RZE7D9T5", "path": "say_my_name_and_more/uppercase_name/ method  upper  of  str  objects", "time": 4e-07}, {"sample_id": "J7MIIB81", "path": "say_my_name_and_more/lowercase_name/ method  lower  of  str  objects", "time": 4e-07}, {"sample_id": "RZE7D9T5", "path": "say_my_name_and_more/lowercase_name/ method  lower  of  str  objects", "time": 3e-07}];
-    var TimeScale = [1e-07, 3.4199518933533896e-05, 0.011696070952851459, 4.0]
 
-    class HeatMap{
-        /*
-        The code below will change
-        the heading with id = "myH"
-        and the paragraph with id = "myP"
-        in my web page:
-        */
+    var data = {{payload}};
+    var TimeScale = [1e-07, 3.4199518933533896e-05, 0.011696070952851459, 4.0];
 
+    class HeatMap {
         constructor(data, scale) {
-            /*
-            The code below will change
-            the heading with id = "myH"
-            and the paragraph with id = "myP"
-            in my web page:
-            */
-
             // Extracts the samples and the code paths
             this.data = data;
             this.scale = scale;
-            this.Samples = d3.map(this.data, function(d){return d.sample_id;}).keys()
-            this.CodePaths = d3.map(this.data, function(d){return d.path;}).keys()
+            this.heatmap_id = 'QuickPotatoHeatmap';
+            this.Samples = d3.map(this.data, d => d.x_axis_identifier_sample_ids).keys();
+            this.CodePaths = d3.map(this.data, d => d.y_axis_identifier_parent_child_pair).keys();
+            this.Tests = d3.map(this.data, d => d.x_axis_identifier_test_ids).keys();
 
             // Setting the dimensions, margins and the color palette of the graph
-            this.margin = {top: 100, right: 100, bottom: 100, left: 100};
-            this.width = 2000 - this.margin.left - this.margin.right;
-            this.height = 800 - this.margin.top - this.margin.bottom;
-            this.ColorPalette = ["#ffe808", "#ffce00", "#ff9a00", "#ff5a00", "#ff0000"]
+            this.margin = { top: 110, right: 10, bottom: 100, left: 50 };
+            this.width = 1800 - this.margin.left - this.margin.right;
+            this.height = 1300 - this.margin.top - this.margin.bottom;
+            this.ColorPalette = ['#f1bc31', '#e9731e', '#e4671f', '#df5a21', '#bc2d23'];
 
+            // Adding the heatmap to the analytic section
+            document.getElementById("analytics").innerHTML += '<div id="' + this.heatmap_id + '"></div>';
         }
 
-    render() {
-            /*
-            The code below will change
-            the heading with id = "myH"
-            and the paragraph with id = "myP"
-            in my web page:
-            */
-
-            // add the svg image to the page:
-            var svg = d3.select("#heatmap")
-                .append("svg")
-                .attr("viewBox", `0 0 2000 900`)
-            .append("g")
-                .attr("transform", "translate(" + this.margin.left + "," + this.margin.top + ")");
-
-            // create a tooltip
-            var tooltip = d3.select("#heatmap")
+        create_tooltip() {
+            var tooltip = d3.select("#" + this.heatmap_id)
                 .append("div")
+                .style("position", "absolute")
                 .style("opacity", 0)
                 .attr("class", "tooltip")
                 .style("background-color", "white")
@@ -229,81 +227,241 @@ sample_heatmap_template = """"
                 .style("border-width", "2px")
                 .style("border-radius", "5px")
                 .style("padding", "5px")
+                .style("direction", "ltr")
+                .style("background-color", "white")
+                .style("border", "solid")
+                .style("border-width", "1px")
+                .style("border-radius", "5px")
+                .style("padding", "10px")
+            return tooltip
+        }
 
-            // Three function that change the tooltip when user hover / move / leave a cell
-            var mouseover = function(d) {
+        create_mouse_over_event(tooltip) {
+            return function (d) {
                 tooltip
                     .style("opacity", 1)
+
                 d3.select(this)
                     .style("stroke", "black")
                     .style("opacity", 1)
             }
-            var mousemove = function(d) {
-                tooltip
-                    .html(d.path + " " + d.time)
-                    .style("left", (d3.mouse(this)[0]+70) + "px")
-                    .style("top", (d3.mouse(this)[1]) + "px")
+        }
+
+        create_mouse_move_event(tooltip) {
+            return function (d) {
+                var mouse_position = Math.abs(event.clientX);
+                var tooltip_text = 'Test ID: ' + d.x_axis_identifier_test_ids + ' Sample ID:'
+                    + d.x_axis_identifier_sample_ids + ' Function '
+                    + d.y_axis_identifier_parent_child_pair + ', ran for ' + d.latency;
+
+                if (mouse_position > 850) {
+                    var tooltip_position = d3.event.pageX - 10 - tooltip.node().getBoundingClientRect().width + "px"
+                } else {
+                    var tooltip_position = d3.event.pageX + 10 + "px"
                 }
 
-            var mouseleave = function(d) {
+                tooltip
+                    .html(tooltip_text)
+                    .style("left", tooltip_position)
+                    .style("top", d3.event.pageY + 10 + "px")
+            }
+        }
+
+        create_mouse_leave_event(tooltip) {
+            return function (d) {
                 tooltip
                     .style("opacity", 0)
-                    d3.select(this)
+                d3.select(this)
                     .style("stroke", "none")
                     .style("opacity", 0.8)
             }
+        }
 
-            var Color = d3.scaleLinear()
+        create_mouse_click_event(json) {
+            var explorer = document.getElementById("meta_data_viewer")
+
+            // Generate human friendly code path
+            var code_path = "";
+            for (var method of json.predicted_code_path) {
+                method = method.replace(/[^\w\s]/gi, '')
+                if (code_path == "") {
+
+                    var code_path = method;
+
+                } else {
+
+                    var code_path = code_path + " --> " + method;
+                }
+            }
+            var html = `
+                <div class="card-body">
+                    <h5 class="card-title">Test Information:</h5>
+                    <p class="card-text">
+                        Test ID: ${json.x_axis_identifier_test_ids}<br>
+                        Sample ID:  ${json.x_axis_identifier_sample_ids}<br>
+                    </p>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        <h5 class="card-title">Function Information:</h5>
+                        <p class="card-text">
+                            name: ${json.y_axis_identifier_parent_child_pair}<br>
+                            Time spend: ${json.latency}<br>
+                            Number of calls: ${json.meta_data.number_of_calls}<br>
+                        </p>
+                    </li>
+                    <li class="list-group-item">
+                        <h5 class="card-title">Detected Code Path</h5>
+                        <p class="card-text">${code_path}</p>
+                    </li>
+                    <li class="list-group-item">
+                        <h5 class="card-title">Function location</h5>
+                        <p class="card-text">Path: ${json.meta_data.child_path}</p>
+                        <p class="card-text">Line Number: ${json.meta_data.child_line_number}</p>
+                    </li>
+                    <li class="list-group-item">
+                        <h5 class="card-title">Parent location</h5>
+                        <p class="card-text">Path: ${json.meta_data.parent_path}</p>
+                        <p class="card-text">Line Number: ${json.meta_data.parent_line_number}</p>
+                    </li>
+                </ul>
+            `;
+
+            explorer.innerHTML = html;
+        }
+
+        create_color_palette() {
+            return d3.scaleLinear()
                 .range(this.ColorPalette)
                 .domain(this.scale)
+        }
 
+        create_sample_x_axis(svg, domain) {
             // Build X axis:
             var x_axis = d3.scaleBand()
-                .range([ 0, this.width ])
-                .domain(this.Samples)
-                .padding(0.05);
-            svg.append("g")
-                .style("font-size", 15)
-                .attr("transform", "translate(0," + (this.height) + ")")
-                .call(d3.axisBottom(x_axis))
-                .selectAll("text")
-                    .attr("y", 10)
-                    .attr("x", 10)
-                    .attr("dy", ".35em")
-                    .attr("transform", "rotate(60)")
-                    .style("text-anchor", "start");
+                .range([0, this.width / this.Tests.length - 10])
+                .domain(domain)
+                .padding(0.05)
 
-            // Build Y axis:
+            // text label for the x axis
+            svg.append("text")
+                .attr("x", 900)
+                .attr("y", 1120)
+                .style("font-size", 30)
+                .style("text-anchor", "middle")
+                .text("Test id's and samples");
+
+            return x_axis
+        }
+
+        create_tests_x_axis(svg) {
+            // Build X axis:
+            var axis = d3.scaleBand()
+                .range([-10, this.width])
+                .domain(this.Tests)
+                .padding(0.05)
+            return axis;
+        }
+
+        create_y_axis(svg) {
             var y_axis = d3.scaleBand()
-                .range([ this.height, 0 ])
+                .range([this.height, 0])
                 .domain(this.CodePaths)
                 .padding(0.05);
-                svg.append("g")
-                    .select(".domain").remove()
 
-            // add the squares
+            // text label for the y axis
+            svg.append("text")
+                .attr("x", 550)
+                .attr("y", 25)
+                .attr("transform", "rotate(90)")
+                .style("font-size", 30)
+                .style("text-anchor", "middle")
+                .text("Code Paths");
+
+            return y_axis
+
+        }
+
+        create_title_and_subtitle(svg) {
+
+            var date = new Date().toLocaleDateString();
+            var time = new Date().toLocaleTimeString();
+
+            // Add title to graph
+            svg.append("text")
+                .attr("x", 30)
+                .attr("y", -70)
+                .attr("text-anchor", "left")
+                .style("font-size", 50)
+                .text("QuickPotato Code Path Heatmap");
+
+            // Add subtitle to graph
+            svg.append("text")
+                .attr("x", 35)
+                .attr("y", -35)
+                .attr("text-anchor", "left")
+                .style("font-size", 25)
+                .style("fill", "grey")
+                .style("max-width", 400)
+                .text('Generated on ' + date + ' ' + time);
+        }
+
+        render() {
+            // Add the svg image to the page and generate the color palette
+            var svg = d3.select("#" + this.heatmap_id)
+                .append("svg")
+                .attr("viewBox", `0 0 1900 1400`)
+                .append("g")
+                .attr("transform", "translate(" + this.margin.left + "," + this.margin.top + ")");
+            var Color = this.create_color_palette();
+
+            // Create the mouse and tooltip event handlers
+            var tooltip = this.create_tooltip();
+            var mouseover = this.create_mouse_over_event(tooltip);
+            var mousemove = this.create_mouse_move_event(tooltip);
+            var mouseleave = this.create_mouse_leave_event(tooltip);
+            var mouseclick = this.create_mouse_click_event;
+
+            // Build the X axis for each subplot
+            var x_axes = {};
+            this.Tests.forEach(test => {
+                var data_for_test = this.data.filter(d => d.x_axis_identifier_test_ids === test);
+                var samples_for_test = d3.map(data_for_test, d => d.x_axis_identifier_sample_ids).keys();
+                x_axes[test] = this.create_sample_x_axis(svg, samples_for_test);
+            });
+            var test_axis = this.create_tests_x_axis(svg);
+
+            // Build the Y axis:
+            var y_axis = this.create_y_axis(svg);
+
+            // Add all the code paths per sample as squares
             svg.selectAll()
-                .data(this.data, function(d) {return d.sample_id+':'+d.path;})
+                .data(this.data, d => d.x_axis_identifier_sample_ids + ':' + d.y_axis_identifier_parent_child_pair)
                 .enter()
                 .append("rect")
-                    .attr("x", function(d) { return x_axis(d.sample_id) })
-                    .attr("y", function(d) { return y_axis(d.path) })
-                    .attr("rx", 4)
-                    .attr("ry", 4)
-                    .attr("width", x_axis.bandwidth() )
-                    .attr("height", y_axis.bandwidth() )
-                    .style("fill", function(d) { return Color(d.time)} )
-                    .style("stroke-width", 4)
-                    .style("stroke", "none")
-                    .style("opacity", 0.8)
-                    .on("mouseover", mouseover)
-                    .on("mousemove", mousemove)
-                    .on("mouseleave", mouseleave)
+                .attr("x", d => {
+                    return x_axes[d.x_axis_identifier_test_ids](d.x_axis_identifier_sample_ids) + test_axis(d.x_axis_identifier_test_ids);
+                })
+                .attr("y", function (d) {
+                    return y_axis(d.y_axis_identifier_parent_child_pair)
+                })
+                .attr("rx", 4)
+                .attr("ry", 4)
+                .attr("width", d => x_axes[d.x_axis_identifier_test_ids].bandwidth())
+                .attr("height", y_axis.bandwidth())
+                .style("fill", d => Color(d.latency))
+                .style("stroke-width", 4)
+                .style("stroke", "none")
+                .style("opacity", 0.8)
+                .on("mouseover", mouseover)
+                .on("mousemove", mousemove)
+                .on("mouseleave", mouseleave)
+                .on("click", mouseclick);
+
+            // Create title and subtitle
+            this.create_title_and_subtitle(svg);
         }
     }
-    const graph = new HeatMap(payload, TimeScale)
-    graph.render()
-    
-    
+    new HeatMap(data, TimeScale).render()
 </script>
 """

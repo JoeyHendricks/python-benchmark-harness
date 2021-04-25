@@ -1,41 +1,25 @@
 class HeatMap {
-    /*
-    The code below will change
-    the heading with id = "myH"
-    and the paragraph with id = "myP"
-    in my web page:
-    */
-
     constructor(data, scale) {
-        /*
-        The code below will change
-        the heading with id = "myH"
-        and the paragraph with id = "myP"
-        in my web page:
-        */
-
         // Extracts the samples and the code paths
         this.data = data;
         this.scale = scale;
-        this.Samples = d3.map(this.data, function (d) { return d.sample_id; }).keys()
-        this.CodePaths = d3.map(this.data, function (d) { return d.path; }).keys()
+        this.heatmap_id = 'QuickPotatoHeatmap';
+        this.Samples = d3.map(this.data, d => d.x_axis_identifier_sample_ids).keys();
+        this.CodePaths = d3.map(this.data, d => d.y_axis_identifier_parent_child_pair).keys();
+        this.Tests = d3.map(this.data, d => d.x_axis_identifier_test_ids).keys();
 
         // Setting the dimensions, margins and the color palette of the graph
         this.margin = { top: 110, right: 10, bottom: 100, left: 50 };
-        this.width = 1920 - this.margin.left - this.margin.right;
-        this.height = 1400 - this.margin.top - this.margin.bottom;
-        this.ColorPalette = ['#f1bc31', '#e9731e', '#e4671f', '#df5a21', '#bc2d23']
+        this.width = 1800 - this.margin.left - this.margin.right;
+        this.height = 1300 - this.margin.top - this.margin.bottom;
+        this.ColorPalette = ['#f1bc31', '#e9731e', '#e4671f', '#df5a21', '#bc2d23'];
 
+        // Adding the heatmap to the analytic section
+        document.getElementById("analytics").innerHTML += '<div id="' + this.heatmap_id + '"></div>';
     }
 
     create_tooltip() {
-        /*
-        The code below will change
-        the heading with id = "myH"
-        and the paragraph with id = "myP"
-        in my web page:
-        */
-        var tooltip = d3.select("#heatmap")
+        var tooltip = d3.select("#" + this.heatmap_id)
             .append("div")
             .style("position", "absolute")
             .style("opacity", 0)
@@ -51,17 +35,10 @@ class HeatMap {
             .style("border-width", "1px")
             .style("border-radius", "5px")
             .style("padding", "10px")
-
         return tooltip
     }
 
     create_mouse_over_event(tooltip) {
-        /*
-        The code below will change
-        the heading with id = "myH"
-        and the paragraph with id = "myP"
-        in my web page:
-        */
         return function (d) {
             tooltip
                 .style("opacity", 1)
@@ -73,35 +50,26 @@ class HeatMap {
     }
 
     create_mouse_move_event(tooltip) {
-        /*
-        The code below will change
-        the heading with id = "myH"
-        and the paragraph with id = "myP"
-        in my web page:
-        */
         return function (d) {
-
             var mouse_position = Math.abs(event.clientX);
-            if (mouse_position > 550) {
+            var tooltip_text = 'Test ID: ' + d.x_axis_identifier_test_ids + ' Sample ID:'
+                + d.x_axis_identifier_sample_ids + ' Function '
+                + d.y_axis_identifier_parent_child_pair + ', ran for ' + d.latency;
+
+            if (mouse_position > 700) {
                 var tooltip_position = d3.event.pageX - 10 - tooltip.node().getBoundingClientRect().width + "px"
             } else {
                 var tooltip_position = d3.event.pageX + 10 + "px"
             }
 
             tooltip
-                .html(d.tooltip)
+                .html(tooltip_text)
                 .style("left", tooltip_position)
                 .style("top", d3.event.pageY + 10 + "px")
         }
     }
 
     create_mouse_leave_event(tooltip) {
-        /*
-        The code below will change
-        the heading with id = "myH"
-        and the paragraph with id = "myP"
-        in my web page:
-        */
         return function (d) {
             tooltip
                 .style("opacity", 0)
@@ -109,22 +77,14 @@ class HeatMap {
                 .style("stroke", "none")
                 .style("opacity", 0.8)
         }
-
     }
 
     create_mouse_click_event(json) {
-        /*
-        The code below will change
-        the heading with id = "myH"
-        and the paragraph with id = "myP"
-        in my web page:
-        */
-        console.log(json.hierarchy)
         var explorer = document.getElementById("meta_data_viewer")
 
         // Generate human friendly code path
         var code_path = "";
-        for (var method of json.hierarchy) {
+        for (var method of json.predicted_code_path) {
             method = method.replace(/[^\w\s]/gi, '')
             if (code_path == "") {
 
@@ -135,78 +95,77 @@ class HeatMap {
                 var code_path = code_path + " --> " + method;
             }
         }
-        console.log(json.meta_data.parent_path)
         var html = `
-        <div class="card-body">
-            <h5 class="card-title">Information:</h5>
-		    <p class="card-text">Name: ${json.parent}/${json.function}</p>
-            <p class="card-text">Time spend: ${json.time}</p>
-			<p class="card-text">Number of calls: ${json.meta_data.number_of_calls}</p>
-	    </div>
-        <ul class="list-group list-group-flush">
-		    <li class="list-group-item">
-                <h5 class="card-title">Detected Code Path</h5>
-                <p class="card-text">${code_path}</p>
-            </li>
-			<li class="list-group-item">
-                <h5 class="card-title">Function location</h5>
-                <p class="card-text">Path: ${json.meta_data.child_path}</p>
-                <p class="card-text">Line Number: ${json.meta_data.child_line_number}</p>
-            </li>
-            <li class="list-group-item">
-                <h5 class="card-title">Parent location</h5>
-			    <p class="card-text">Path: ${json.meta_data.parent_path}</p>
-                <p class="card-text">Line Number: ${json.meta_data.parent_line_number}</p>
-            </li>
-		</ul>
+            <div class="card-body">
+                <h5 class="card-title">Test Information:</h5>
+                <p class="card-text">
+                    Test ID: ${json.x_axis_identifier_test_ids}<br>
+                    Sample ID:  ${json.x_axis_identifier_sample_ids}<br>
+                </p>
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                    <h5 class="card-title">Function Information:</h5>
+                    <p class="card-text">
+                        name: ${json.y_axis_identifier_parent_child_pair}<br>
+                        Time spend: ${json.latency}<br>
+                        Number of calls: ${json.meta_data.number_of_calls}<br>
+                    </p>
+                </li>
+                <li class="list-group-item">
+                    <h5 class="card-title">Detected Code Path</h5>
+                    <p class="card-text">${code_path}</p>
+                </li>
+                <li class="list-group-item">
+                    <h5 class="card-title">Function location</h5>
+                    <p class="card-text">Path: ${json.meta_data.child_path}</p>
+                    <p class="card-text">Line Number: ${json.meta_data.child_line_number}</p>
+                </li>
+                <li class="list-group-item">
+                    <h5 class="card-title">Parent location</h5>
+                    <p class="card-text">Path: ${json.meta_data.parent_path}</p>
+                    <p class="card-text">Line Number: ${json.meta_data.parent_line_number}</p>
+                </li>
+            </ul>
         `;
 
         explorer.innerHTML = html;
     }
 
     create_color_palette() {
-        /*
-        The code below will change
-        the heading with id = "myH"
-        and the paragraph with id = "myP"
-        in my web page:
-        */
         return d3.scaleLinear()
             .range(this.ColorPalette)
             .domain(this.scale)
     }
 
-    create_x_axis(svg) {
-        /*
-        The code below will change
-        the heading with id = "myH"
-        and the paragraph with id = "myP"
-        in my web page:
-        */
+    create_sample_x_axis(svg, domain) {
         // Build X axis:
         var x_axis = d3.scaleBand()
-            .range([0, this.width])
-            .domain(this.Samples)
+            .range([0, this.width / this.Tests.length - 10])
+            .domain(domain)
             .padding(0.05)
 
         // text label for the x axis
         svg.append("text")
-            .attr("x", 925)
-            .attr("y", 1225)
+            .attr("x", 900)
+            .attr("y", 1120)
             .style("font-size", 30)
             .style("text-anchor", "middle")
-            .text("Samples");
+            .text("Test id's and samples");
 
         return x_axis
     }
 
+    create_tests_x_axis(svg) {
+        // Build X axis:
+        var axis = d3.scaleBand()
+            .range([-10, this.width])
+            .domain(this.Tests)
+            .padding(0.05)
+        return axis;
+    }
+
     create_y_axis(svg) {
-        /*
-        The code below will change
-        the heading with id = "myH"
-        and the paragraph with id = "myP"
-        in my web page:
-        */
         var y_axis = d3.scaleBand()
             .range([this.height, 0])
             .domain(this.CodePaths)
@@ -214,8 +173,8 @@ class HeatMap {
 
         // text label for the y axis
         svg.append("text")
-            .attr("x", 600)
-            .attr("y", 30)
+            .attr("x", 550)
+            .attr("y", 25)
             .attr("transform", "rotate(90)")
             .style("font-size", 30)
             .style("text-anchor", "middle")
@@ -226,43 +185,34 @@ class HeatMap {
     }
 
     create_title_and_subtitle(svg) {
-        /*
-        The code below will change
-        the heading with id = "myH"
-        and the paragraph with id = "myP"
-        in my web page:
-        */
+
+        var date = new Date().toLocaleDateString();
+        var time = new Date().toLocaleTimeString();
+
         // Add title to graph
         svg.append("text")
-            .attr("x", 10)
-            .attr("y", -50)
+            .attr("x", 30)
+            .attr("y", -70)
             .attr("text-anchor", "left")
             .style("font-size", 50)
             .text("QuickPotato Code Path Heatmap");
 
         // Add subtitle to graph
         svg.append("text")
-            .attr("x", 10)
-            .attr("y", -10)
+            .attr("x", 35)
+            .attr("y", -35)
             .attr("text-anchor", "left")
             .style("font-size", 25)
             .style("fill", "grey")
             .style("max-width", 400)
-            .text("A short description of the take-away message of this chart.");
+            .text('Generated on ' + date + ' ' + time);
     }
 
     render() {
-        /*
-        The code below will change
-        the heading with id = "myH"
-        and the paragraph with id = "myP"
-        in my web page:
-        */
-
         // Add the svg image to the page and generate the color palette
-        var svg = d3.select("#heatmap")
+        var svg = d3.select("#" + this.heatmap_id)
             .append("svg")
-            .attr("viewBox", `0 0 1920 1400`)
+            .attr("viewBox", `0 0 1900 1400`)
             .append("g")
             .attr("transform", "translate(" + this.margin.left + "," + this.margin.top + ")");
         var Color = this.create_color_palette();
@@ -274,27 +224,34 @@ class HeatMap {
         var mouseleave = this.create_mouse_leave_event(tooltip);
         var mouseclick = this.create_mouse_click_event;
 
-        // Build the X axis:
-        var x_axis = this.create_x_axis(svg);
+        // Build the X axis for each subplot
+        var x_axes = {};
+        this.Tests.forEach(test => {
+            var data_for_test = this.data.filter(d => d.x_axis_identifier_test_ids === test);
+            var samples_for_test = d3.map(data_for_test, d => d.x_axis_identifier_sample_ids).keys();
+            x_axes[test] = this.create_sample_x_axis(svg, samples_for_test);
+        });
+        var test_axis = this.create_tests_x_axis(svg);
 
         // Build the Y axis:
         var y_axis = this.create_y_axis(svg);
 
         // Add all the code paths per sample as squares
         svg.selectAll()
-            .data(this.data, function (d) { return d.sample_id + ':' + d.path; })
+            .data(this.data, d => d.x_axis_identifier_sample_ids + ':' + d.y_axis_identifier_parent_child_pair)
             .enter()
             .append("rect")
-            .attr("x", function (d) { return x_axis(d.sample_id) })
+            .attr("x", d => {
+                return x_axes[d.x_axis_identifier_test_ids](d.x_axis_identifier_sample_ids) + test_axis(d.x_axis_identifier_test_ids);
+            })
             .attr("y", function (d) {
-                console.log(d.path)
-                return y_axis(d.path)
+                return y_axis(d.y_axis_identifier_parent_child_pair)
             })
             .attr("rx", 4)
             .attr("ry", 4)
-            .attr("width", x_axis.bandwidth())
+            .attr("width", d => x_axes[d.x_axis_identifier_test_ids].bandwidth())
             .attr("height", y_axis.bandwidth())
-            .style("fill", function (d) { return Color(d.time) })
+            .style("fill", d => Color(d.latency))
             .style("stroke-width", 4)
             .style("stroke", "none")
             .style("opacity", 0.8)

@@ -107,6 +107,20 @@ class Read(ContextManager):
         self.close_connection(engine, connection)
         return results
 
+    def select_cumulative_latency(self, database, test_id):
+        """
+
+        :param database:
+        :param test_id:
+        :return:
+        """
+        table = ContextManager.performance_statistics_schema()
+        engine, connection = self.spawn_connection(database)
+        query = select([table.c.sample_id.distinct(), table.c.cumulative_time]).where(table.c.test_id == test_id)
+        results = [float(row.cumulative_time) for row in self.execute_query(connection, query)]
+        self.close_connection(engine, connection)
+        return results
+
     def select_test_ids_with_performance_statistics(self, database, number=options.maximum_number_saved_test_results):
         """
 
@@ -211,7 +225,44 @@ class Read(ContextManager):
         self.close_connection(engine, connection)
         return results
 
-    def select_unique_timings_per_function(self, database, test_id):
+    def select_call_stack_by_test_id(self, database, test_id):
+        """
+
+        :param database:
+        :param test_id:
+        :return:
+        """
+        table = ContextManager.performance_statistics_schema()
+        engine, connection = self.spawn_connection(database)
+        query = table.select().where(table.c.test_id == str(test_id)).order_by(table.c.cumulative_time.desc())
+
+        results = []
+        for row in self.execute_query(connection, query):
+            results.append(
+                {
+                    "id": row.id,
+                    "test_id": row.test_id,
+                    "test_case_name": row.test_case_name,
+                    "sample_id": row.sample_id,
+                    "name_of_method_under_test": row.name_of_method_under_test,
+                    "epoch_timestamp": int(row.epoch_timestamp),
+                    "human_timestamp": row.human_timestamp,
+                    "child_path": row.child_path,
+                    "child_line_number": row.child_line_number,
+                    "child_function_name": row.child_function_name,
+                    "parent_path": row.parent_path,
+                    "parent_line_number": row.parent_line_number,
+                    "parent_function_name": row.parent_function_name,
+                    "number_of_calls": row.number_of_calls,
+                    "total_time": float(row.total_time),
+                    "cumulative_time": float(row.cumulative_time),
+                    "total_response_time": float(row.total_response_time)
+                }
+            )
+        self.close_connection(engine, connection)
+        return results
+
+    def select_latency_per_function(self, database, test_id):
         """
 
         :param database:
@@ -235,7 +286,7 @@ class Read(ContextManager):
         self.close_connection(engine, connection)
         return results
 
-    def select_unique_meta_data_per_function(self, database, test_id):
+    def select_meta_data_per_function(self, database, test_id):
         """
 
         :param database:

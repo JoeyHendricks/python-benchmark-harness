@@ -3,7 +3,7 @@ from os.path import isfile, dirname, realpath
 import yaml
 
 
-class Configuration:
+class Configuration(object):
 
     FILE_NAME = "options.yaml"
     PATH = dirname(realpath(__file__)) + "\\" if "\\" in dirname(realpath(__file__)) else \
@@ -27,6 +27,15 @@ class Configuration:
     @enable_intrusive_profiling.setter
     def enable_intrusive_profiling(self, value):
         self.contents["enable_intrusive_profiling"] = value
+        self.dump_configuration_to_yaml_file(self.contents)
+
+    @property
+    def allow_the_selection_of_untested_or_failed_test_ids(self):
+        return self.contents["allow_the_selection_of_untested_or_failed_test_ids"]
+
+    @allow_the_selection_of_untested_or_failed_test_ids.setter
+    def allow_the_selection_of_untested_or_failed_test_ids(self, value):
+        self.contents["allow_the_selection_of_untested_or_failed_test_ids"] = value
         self.dump_configuration_to_yaml_file(self.contents)
 
     @property
