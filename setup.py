@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='QuickPotato',
-    version='0.2',
+    version='0.3',
     packages=[
         'QuickPotato',
         'QuickPotato.harness',
@@ -10,8 +10,7 @@ setup(
         'QuickPotato.profiling',
         'QuickPotato.utilities',
         'QuickPotato.statistical',
-        'QuickPotato.configuration',
-        'QuickPotato.analysis'
+        'QuickPotato.configuration'
     ],
     install_requires=[
         'numpy',
@@ -27,6 +26,6 @@ setup(
     license='MIT',
     author='Joey Hendricks',
     author_email='joey.hendricks20@icloud.com',
-    description='The framework that enables Python developers to include performance validation into their tests',
+    description='Making performance testing within Python easy and understandable.',
     python_requires='>=3.7'
 )
