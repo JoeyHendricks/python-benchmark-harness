@@ -10,5 +10,5 @@ pt.test_case_name = "exploratory performance test"
 for i in range(0, 100):
     FancyCode().say_my_name_and_more(name="joey hendricks")
 
-FlameGraph(test_case_name=pt.test_case_name, test_id=pt.current_test_id).export("C:\\temp\\")
+#FlameGraph(test_case_name=pt.test_case_name, test_id=pt.current_test_id).export("C:\\temp\\")
 HeatMap(test_case_name=pt.test_case_name, test_ids=[pt.current_test_id]).export("C:\\temp\\")

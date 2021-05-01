@@ -301,7 +301,7 @@ class HeatMap(CodePaths):
         """
         max_time = max(self._all_recorded_method_response_times)
         min_time = min(self._all_recorded_method_response_times)
-        time_scale = numpy.logspace(min_time, max_time, num=4)
+        time_scale = list(numpy.logspace(numpy.log10(min_time), numpy.log10(max_time), num=4))
         template = Template(heatmap_template)
         return template.render(payload=self.json, time_scale=time_scale)
 
