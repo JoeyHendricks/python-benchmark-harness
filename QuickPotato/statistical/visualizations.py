@@ -303,7 +303,7 @@ class HeatMap(CodePaths):
         min_time = min(self._all_recorded_method_response_times)
         time_scale = numpy.logspace(min_time, max_time, num=4)
         template = Template(heatmap_template)
-        return template.render(payload=self.json, scale=time_scale)
+        return template.render(payload=self.json, time_scale=time_scale)
 
     def export(self, path):
         """
