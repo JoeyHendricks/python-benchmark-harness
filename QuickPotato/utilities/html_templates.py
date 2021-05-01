@@ -194,7 +194,7 @@ heatmap_template = """
 <script>
 
     var data = {{payload}};
-    var TimeScale = [1e-07, 3.4199518933533896e-05, 0.011696070952851459, 4.0];
+    var TimeScale = {{time_scale}};
 
     class HeatMap {
         constructor(data, scale) {

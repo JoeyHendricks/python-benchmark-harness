@@ -7,6 +7,7 @@ from QuickPotato.utilities.exceptions import UnableToGenerateVisualizations, \
 from datetime import datetime
 from jinja2 import Template
 import pandas as pd
+import numpy
 import json
 import os
 
@@ -168,6 +169,7 @@ class HeatMap(CodePaths):
         self._decimals = 25
         self._order_by = order_by
         self.test_case_name = test_case_name
+        self._all_recorded_method_response_times = []
 
         self.statistics = {}
         self.sample_list = {}
@@ -288,6 +290,7 @@ class HeatMap(CodePaths):
                             "latency": latency
                         }
                     )
+                    self._all_recorded_method_response_times.append(latency)
 
         return json.dumps(sorted(data, key=lambda k: k[self._order_by], reverse=True))
 
@@ -296,8 +299,11 @@ class HeatMap(CodePaths):
 
         :return:
         """
+        max_time = max(self._all_recorded_method_response_times)
+        min_time = min(self._all_recorded_method_response_times)
+        time_scale = numpy.logspace(min_time, max_time, num=4)
         template = Template(heatmap_template)
-        return template.render(payload=self.json)
+        return template.render(payload=self.json, scale=time_scale)
 
     def export(self, path):
         """
