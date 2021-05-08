@@ -7,9 +7,12 @@ from QuickPotato.statistical.verification import *
 from QuickPotato.database.queries import Crud
 from QuickPotato.harness.results import TestReport
 from QuickPotato.harness.measurements import RawData
+from QuickPotato.profiling.instrumentation import Profiler
+from QuickPotato.profiling.interpreters import StatisticsInterpreter
 from datetime import datetime
 import string
 import random
+import time
 
 
 class PerformanceTest(Crud, Boundaries, Metrics, RegressionSettings):
@@ -106,6 +109,30 @@ class PerformanceTest(Crud, Boundaries, Metrics, RegressionSettings):
         results = self._check_difference_between_baseline_benchmark()
         self._save_results_to_test_report(regression_found=results)
         return results
+
+    def measure_method_performance(self, method, arguments=None, iteration=1, pacing=0):
+        """
+
+        :param arguments:
+        :param method:
+        :param iteration:
+        :param pacing:
+        :return:
+        """
+        for _ in range(0, iteration):
+            time.sleep(pacing)
+            sample_id = ''.join(random.choices(string.ascii_uppercase + string.digits, k=8))
+            pf = Profiler()
+            pf.profile_method_under_test(method, *arguments)
+
+            StatisticsInterpreter(
+                performance_statistics=pf.performance_statistics,
+                total_response_time=pf.total_response_time,
+                database_name=self.test_case_name,
+                test_id=self.current_test_id,
+                method_name=method.__name__,
+                sample_id=sample_id
+            )
 
     @staticmethod
     def _generate_random_test_id():

@@ -1,15 +1,15 @@
-from QuickPotato.profiling.intrusive import performance_critical
+from QuickPotato.profiling.intrusive import performance_breakpoint
 import time
 import math
 
 
-@performance_critical
+@performance_breakpoint
 def slow_method():
     num = 6 ** 6 ** 6
     return len(str(num))
 
 
-@performance_critical
+@performance_breakpoint
 def fast_method():
     num = 6 ** 6 ** 6
     return int(math.log10(num))
@@ -20,7 +20,7 @@ class FancyCode:
     A totally random piece of code used to example quick profiling.
     """
 
-    @performance_critical
+    # @performance_breakpoint
     def say_my_name_and_more(self, name):
         print(f"Your name is: {self.capitalize_name(name)}\n")
         print(f"The length of your name is: {self.length_of_name(name)}")

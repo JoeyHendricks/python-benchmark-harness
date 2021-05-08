@@ -1,17 +1,16 @@
 import random
 import string
 from functools import wraps, partial
-
 from QuickPotato.configuration.management import options
 from QuickPotato.harness.testing import PerformanceTest
-from QuickPotato.profiling.debugger import Profiler
+from QuickPotato.profiling.instrumentation import Profiler
 from QuickPotato.profiling.interpreters import StatisticsInterpreter
 from QuickPotato.utilities.exceptions import CouchPotatoCannotFindMethod
 
 performance_test = PerformanceTest()
 
 
-def performance_critical(method=None, enabled=True):
+def performance_breakpoint(method=None, enabled=True):
     """
     This decorator can be used to gather performance statistical
     on a method.
@@ -54,7 +53,7 @@ def performance_critical(method=None, enabled=True):
     # ---------------------------------------------------------------------
 
     if method is None:
-        return partial(performance_critical, enabled=enabled)
+        return partial(performance_breakpoint, enabled=enabled)
 
     elif callable(method) is not True:
         CouchPotatoCannotFindMethod()

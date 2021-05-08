@@ -24,6 +24,7 @@ class Profiler(object):
         # Start Profiling the method
         start_time = time()
         profiler.enable()
+        print(args)
         self.functional_output = method(*args, **kwargs)
         profiler.disable()
         end_time = time()

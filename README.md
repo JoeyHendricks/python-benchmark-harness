@@ -60,16 +60,18 @@ In the following way you can generate a Python flame graph with QuickPotato:
 ```python
 from QuickPotato.configuration.management import options
 from QuickPotato.statistical.visualizations import FlameGraph
-from QuickPotato.profiling.intrusive import performance_critical
+from QuickPotato.profiling.intrusive import performance_breakpoint
 
 options.enable_intrusive_profiling = True  # <-- Make sure that when using intrusive profiling 
-                                           #     that intrusive profiling is enabled.
 
 
-@performance_critical  # <-- Make sure you attach the performance critical decorator.
+#     that intrusive profiling is enabled.
+
+
+@performance_breakpoint  # <-- Make sure you attach the performance critical decorator.
 def i_am_a_slow_function():
-    num = 6 ** 6 ** 6
-    return len(str(num))
+  num = 6 ** 6 ** 6
+  return len(str(num))
 
 
 # Generate Flame Graph
@@ -107,7 +109,7 @@ pt.test_case_name = "heatmap"  # <-- For recording multiple sample QuickPotato n
 
 # Run you code an X amount of times.
 for _ in range(0, 100):
-    FancyCode().say_my_name_and_more(name="joey hendricks")
+  FancyCode().say_my_name_and_more(name="joey hendricks")
 
 # Generate a heatmap
 heatmap = HeatMap(test_case_name=pt.test_case_name, test_ids=[pt.previous_test_id, pt.current_test_id])
@@ -127,16 +129,18 @@ You can generate a CSV export in the following way:
 ```python
 from QuickPotato.configuration.management import options
 from QuickPotato.statistical.visualizations import CsvFile
-from QuickPotato.profiling.intrusive import performance_critical
+from QuickPotato.profiling.intrusive import performance_breakpoint
 
 options.enable_intrusive_profiling = True  # <-- Make sure that when using intrusive profiling 
-                                           #     that intrusive profiling is enabled.
 
 
-@performance_critical  # <-- Make sure you attach the performance critical decorator.
+#     that intrusive profiling is enabled.
+
+
+@performance_breakpoint  # <-- Make sure you attach the performance critical decorator.
 def i_am_a_slow_function():
-    num = 6 ** 6 ** 6
-    return len(str(num))
+  num = 6 ** 6 ** 6
+  return len(str(num))
 
 
 # export measurements to csv
@@ -160,7 +164,7 @@ pt.max_and_min_boundary_for_average = {"max": 1, "min": 0.001}
 
 # Execute method under test
 for _ in range(0, 10):
-    fast_method()
+  fast_method()
 
 # Analyse profiled results will output True if boundaries are not breached otherwise False
 results = pt.verify_benchmark_against_set_boundaries
@@ -180,7 +184,7 @@ pt.test_case_name = "test_performance"
 
 # Execute method under test
 for _ in range(0, 10):
-    fast_method()
+  fast_method()
 
 # Analyse results for change True if there is no change otherwise False
 results = pt.verify_benchmark_against_previous_baseline
