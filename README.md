@@ -95,7 +95,7 @@ How does a by QuickPotato generated heatmap work:
 In the following way you can generate a Python heatmap with QuickPotato:
 
 ```python
-from example.example_code import FancyCode
+from examples.example_code import FancyCode
 from QuickPotato.profiling.intrusive import performance_test as pt
 from QuickPotato.configuration.management import options
 from QuickPotato.statistical.visualizations import HeatMap
@@ -109,7 +109,7 @@ pt.test_case_name = "heatmap"  # <-- For recording multiple sample QuickPotato n
 
 # Run you code an X amount of times.
 for _ in range(0, 100):
-  FancyCode().say_my_name_and_more(name="joey hendricks")
+    FancyCode().say_my_name_and_more(name="joey hendricks")
 
 # Generate a heatmap
 heatmap = HeatMap(test_case_name=pt.test_case_name, test_ids=[pt.previous_test_id, pt.current_test_id])
@@ -154,7 +154,7 @@ defined boundary or not. An example of this sort of test can be found in the sni
 
 ```python
 from QuickPotato.profiling.intrusive import performance_test as pt
-from example.example_code import fast_method
+from examples.example_code import fast_method
 
 # Define test case name
 pt.test_case_name = "test_performance"
@@ -164,7 +164,7 @@ pt.max_and_min_boundary_for_average = {"max": 1, "min": 0.001}
 
 # Execute method under test
 for _ in range(0, 10):
-  fast_method()
+    fast_method()
 
 # Analyse profiled results will output True if boundaries are not breached otherwise False
 results = pt.verify_benchmark_against_set_boundaries
@@ -177,14 +177,14 @@ The method for creating such a test can also be found in the snippet below:
 
 ```python
 from QuickPotato.profiling.intrusive import performance_test as pt
-from example.example_code import fast_method
+from examples.example_code import fast_method
 
 # Define test case name
 pt.test_case_name = "test_performance"
 
 # Execute method under test
 for _ in range(0, 10):
-  fast_method()
+    fast_method()
 
 # Analyse results for change True if there is no change otherwise False
 results = pt.verify_benchmark_against_previous_baseline

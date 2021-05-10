@@ -17,10 +17,10 @@ def fast_method():
 
 class FancyCode:
     """
-    A totally random piece of code used to example quick profiling.
+    A totally random piece of code used to examples quick profiling.
     """
 
-    # @performance_breakpoint
+    # @performance_breakpoint <-- (Uncomment this line to use intrusive profiling by ways of the decorator)
     def say_my_name_and_more(self, name):
         print(f"Your name is: {self.capitalize_name(name)}\n")
         print(f"The length of your name is: {self.length_of_name(name)}")

@@ -1,7 +1,7 @@
 from QuickPotato.profiling.intrusive import performance_test as pt
 from QuickPotato.statistical.visualizations import CsvFile, FlameGraph
 from QuickPotato.configuration.management import options
-from example.example_code import *
+from examples.example_code import *
 import unittest
 
 
