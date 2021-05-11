@@ -147,7 +147,7 @@ class HeatMap {
 
         // text label for the x axis
         svg.append("text")
-            .attr("x", 900)
+            .attr("x", 870)
             .attr("y", 1120)
             .style("font-size", 30)
             .style("text-anchor", "middle")
