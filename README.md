@@ -83,7 +83,7 @@ https://github.com/JoeyHendricks/QuickPotato/blob/master/images/python-code-perf
 How does a by QuickPotato generated heatmap work:
 
 - Every box in the heatmap is a function
-- The y-axis is made up of functions ordered alphabetically.
+- The y-axis is made up of functions ordered by its latency.
 - The x-axis spans the amount of sample (one sample is on execution of your code) and is separated into 
   columns of test id's (one test id is one completely executed test).
 - The color shows the speeds of the function to more red a box is the more time there was spent.

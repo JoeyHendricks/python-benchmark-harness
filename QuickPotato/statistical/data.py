@@ -260,14 +260,14 @@ class CodePaths(Crud):
                 ]
 
             else:
-                self._recursively_update_parent_child_relationship(
+                self._recursively_update_number_of_parent_child_relationship(
                     stack=stack,
                     parent=line['parent_function_name'],
                     child=line['child_function_name']
                 )
         return stack
 
-    def _recursively_update_parent_child_relationship(self, stack, parent, child):
+    def _recursively_update_number_of_parent_child_relationship(self, stack, parent, child):
         """
         Helps map out the call stack by extending or updating the
         hierarchical stack with new members.
@@ -288,7 +288,7 @@ class CodePaths(Crud):
 
         else:
             for item in stack['children']:
-                self._recursively_update_parent_child_relationship(item, parent, child)
+                self._recursively_update_number_of_parent_child_relationship(item, parent, child)
 
     def _recursively_search_hierarchical_stack(self, hierarchical_stack, parent, child, history):
         """
