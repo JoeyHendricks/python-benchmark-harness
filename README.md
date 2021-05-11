@@ -73,7 +73,7 @@ pt.measure_method_performance(
 )
 
 # Generate the flame graph visualizations to analyse your code performance.
-FlameGraph(test_case_name=pt.test_case_name, test_id=pt.current_test_id).export("C:\\temp\\")
+FlameGraph(pt.test_case_name, test_id=pt.current_test_id).export("C:\\temp\\")
 ```
 
 ## Generating Heatmaps (Beta)
@@ -109,8 +109,7 @@ pt.measure_method_performance(
 )
 
 # Generate the heatmap visualizations to analyse your code performance.
-HeatMap(test_case_name=pt.test_case_name, test_ids=[
-  pt.current_test_id, pt.previous_test_id]).export("C:\\temp\\")
+HeatMap(pt.test_case_name, test_ids=[pt.current_test_id, pt.previous_test_id]).export("C:\\temp\\")
 
 ```
 > This visualization is still being tweaked and improved if you encounter any issue with it please open an issue. 
@@ -140,7 +139,7 @@ pt.measure_method_performance(
 )
 
 # Export the sample into csv file for further analysis
-CsvFile(test_case_name=pt.test_case_name, test_id=pt.current_test_id).export("C:\\temp\\")
+CsvFile(pt.test_case_name, test_id=pt.current_test_id).export("C:\\temp\\")
 
 ```
 
