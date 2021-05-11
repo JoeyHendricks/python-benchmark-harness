@@ -63,10 +63,7 @@ from QuickPotato.statistical.visualizations import FlameGraph
 from QuickPotato.profiling.intrusive import performance_breakpoint
 
 options.enable_intrusive_profiling = True  # <-- Make sure that when using intrusive profiling 
-
-
-#     that intrusive profiling is enabled.
-
+                                           #     that intrusive profiling is enabled.
 
 @performance_breakpoint  # <-- Make sure you attach the performance critical decorator.
 def i_am_a_slow_function():
