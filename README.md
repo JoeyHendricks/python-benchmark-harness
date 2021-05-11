@@ -143,8 +143,6 @@ CsvFile(pt.test_case_name, test_id=pt.current_test_id).export("C:\\temp\\")
 
 ```
 
-> Click here to find an example 
-
 ## Boundary testing
 
 Within QuickPotato, it is possible to create a performance test that validates if your code breaches any 
