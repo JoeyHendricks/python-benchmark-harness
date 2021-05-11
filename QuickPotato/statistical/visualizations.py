@@ -151,7 +151,8 @@ class CsvFile(Crud):
 
 class HeatMap(CodePaths):
 
-    def __init__(self, test_case_name=default_test_case_name, test_ids=None, order_by="latency"):
+    def __init__(self, test_case_name=default_test_case_name, test_ids=None, order_by="latency",
+                 detect_code_paths=True):
         """
 
         :param test_case_name:
@@ -179,7 +180,7 @@ class HeatMap(CodePaths):
             for sample in self.sample_list[tid]:
                 self.statistics[tid][sample] = self.select_call_stack_by_sample_id(test_case_name, sample)
 
-        self.json = self.generate_json_payload()
+        self.json = self.generate_json_payload(detect_code_paths)
 
     def look_up_method_latency(self, parent_function_name, child_function_name, sample_id, test_id):
         """
@@ -240,7 +241,7 @@ class HeatMap(CodePaths):
             text = text.replace(">", " ")
             return text
 
-    def generate_json_payload(self):
+    def generate_json_payload(self, detect_code_paths):
         """
 
         :return:
@@ -252,18 +253,28 @@ class HeatMap(CodePaths):
                 raise UnAcceptableTestIdFound()
 
             for sample_id in self.sample_list[test_id]:
-                hierarchical_stack = self._map_out_hierarchical_stack_relationships(self.test_case_name, sample_id)
+
+                if detect_code_paths:
+                    hierarchical_stack = self._map_out_hierarchical_stack_relationships(self.test_case_name, sample_id)
+
+                else:
+                    hierarchical_stack = None
+
                 for frame in self.statistics[test_id][sample_id]:
 
                     parent_function = frame['parent_function_name']
                     child_function = frame['child_function_name']
 
-                    predicted_code_path = self._recursively_search_hierarchical_stack(
-                        hierarchical_stack,
-                        frame['parent_function_name'],
-                        frame['child_function_name'],
-                        history=[]
-                    )
+                    if hierarchical_stack is None:
+                        predicted_code_path = self._recursively_search_hierarchical_stack(
+                            hierarchical_stack,
+                            frame['parent_function_name'],
+                            frame['child_function_name'],
+                            history=[]
+                        )
+                    else:
+                        predicted_code_path = "Code path could not be predicted."
+
                     meta_data = self.look_up_method_meta_data(
                         parent_function_name=frame['parent_function_name'],
                         child_function_name=frame['child_function_name'],
