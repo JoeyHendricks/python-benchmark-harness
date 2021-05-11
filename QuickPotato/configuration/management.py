@@ -30,12 +30,12 @@ class Configuration(object):
         self.dump_configuration_to_yaml_file(self.contents)
 
     @property
-    def allow_the_selection_of_untested_or_failed_test_ids(self):
-        return self.contents["allow_the_selection_of_untested_or_failed_test_ids"]
+    def enable_the_selection_of_untested_or_failed_test_ids(self):
+        return self.contents["enable_the_selection_of_untested_or_failed_test_ids"]
 
-    @allow_the_selection_of_untested_or_failed_test_ids.setter
-    def allow_the_selection_of_untested_or_failed_test_ids(self, value):
-        self.contents["allow_the_selection_of_untested_or_failed_test_ids"] = value
+    @enable_the_selection_of_untested_or_failed_test_ids.setter
+    def enable_the_selection_of_untested_or_failed_test_ids(self, value):
+        self.contents["enable_the_selection_of_untested_or_failed_test_ids"] = value
         self.dump_configuration_to_yaml_file(self.contents)
 
     @property

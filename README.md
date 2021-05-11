@@ -143,6 +143,8 @@ CsvFile(pt.test_case_name, test_id=pt.current_test_id).export("C:\\temp\\")
 
 ```
 
+> Click here to find an example 
+
 ## Boundary testing
 
 Within QuickPotato, it is possible to create a performance test that validates if your code breaches any 
@@ -150,20 +152,25 @@ defined boundary or not. An example of this sort of test can be found in the sni
 
 ```python
 from QuickPotato.profiling.intrusive import performance_test as pt
-from examples.example_code import fast_method
+from examples.example_code import FancyCode
 
-# Define test case name
-pt.test_case_name = "test_performance"
+# Create a test case
+pt.test_case_name = "test_performance"  # <-- Define test case name
 
-# Establish performance boundaries
+# Defining the boundaries
 pt.max_and_min_boundary_for_average = {"max": 1, "min": 0.001}
 
-# Execute method under test
-for _ in range(0, 10):
-    fast_method()
+# Execute your code in a non-intrusive way
+pt.measure_method_performance(
+    method=FancyCode().say_my_name_and_more,  # <-- The Method which you want to test.
+    arguments=["joey hendricks"],  # <-- Your arguments go here.
+    iteration=10,  # <-- The number of times you want to execute this method.
+    pacing=0  # <-- How much seconds you want to wait between iterations.
+)
 
-# Analyse profiled results will output True if boundaries are not breached otherwise False
-results = pt.verify_benchmark_against_set_boundaries
+# Analyse results for change True if there is no change otherwise False
+results = pt.verify_benchmark_against_previous_baseline()
+
 ```
 
 ## Regression testing
@@ -173,42 +180,78 @@ The method for creating such a test can also be found in the snippet below:
 
 ```python
 from QuickPotato.profiling.intrusive import performance_test as pt
-from examples.example_code import fast_method
+from QuickPotato.configuration.management import options
+from examples.example_code import FancyCode
 
-# Define test case name
-pt.test_case_name = "test_performance"
+# Disabling this setting will filter out untested or failed test-id's out of your baseline selection.
+options.enable_the_selection_of_untested_or_failed_test_ids = False
 
-# Execute method under test
-for _ in range(0, 10):
-    fast_method()
+# Create a test case
+pt.test_case_name = "test_performance"  # <-- Define test case name
+
+# Execute your code in a non-intrusive way
+pt.measure_method_performance(
+  method=FancyCode().say_my_name_and_more,  # <-- The Method which you want to test.
+  arguments=["joey hendricks"],  # <-- Your arguments go here.
+  iteration=10,  # <-- The number of times you want to execute this method.
+  pacing=0  # <-- How much seconds you want to wait between iterations.
+)
 
 # Analyse results for change True if there is no change otherwise False
-results = pt.verify_benchmark_against_previous_baseline
+results = pt.verify_benchmark_against_previous_baseline()
 ```
 
-## Options you can configure
+## Integrating with unit testing frameworks
 
-QuickPotato comes equipped with some options you can configure to make sure QuickPotato fits your needs.
-Below you can find a list of all basic options:
+Uplifting basic performance tests into a test framework is easy within QuickPotato and can be achieved 
+the following way:
 
-```python
+````python
+from QuickPotato.profiling.intrusive import performance_test as pt
 from QuickPotato.configuration.management import options
+from examples.example_code import *
+import unittest
 
-# Profiling Settings
-options.enable_intrusive_profiling = True 
-options.enable_system_resource_collection = True
 
-# Results Storage
-options.connection_url = None  # <-- None will use SQlite and store results in Temp directory
-options.enable_database_echo = False
+class TestPerformance(unittest.TestCase):
 
-# Storage Maintenance 
-options.enable_auto_clean_up_old_test_results = True
-options.maximum_number_saved_test_results = 10
+    def setUp(self):
+        """
+        Disable the selection of failed or untested test results.
+        This will make sure QuickPotato will only compare you tests against a valid baseline.
+        """
+        options.enable_the_selection_of_untested_or_failed_test_ids = False
 
-```
-> States of options are saved in a static yaml options file.  
-> That is why settings can be defined just once or changed on the fly.
+    def tearDown(self):
+        """
+        Enabling the selection of failed or untested test results.
+        We enable this setting after the test so it will not bother you when quick profiling.
+        """
+        options.enable_the_selection_of_untested_or_failed_test_ids = True
+
+    def test_performance_of_method(self):
+        """
+        Your performance test.
+        """
+        # Create a test case
+        pt.test_case_name = "test_performance"  # <-- Define test case name
+
+        # Defining the boundaries
+        pt.max_and_min_boundary_for_average = {"max": 10, "min": 0.001}
+
+        # Execute your code in a non-intrusive way
+        pt.measure_method_performance(
+            method=FancyCode().say_my_name_and_more,  # <-- The Method which you want to test.
+            arguments=["joey hendricks"],  # <-- Your arguments go here.
+            iteration=10,  # <-- The number of times you want to execute this method.
+            pacing=0  # <-- How much seconds you want to wait between iterations.
+        )
+
+        # Pass or fail the performance test
+        self.assertTrue(pt.verify_benchmark_against_previous_baseline())
+        self.assertTrue(pt.verify_benchmark_against_set_boundaries())
+
+````
 
 ## Coming soon
 
@@ -218,7 +261,6 @@ Some features which I am planning to add to QuickPotato soon:
 - Scatter plot
 - Creating a virtual map of your code
 - Time Line (Showing from left to right the time spent per action in your code.)
-- non-intrusive profiling by means of setting a start and stop point
 
 ## Learn more about QuickPotato
 

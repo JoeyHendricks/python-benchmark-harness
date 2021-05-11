@@ -14,12 +14,14 @@ class TestRegressionTesting(unittest.TestCase):
         """
 
         """
+        options.enable_the_selection_of_untested_or_failed_test_ids = False
         options.enable_intrusive_profiling = True
 
     def tearDown(self):
         """
 
         """
+        options.enable_the_selection_of_untested_or_failed_test_ids = True
         options.enable_intrusive_profiling = False
         self.clean_up()
 
@@ -52,7 +54,7 @@ class TestRegressionTesting(unittest.TestCase):
                 fast_method()
 
         # Analyse test results
-        results = pt.verify_benchmark_against_previous_baseline
+        results = pt.verify_benchmark_against_previous_baseline()
 
         # printing information message about baseline
         print("------------------------------BASELINE------------------------------")
@@ -84,7 +86,7 @@ class TestRegressionTesting(unittest.TestCase):
             slow_method()
 
         # Analyse test results
-        results = pt.verify_benchmark_against_previous_baseline
+        results = pt.verify_benchmark_against_previous_baseline()
         
         # Print Details of this test
         print("------------------------------BENCHMARK-----------------------------")
@@ -112,7 +114,7 @@ class TestRegressionTesting(unittest.TestCase):
             fast_method()
 
         # Analyse test results
-        results = pt.verify_benchmark_against_previous_baseline
+        results = pt.verify_benchmark_against_previous_baseline()
 
         # Print Details of this test
         print("------------------------------BENCHMARK-----------------------------")
@@ -140,7 +142,7 @@ class TestRegressionTesting(unittest.TestCase):
             fast_method()
 
         # Analyse test results
-        results = pt.verify_benchmark_against_previous_baseline
+        results = pt.verify_benchmark_against_previous_baseline()
 
         # Print Details of this test
         print("------------------------------BENCHMARK-----------------------------")
@@ -173,7 +175,7 @@ class TestRegressionTesting(unittest.TestCase):
                 slow_method()  # <--- SLOWER
 
             # Analyse test results
-            results = pt.verify_benchmark_against_previous_baseline
+            results = pt.verify_benchmark_against_previous_baseline()
 
             # Expected results is a failure because the test changed
             print("------------------------------BENCHMARK 1 -----------------------------")
@@ -198,7 +200,7 @@ class TestRegressionTesting(unittest.TestCase):
                 fast_method()  # <--- FASTER
 
             # Analyse test results
-            results = pt.verify_benchmark_against_previous_baseline
+            results = pt.verify_benchmark_against_previous_baseline()
 
             # Expected results is a failure because the test changed
             print("------------------------------BENCHMARK 2 -----------------------------")
@@ -234,7 +236,7 @@ class TestRegressionTesting(unittest.TestCase):
                 fast_method()
 
             # Analyse results
-            output = pt.verify_benchmark_against_previous_baseline
+            output = pt.verify_benchmark_against_previous_baseline()
             results.append(output)
 
         print(f"passed: {results.count(True)} failed: {results.count(False)} total: 100")

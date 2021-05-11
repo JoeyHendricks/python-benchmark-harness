@@ -92,19 +92,17 @@ class PerformanceTest(Crud, Boundaries, Metrics, RegressionSettings):
         value = value
         self._create_and_populate_test_case_database(value)
         self._no_test_case_mode = False
-        self.enable_untested_or_failed_test_selection = options.allow_the_selection_of_untested_or_failed_test_ids
+        self.enable_untested_or_failed_test_selection = options.enable_the_selection_of_untested_or_failed_test_ids
 
         # Refresh Test ID's
         self._reset_unit_performance_test(database_name=value)
         self._test_case_name = value
 
-    @property
     def verify_benchmark_against_set_boundaries(self):
         results = self._check_breach_benchmark_defined_boundaries()
         self._save_results_to_test_report(boundaries_breached=results)
         return results
 
-    @property
     def verify_benchmark_against_previous_baseline(self):
         results = self._check_difference_between_baseline_benchmark()
         self._save_results_to_test_report(regression_found=results)

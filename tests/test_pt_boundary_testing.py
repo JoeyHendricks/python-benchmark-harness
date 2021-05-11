@@ -15,12 +15,14 @@ class TestPerformanceBoundaries(unittest.TestCase):
 
         """
         options.enable_intrusive_profiling = True
+        options.enable_the_selection_of_untested_or_failed_test_ids = False
 
     def tearDown(self):
         """
 
         """
         options.enable_intrusive_profiling = False
+        options.enable_the_selection_of_untested_or_failed_test_ids = True
         self.clean_up()
 
     @staticmethod
@@ -44,7 +46,7 @@ class TestPerformanceBoundaries(unittest.TestCase):
             slow_method()
 
         # Analyse profiled results
-        results = pt.verify_benchmark_against_set_boundaries
+        results = pt.verify_benchmark_against_set_boundaries()
 
         self.assertTrue(results)
 
@@ -61,7 +63,7 @@ class TestPerformanceBoundaries(unittest.TestCase):
             slow_method()
 
         # Analyse profiled results
-        results = pt.verify_benchmark_against_set_boundaries
+        results = pt.verify_benchmark_against_set_boundaries()
 
         self.assertFalse(results)
 
@@ -98,6 +100,6 @@ class TestPerformanceBoundaries(unittest.TestCase):
             slow_method()
 
         # Analyse profiled results
-        results = pt.verify_benchmark_against_set_boundaries
+        results = pt.verify_benchmark_against_set_boundaries()
 
         self.assertTrue(results)

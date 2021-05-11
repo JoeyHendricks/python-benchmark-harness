@@ -32,7 +32,7 @@ default_quick_potato_configuration = {
     "connection_url": None,
     "enable_database_echo": False,
     "enable_asynchronous_payload_delivery": True if sys.version_info[0:3] > (3, 8, 2) else False,
-    "allow_the_selection_of_untested_or_failed_test_ids": True,
+    "enable_the_selection_of_untested_or_failed_test_ids": True,
     "enable_auto_clean_up_old_test_results": True,
     "maximum_number_saved_test_results": 100,
 
