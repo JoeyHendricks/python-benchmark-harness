@@ -109,7 +109,8 @@ pt.measure_method_performance(
 )
 
 # Generate the heatmap visualizations to analyse your code performance.
-HeatMap(test_case_name=pt.test_case_name, test_ids=[pt.current_test_id, pt.previous_test_id]).export("C:\\temp\\")
+HeatMap(test_case_name=pt.test_case_name, test_ids=[
+  pt.current_test_id, pt.previous_test_id]).export("C:\\temp\\")
 
 ```
 > This visualization is still being tweaked and improved if you encounter any issue with it please open an issue. 
