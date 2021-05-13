@@ -38,8 +38,6 @@ Install using [pip](https://pip.pypa.io/en/stable/) or download the source code 
 ```bash
 pip install QuickPotato
 ```
-> Do note that QuickPotato hasn't released (yet) on the Python Package Index
-> Please just grab the source code or the latest release from GitHub for now :).
 
 ## Generating Flame Graphs
 
