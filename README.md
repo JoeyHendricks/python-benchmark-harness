@@ -268,4 +268,3 @@ Then I would encourage you to check out the following resources:
 - 08/10/2020: [My recording about QuickPotato @NeotysPAC 2020. (English)](https://www.youtube.com/watch?v=AWlhalEywEw) 
 - 15/12/2020: [Interview about QuickPotato @TestGuild 2020. (English)](https://testguild.com/podcast/performance/p56-joey/)
 - 12/01/2020: [An article I wrote for Neotys about my @NeotysPAC 2020 presentation. (English)](https://www.neotys.com/blog/neotyspac-performance-testing-unit-level-joey-hendricks/)
-
