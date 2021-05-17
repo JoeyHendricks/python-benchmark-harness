@@ -328,3 +328,54 @@ class HeatMap(CodePaths):
                 file.write(self.render_html())
         else:
             raise UnableToExportVisualization()
+
+
+class BarGraph(Crud):
+
+    def __init__(self, test_case_name=default_test_case_name, test_ids=None, order_by="latency"):
+        """
+
+        :param test_case_name:
+        :param test_ids:
+        :param order_by:
+        """
+        super(BarGraph, self).__init__()
+
+        # Sorting out the test-id's
+        self.test_case_name = test_case_name
+        self._order_by = order_by
+        if test_ids is None or type(test_ids) is not list:
+            raise UnableToGenerateVisualizations()
+
+        elif test_ids is None and test_case_name == default_test_case_name:
+            self.list_of_test_ids = [self.select_test_ids_with_performance_statistics(database=test_case_name)[-1]]
+
+        else:
+            self.list_of_test_ids = test_ids
+
+        # Gathering relevant performance metrics
+        self.statistics = {}
+        for tid in self.list_of_test_ids:
+            self.statistics[tid] = self.select_call_stack_by_test_id(test_case_name, tid)
+
+        self.json = self.generate_json_payload()
+        print(self.json)
+
+    def generate_json_payload(self):
+        """
+
+        :return:
+        """
+        payload = {}
+        for tid in self.list_of_test_ids:
+            payload[tid] = []
+            for row in self.statistics[tid]:
+                payload[tid].append(
+                    {
+                        "sample_id": row['sample_id'],
+                        "method_signature": f"{row['parent_function_name']}/{row['child_function_name']}",
+                        "latency": row['cumulative_time']
+                    }
+                )
+            sorted(payload[tid], key=lambda k: k[self._order_by], reverse=True)
+        return json.dumps(payload)
