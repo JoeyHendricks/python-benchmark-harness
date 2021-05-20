@@ -6,6 +6,7 @@ from QuickPotato.utilities.exceptions import UnableToGenerateVisualizations, \
     UnableToExportVisualization, UnAcceptableTestIdFound
 from datetime import datetime
 from jinja2 import Template
+import plotly.graph_objects as go
 import pandas as pd
 import numpy
 import json
@@ -358,24 +359,81 @@ class BarGraph(Crud):
         for tid in self.list_of_test_ids:
             self.statistics[tid] = self.select_call_stack_by_test_id(test_case_name, tid)
 
-        self.json = self.generate_json_payload()
-        print(self.json)
+        self.json = self.generate_json()
 
-    def generate_json_payload(self):
+    def generate_json(self):
         """
 
         :return:
         """
-        payload = {}
+        payload = []
         for tid in self.list_of_test_ids:
-            payload[tid] = []
             for row in self.statistics[tid]:
-                payload[tid].append(
+
+                if row['parent_function_name'] == row['sample_id']:
+                    method_signature = row['child_function_name']
+
+                else:
+                    method_signature = f"{row['parent_function_name']}/{row['child_function_name']}"
+
+                payload.append(
                     {
                         "sample_id": row['sample_id'],
-                        "method_signature": f"{row['parent_function_name']}/{row['child_function_name']}",
+                        "test_id": tid,
+                        "method_signature": method_signature,
                         "latency": row['cumulative_time']
                     }
                 )
-            sorted(payload[tid], key=lambda k: k[self._order_by], reverse=True)
-        return json.dumps(payload)
+        return sorted(payload, key=lambda k: k[self._order_by], reverse=True)
+
+    def render_html(self):
+        """
+
+        :return:
+        """
+        df = pd.DataFrame(self.json)
+        fig = go.Figure()
+        fig.update_layout(
+            title="<span style='font-size: 22px;'>QuickPotato Method Performance Bar Chart</span>",
+            template="ggplot2",
+            xaxis=dict(title_text="Test-id's"),
+            yaxis=dict(title_text="Time spent in seconds"),
+            barmode="stack",
+            font=dict(
+                size=12,
+            )
+        )
+
+        for method_signature in df.method_signature.unique():
+            plot_df = df[df.method_signature == method_signature]
+            fig.add_trace(
+                go.Bar(
+                    x=[plot_df.test_id, plot_df.sample_id],
+                    y=plot_df.latency,
+                    name=method_signature,
+                    meta=[method_signature],
+                    hovertemplate=
+                    '<br>Test-ID: %{x[0]}</b>'
+                    '<br>Sample-ID: %{x[1]}</b>'
+                    '<br>method name: %{meta[0]}</b>' +
+                    '<br>Time Spent %{y}</b>' +
+                    '<extra></extra>'
+                ),
+            )
+
+        return fig.to_html(config={
+            "displaylogo": False
+        })
+
+    def export(self, path):
+        """
+        Export the bar chart as a HTML report on disk.
+        :param path: The path on disk where the file needs to be written.
+                     Example: C:\\temp\\
+        """
+        if os.path.isdir(path):
+            name = f"BarChart-{self.test_case_name}-{datetime.now().timestamp()}"
+            with open(f"{path}{name}.html", 'a') as file:
+                file.write(self.render_html())
+        else:
+            raise UnableToExportVisualization()

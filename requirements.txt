@@ -6,3 +6,5 @@ Jinja2~=2.11.3
 scipy~=1.6.2
 PyYAML~=5.4.1
 sqlalchemy_utils~=0.37.2
+QuickPotato~=0.3
+plotly~=4.14.3
