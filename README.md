@@ -79,7 +79,7 @@ FlameGraph(pt.test_case_name, test_id=pt.current_test_id).export("C:\\temp\\")
 [![Example of a Python heatmap](/images/python-code-performance-heatmap.png "heatmap Python")](
 https://github.com/JoeyHendricks/QuickPotato/blob/master/images/python-code-performance-heatmap.png)
 
-How does a by QuickPotato generated heatmap work:
+How does a by QuickPotato generated D3 heatmap work:
 
 - Every box in the heatmap is a function
 - The y-axis is made up of functions ordered by its latency.
@@ -110,7 +110,7 @@ pt.measure_method_performance(
 HeatMap(pt.test_case_name, test_ids=[pt.current_test_id, pt.previous_test_id]).export("C:\\temp\\")
 
 ```
-> This visualization is still being tweaked and improved if you encounter any issue with it please open an issue. 
+> This D3 visualization is still being tweaked and improved if you encounter any issue with it please open an issue. 
 > (Your feedback is appreciated!)
 
 ## Generating a CSV file
@@ -138,6 +138,44 @@ pt.measure_method_performance(
 
 # Export the sample into csv file for further analysis
 CsvFile(pt.test_case_name, test_id=pt.current_test_id).export("C:\\temp\\")
+
+```
+
+## Generating a Bar Chart
+
+[![Example of a bar chart](/images/python-code-performance-bar-chart.png "a bar chart")](
+https://github.com/JoeyHendricks/QuickPotato/blob/master/images/python-code-performance-bar-chart.png)
+
+How to interpret the bar chart generate by QuickPotato:
+
+- each color is method executed in your performance test.
+- The graph is ordered by latency from slowest to fastest (This can be disabled.)
+- The Y axis is time spent per method.
+- The X axis made up out of samples and divided per test id.
+- You can exclude a method by clicking the method name in the legend.
+  Also, by double clicking a method name you can deselect all other methods.
+- On the top right-hand side Plotly's control bar can be found to further interact with the graph.
+
+You can generate a simple interactive bar chart in the following way:
+
+```python
+from examples.example_code import FancyCode
+from QuickPotato.profiling.intrusive import performance_test as pt
+from QuickPotato.statistical.visualizations import BarChart
+
+# Create a test case
+pt.test_case_name = "bar chart"
+
+# Attach the method from which you want to performance test
+pt.measure_method_performance(
+    method=FancyCode().say_my_name_and_more,  # <-- The Method which you want to test.
+    arguments=["joey hendricks"],  # <-- Your arguments go here.
+    iteration=10,  # <-- The number of times you want to execute this method.
+    pacing=0  # <-- How much seconds you want to wait between iterations.
+)
+
+# Generate visualizations to analyse your code.
+BarChart(test_case_name=pt.test_case_name, test_ids=[pt.current_test_id, pt.previous_test_id]).export("C:\\temp\\")
 
 ```
 
