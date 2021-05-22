@@ -175,7 +175,7 @@ pt.measure_method_performance(
 )
 
 # Generate visualizations to analyse your code.
-BarChart(test_case_name=pt.test_case_name, test_ids=[pt.current_test_id, pt.previous_test_id]).export("C:\\temp\\")
+BarChart(pt.test_case_name, test_ids=[pt.current_test_id, pt.previous_test_id]).export("C:\\temp\\")
 
 ```
 
