@@ -331,7 +331,7 @@ class HeatMap(CodePaths):
             raise UnableToExportVisualization()
 
 
-class BarGraph(Crud):
+class BarChart(Crud):
 
     def __init__(self, test_case_name=default_test_case_name, test_ids=None, order_by="latency"):
         """
@@ -340,7 +340,7 @@ class BarGraph(Crud):
         :param test_ids:
         :param order_by:
         """
-        super(BarGraph, self).__init__()
+        super(BarChart, self).__init__()
 
         # Sorting out the test-id's
         self.test_case_name = test_case_name
