@@ -1,4 +1,3 @@
-import sys
 
 template_for_service_level_agreement_threshold_policy = {
     "max_and_min_boundary_for_average": {"max": None, "min": None},
@@ -31,7 +30,7 @@ default_quick_potato_configuration = {
     "enable_system_resource_collection": False,
     "connection_url": None,
     "enable_database_echo": False,
-    "enable_asynchronous_payload_delivery": True if sys.version_info[0:3] > (3, 8, 2) else False,
+    "enable_asynchronous_payload_delivery": False,
     "enable_the_selection_of_untested_or_failed_test_ids": True,
     "enable_auto_clean_up_old_test_results": True,
     "maximum_number_saved_test_results": 100,

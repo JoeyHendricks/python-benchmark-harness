@@ -95,7 +95,7 @@ class PerformanceTest(Crud, Boundaries, Metrics, RegressionSettings):
         self.enable_untested_or_failed_test_selection = options.enable_the_selection_of_untested_or_failed_test_ids
 
         # Refresh Test ID's
-        self._reset_unit_performance_test(database_name=value)
+        self._reset_performance_test(database_name=value)
         self._test_case_name = value
 
     def verify_benchmark_against_set_boundaries(self):
@@ -152,7 +152,7 @@ class PerformanceTest(Crud, Boundaries, Metrics, RegressionSettings):
         self.spawn_regression_test_evidence_schema(database_name)
         self.enforce_test_result_retention_policy(database_name)
 
-    def _reset_unit_performance_test(self, database_name):
+    def _reset_performance_test(self, database_name):
         """
         The method will reset the unit load test class to it original state.
 

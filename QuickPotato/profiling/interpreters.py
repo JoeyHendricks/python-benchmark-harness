@@ -56,7 +56,6 @@ class StatisticsInterpreter(Crud):
                 # Sending and nuking payload variable when exceeding SQLite's max amount of variables.
                 self.insert_performance_statistics(payload=payload, database=self.database_name)
                 payload = []
-
             payload.append(row)
 
         # Inserting full payload into server-based database or sending left-overs to sever-less database

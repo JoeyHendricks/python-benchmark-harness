@@ -1,6 +1,7 @@
 from QuickPotato.utilities.defaults import default_quick_potato_configuration
 from os.path import isfile, dirname, realpath
 import yaml
+import sys
 
 
 class Configuration(object):
@@ -66,8 +67,13 @@ class Configuration(object):
 
     @enable_asynchronous_payload_delivery.setter
     def enable_asynchronous_payload_delivery(self, value):
-        self.contents["enable_asynchronous_payload_delivery"] = value
-        self.dump_configuration_to_yaml_file(self.contents)
+        if sys.version_info[0:3] > (3, 8, 2) and value is True:
+            self.contents["enable_asynchronous_payload_delivery"] = True
+            self.dump_configuration_to_yaml_file(self.contents)
+
+        else:
+            self.contents["enable_asynchronous_payload_delivery"] = False
+            self.dump_configuration_to_yaml_file(self.contents)
 
     @property
     def enable_auto_clean_up_old_test_results(self):
