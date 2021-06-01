@@ -1,13 +1,11 @@
 import random
 import string
 from functools import wraps, partial
+from QuickPotato import performance_test
 from QuickPotato.configuration.management import options
-from QuickPotato.harness.testing import PerformanceTest
 from QuickPotato.profiling.instrumentation import Profiler
 from QuickPotato.profiling.interpreters import StatisticsInterpreter
 from QuickPotato.utilities.exceptions import CouchPotatoCannotFindMethod
-
-performance_test = PerformanceTest()
 
 
 def performance_breakpoint(method=None, enabled=True):
