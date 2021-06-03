@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='QuickPotato',
-    version='0.3',
+    version='0.0.4.1',
     packages=[
         'QuickPotato',
         'QuickPotato.harness',
