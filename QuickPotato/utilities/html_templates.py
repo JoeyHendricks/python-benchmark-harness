@@ -205,17 +205,17 @@ heatmap_template = """
             this.Samples = d3.map(this.data, d => d.x_axis_identifier_sample_ids).keys();
             this.CodePaths = d3.map(this.data, d => d.y_axis_identifier_parent_child_pair).keys();
             this.Tests = d3.map(this.data, d => d.x_axis_identifier_test_ids).keys();
-
+    
             // Setting the dimensions, margins and the color palette of the graph
             this.margin = { top: 110, right: 10, bottom: 100, left: 75 };
             this.width = 1800 - this.margin.left - this.margin.right;
             this.height = 1300 - this.margin.top - this.margin.bottom;
             this.ColorPalette = ['#f1bc31', '#e9731e', '#e4671f', '#df5a21', '#bc2d23'];
-
+    
             // Adding the heatmap to the analytic section
             document.getElementById("analytics").innerHTML += '<div id="' + this.heatmap_id + '"></div>';
         }
-
+    
         create_tooltip() {
             var tooltip = d3.select("#" + this.heatmap_id)
                 .append("div")
@@ -235,38 +235,38 @@ heatmap_template = """
                 .style("padding", "10px")
             return tooltip
         }
-
+    
         create_mouse_over_event(tooltip) {
             return function (d) {
                 tooltip
                     .style("opacity", 1)
-
+    
                 d3.select(this)
                     .style("stroke", "black")
                     .style("opacity", 1)
             }
         }
-
+    
         create_mouse_move_event(tooltip) {
             return function (d) {
                 var mouse_position = Math.abs(event.clientX);
                 var tooltip_text = 'Test ID: ' + d.x_axis_identifier_test_ids + ' Sample ID:'
                     + d.x_axis_identifier_sample_ids + ' Function '
                     + d.y_axis_identifier_parent_child_pair + ', ran for ' + d.latency;
-
-                if (mouse_position > 850) {
+    
+                if (mouse_position > 700) {
                     var tooltip_position = d3.event.pageX - 10 - tooltip.node().getBoundingClientRect().width + "px"
                 } else {
                     var tooltip_position = d3.event.pageX + 10 + "px"
                 }
-
+    
                 tooltip
                     .html(tooltip_text)
                     .style("left", tooltip_position)
                     .style("top", d3.event.pageY + 10 + "px")
             }
         }
-
+    
         create_mouse_leave_event(tooltip) {
             return function (d) {
                 tooltip
@@ -276,20 +276,23 @@ heatmap_template = """
                     .style("opacity", 0.8)
             }
         }
-
+    
         create_mouse_click_event(json) {
             var explorer = document.getElementById("meta_data_viewer")
-
+    
             // Generate human friendly code path
             var code_path = "";
             for (var method of json.predicted_code_path) {
                 method = method.replace(/[^\w\s]/gi, '')
-                if (code_path == "") {
-
+                if (method == "Code path could not be predicted.") {
+                    var code_path ="Code path could not be predicted."
+    
+                } else if (code_path == "") {
+    
                     var code_path = method;
-
+    
                 } else {
-
+    
                     var code_path = code_path + " --> " + method;
                 }
             }
@@ -326,23 +329,23 @@ heatmap_template = """
                     </li>
                 </ul>
             `;
-
+    
             explorer.innerHTML = html;
         }
-
+    
         create_color_palette() {
             return d3.scaleLinear()
                 .range(this.ColorPalette)
                 .domain(this.scale)
         }
-
+    
         create_sample_x_axis(svg, domain) {
             // Build X axis:
             var x_axis = d3.scaleBand()
                 .range([0, this.width / this.Tests.length - 10])
                 .domain(domain)
                 .padding(0.05)
-
+    
             // text label for the x axis
             svg.append("text")
                 .attr("x", 870)
@@ -350,10 +353,10 @@ heatmap_template = """
                 .style("font-size", 30)
                 .style("text-anchor", "middle")
                 .text("Test id's and samples");
-
+    
             return x_axis
         }
-
+    
         create_tests_x_axis(svg) {
             // Build X axis:
             var axis = d3.scaleBand()
@@ -362,13 +365,13 @@ heatmap_template = """
                 .padding(0.05)
             return axis;
         }
-
+    
         create_y_axis(svg) {
             var y_axis = d3.scaleBand()
                 .range([this.height, 0])
                 .domain(this.CodePaths)
                 .padding(0.05);
-
+    
             // text label for the y axis
             svg.append("text")
                 .attr("x", 550)
@@ -376,25 +379,25 @@ heatmap_template = """
                 .attr("transform", "rotate(90)")
                 .style("font-size", 30)
                 .style("text-anchor", "middle")
-                .text("Methods");
-
+                .text("Code Paths");
+    
             return y_axis
-
+    
         }
-
+    
         create_title_and_subtitle(svg) {
-
+    
             var date = new Date().toLocaleDateString();
             var time = new Date().toLocaleTimeString();
-
+    
             // Add title to graph
             svg.append("text")
                 .attr("x", 30)
                 .attr("y", -70)
                 .attr("text-anchor", "left")
                 .style("font-size", 50)
-                .text("QuickPotato Code Performance Heatmap");
-
+                .text("QuickPotato Code Path Heatmap");
+    
             // Add subtitle to graph
             svg.append("text")
                 .attr("x", 35)
@@ -405,7 +408,7 @@ heatmap_template = """
                 .style("max-width", 400)
                 .text('Generated on ' + date + ' ' + time);
         }
-
+    
         render() {
             // Add the svg image to the page and generate the color palette
             var svg = d3.select("#" + this.heatmap_id)
@@ -414,14 +417,14 @@ heatmap_template = """
                 .append("g")
                 .attr("transform", "translate(" + this.margin.left + "," + this.margin.top + ")");
             var Color = this.create_color_palette();
-
+    
             // Create the mouse and tooltip event handlers
             var tooltip = this.create_tooltip();
             var mouseover = this.create_mouse_over_event(tooltip);
             var mousemove = this.create_mouse_move_event(tooltip);
             var mouseleave = this.create_mouse_leave_event(tooltip);
             var mouseclick = this.create_mouse_click_event;
-
+    
             // Build the X axis for each subplot
             var x_axes = {};
             this.Tests.forEach(test => {
@@ -430,10 +433,10 @@ heatmap_template = """
                 x_axes[test] = this.create_sample_x_axis(svg, samples_for_test);
             });
             var test_axis = this.create_tests_x_axis(svg);
-
+    
             // Build the Y axis:
             var y_axis = this.create_y_axis(svg);
-
+    
             // Add all the code paths per sample as squares
             svg.selectAll()
                 .data(this.data, d => d.x_axis_identifier_sample_ids + ':' + d.y_axis_identifier_parent_child_pair)
@@ -457,7 +460,7 @@ heatmap_template = """
                 .on("mousemove", mousemove)
                 .on("mouseleave", mouseleave)
                 .on("click", mouseclick);
-
+    
             // Create title and subtitle
             this.create_title_and_subtitle(svg);
         }

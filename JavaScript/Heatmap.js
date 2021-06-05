@@ -86,6 +86,7 @@ class HeatMap {
         var code_path = "";
         for (var method of json.predicted_code_path) {
             method = method.replace(/[^\w\s]/gi, '')
+
             if (code_path == "") {
 
                 var code_path = method;

@@ -1,4 +1,4 @@
-from QuickPotato.profiling.intrusive import performance_test as pt
+from QuickPotato import performance_test as pt
 from QuickPotato.configuration.management import options
 from examples.example_code import *
 import unittest

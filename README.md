@@ -160,7 +160,7 @@ You can generate a simple interactive bar chart in the following way:
 
 ```python
 from examples.example_code import FancyCode
-from QuickPotato.profiling.intrusive import performance_test as pt
+from QuickPotato import performance_test as pt
 from QuickPotato.statistical.visualizations import BarChart
 
 # Create a test case
@@ -185,7 +185,7 @@ Within QuickPotato, it is possible to create a performance test that validates i
 defined boundary or not. An example of this sort of test can be found in the snippet below:
 
 ```python
-from QuickPotato.profiling.intrusive import performance_test as pt
+from QuickPotato import performance_test as pt
 from examples.example_code import FancyCode
 
 # Create a test case
@@ -213,7 +213,7 @@ It is also possible to verify that there is no regression between the current be
 The method for creating such a test can also be found in the snippet below:
 
 ```python
-from QuickPotato.profiling.intrusive import performance_test as pt
+from QuickPotato import performance_test as pt
 from QuickPotato.configuration.management import options
 from examples.example_code import FancyCode
 
@@ -241,7 +241,7 @@ Uplifting basic performance tests into a test framework is easy within QuickPota
 the following way:
 
 ````python
-from QuickPotato.profiling.intrusive import performance_test as pt
+from QuickPotato import performance_test as pt
 from QuickPotato.configuration.management import options
 from examples.example_code import *
 import unittest
