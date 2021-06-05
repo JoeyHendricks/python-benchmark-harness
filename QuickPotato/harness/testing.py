@@ -10,6 +10,7 @@ from QuickPotato.harness.measurements import RawData
 from QuickPotato.profiling.instrumentation import Profiler
 from QuickPotato.profiling.interpreters import StatisticsInterpreter
 from datetime import datetime
+import multiprocessing as mp
 import string
 import random
 import time
@@ -108,13 +109,14 @@ class PerformanceTest(Crud, Boundaries, Metrics, RegressionSettings):
         self._save_results_to_test_report(regression_found=results)
         return results
 
-    def measure_method_performance(self, method, arguments=None, iteration=1, pacing=0):
+    def measure_method_performance(self, method, arguments=None, iteration=1, pacing=0, processes=0):
         """
 
-        :param arguments:
         :param method:
+        :param arguments:
         :param iteration:
         :param pacing:
+        :param processes:
         :return:
         """
         for _ in range(0, iteration):
@@ -154,7 +156,7 @@ class PerformanceTest(Crud, Boundaries, Metrics, RegressionSettings):
 
     def _reset_performance_test(self, database_name):
         """
-        The method will reset the unit load test class to it original state.
+        The method will reset the performance test test class to its original state.
 
         Parameters
         ----------

@@ -266,7 +266,7 @@ class HeatMap(CodePaths):
                     parent_function = frame['parent_function_name']
                     child_function = frame['child_function_name']
 
-                    if hierarchical_stack is None:
+                    if hierarchical_stack is not None:
                         predicted_code_path = self._recursively_search_hierarchical_stack(
                             hierarchical_stack,
                             frame['parent_function_name'],

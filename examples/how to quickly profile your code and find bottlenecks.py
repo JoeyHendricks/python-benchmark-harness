@@ -16,5 +16,6 @@ pt.measure_method_performance(
 # Generate visualizations to analyse your code.
 BarChart(test_case_name=pt.test_case_name, test_ids=[pt.current_test_id, pt.previous_test_id]).export("C:\\temp\\")
 FlameGraph(test_case_name=pt.test_case_name, test_id=pt.current_test_id).export("C:\\temp\\")
-HeatMap(test_case_name=pt.test_case_name, test_ids=[pt.current_test_id, pt.previous_test_id]).export("C:\\temp\\")
+HeatMap(test_case_name=pt.test_case_name, test_ids=[pt.current_test_id, pt.previous_test_id], detect_code_paths=True
+        ).export("C:\\temp\\")
 CsvFile(test_case_name=pt.test_case_name, test_id=pt.current_test_id).export("C:\\temp\\")
