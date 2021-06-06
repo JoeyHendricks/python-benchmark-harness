@@ -57,7 +57,7 @@ In the following way you can generate a Python flame graph with QuickPotato:
 
 ```python
 from examples.example_code import FancyCode
-from QuickPotato.profiling.intrusive import performance_test as pt
+from QuickPotato import performance_test as pt
 from QuickPotato.statistical.visualizations import FlameGraph
 
 # Create a test case
@@ -92,7 +92,7 @@ In the following way you can generate a Python heatmap with QuickPotato:
 
 ```python
 from examples.example_code import FancyCode
-from QuickPotato.profiling.intrusive import performance_test as pt
+from QuickPotato import performance_test as pt
 from QuickPotato.statistical.visualizations import HeatMap
 
 # Create a test case
@@ -122,7 +122,7 @@ You can generate a CSV export in the following way:
 
 ```python
 from examples.example_code import FancyCode
-from QuickPotato.profiling.intrusive import performance_test as pt
+from QuickPotato import performance_test as pt
 from QuickPotato.statistical.visualizations import CsvFile
 
 # Create a test case
