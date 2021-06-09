@@ -10,7 +10,7 @@ from QuickPotato.harness.measurements import RawData
 from QuickPotato.profiling.instrumentation import Profiler
 from QuickPotato.profiling.interpreters import StatisticsInterpreter
 from datetime import datetime
-import multiprocessing as mp
+from multiprocessing import Process
 import string
 import random
 import time
@@ -109,14 +109,9 @@ class PerformanceTest(Crud, Boundaries, Metrics, RegressionSettings):
         self._save_results_to_test_report(regression_found=results)
         return results
 
-    def measure_method_performance(self, method, arguments=None, iteration=1, pacing=0, processes=0):
+    def _execute_code_under_test(self, method, arguments=None, iteration=1, pacing=0):
         """
 
-        :param method:
-        :param arguments:
-        :param iteration:
-        :param pacing:
-        :param processes:
         :return:
         """
         for _ in range(0, iteration):
@@ -132,6 +127,38 @@ class PerformanceTest(Crud, Boundaries, Metrics, RegressionSettings):
                 test_id=self.current_test_id,
                 method_name=method.__name__,
                 sample_id=sample_id
+            )
+
+    def measure_method_performance(self, method, arguments=None, iteration=1, pacing=0, processes=0, wind_up=0):
+        """
+
+        :param method:
+        :param arguments:
+        :param iteration:
+        :param pacing:
+        :param processes:
+        :param wind_up:
+        :return:
+        """
+        if __name__ == "__main__" and processes > 0:
+            for _ in range(0, processes):
+                Process(
+                    name=f"worker-{_}",
+                    target=self._execute_code_under_test,
+                    kwargs={
+                        "method": method,
+                        "arguments": arguments,
+                        "iteration": iteration,
+                        "pacing": pacing
+                    }
+                ).start()
+
+        else:
+            self._execute_code_under_test(
+                method,
+                arguments,
+                iteration,
+                pacing,
             )
 
     @staticmethod
