@@ -16,7 +16,6 @@ import random
 import time
 
 
-
 class PerformanceTest(Crud, Boundaries, Metrics, RegressionSettings):
 
     def __init__(self):

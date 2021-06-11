@@ -1,7 +1,7 @@
 from QuickPotato.harness.results import RegressionTestEvidence
 from datetime import datetime
 import numpy as np
-from decimal import *
+from decimal import Decimal
 from scipy import stats
 
 # Silence Divided by zero warnings
