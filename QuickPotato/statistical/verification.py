@@ -2,7 +2,7 @@ from QuickPotato.utilities.decorators import save_boundary_evidence
 
 
 @save_boundary_evidence
-def validate_max_boundary_of_measurements(value, boundary):
+def check_max_boundary_of_measurement(value, boundary):
     """
     :return:
     """
@@ -17,7 +17,7 @@ def validate_max_boundary_of_measurements(value, boundary):
 
 
 @save_boundary_evidence
-def validate_min_boundary_of_measurements(value, boundary):
+def check_min_boundary_of_measurement(value, boundary):
     """
     :return:
     """

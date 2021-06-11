@@ -1,9 +1,9 @@
+from QuickPotato.statistical.verification import check_max_boundary_of_measurement, check_min_boundary_of_measurement
 from QuickPotato.configuration.settings import Boundaries, RegressionSettings
 from QuickPotato.configuration.management import options
 from QuickPotato.utilities.defaults import default_test_case_name
 from QuickPotato.statistical.hypothesis_tests import TTest
 from QuickPotato.harness.measurements import Metrics
-from QuickPotato.statistical.verification import *
 from QuickPotato.database.queries import Crud
 from QuickPotato.harness.results import TestReport
 from QuickPotato.harness.measurements import RawData
@@ -14,6 +14,7 @@ from multiprocessing import Process
 import string
 import random
 import time
+
 
 
 class PerformanceTest(Crud, Boundaries, Metrics, RegressionSettings):
@@ -278,7 +279,7 @@ class PerformanceTest(Crud, Boundaries, Metrics, RegressionSettings):
         for boundary_key, measurements_key in zip(self.boundary_policy, self.threshold_measurements):
             if self.boundary_policy[boundary_key]["max"] is not None:
                 results.append(
-                    validate_max_boundary_of_measurements(
+                    check_max_boundary_of_measurement(
                         test_id=self.current_test_id,
                         test_case_name=self._test_case_name,
                         validation_name="validate_max_boundary_for_" + measurements_key,
@@ -287,7 +288,7 @@ class PerformanceTest(Crud, Boundaries, Metrics, RegressionSettings):
                 )
             if self.boundary_policy[boundary_key]["min"] is not None:
                 results.append(
-                    validate_min_boundary_of_measurements(
+                    check_min_boundary_of_measurement(
                         test_id=self.current_test_id,
                         test_case_name=self._test_case_name,
                         validation_name="validate_min_boundary_for_" + measurements_key,
