@@ -1,8 +1,8 @@
 from QuickPotato.configuration.management import options
-from QuickPotato.database.schemas import *
+from QuickPotato.database.schemas import RawStatisticsSchemas, UnitPerformanceTestResultSchemas
 from sqlalchemy import create_engine
 from sqlalchemy.exc import ProgrammingError
-from QuickPotato.utilities.exceptions import *
+from QuickPotato.utilities.exceptions import DatabaseConnectionCannotBeSpawned, DatabaseSchemaCannotBeSpawned
 from sqlalchemy_utils import database_exists, create_database, drop_database
 import tempfile
 
