@@ -86,11 +86,10 @@ class ContextManager(RawStatisticsSchemas, UnitPerformanceTestResultSchemas):
             if not database_exists(engine.url):
                 create_database(engine.url)
             engine.dispose()
-            return True
 
         except ProgrammingError:
             # Database exists no need to re-create it
-            return True
+            pass
 
         except Exception:
             raise DatabaseSchemaCannotBeSpawned()
