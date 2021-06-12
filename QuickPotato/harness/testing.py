@@ -90,7 +90,6 @@ class PerformanceTest(Crud, Boundaries, Metrics, RegressionSettings):
             the new value of the test case name that will
             be defined by the developer.
         """
-        value = value
         self._create_and_populate_test_case_database(value)
         self._no_test_case_mode = False
         self.enable_untested_or_failed_test_selection = options.enable_the_selection_of_untested_or_failed_test_ids

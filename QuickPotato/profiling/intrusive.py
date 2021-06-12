@@ -54,7 +54,7 @@ def performance_breakpoint(method=None, enabled=True):
         return partial(performance_breakpoint, enabled=enabled)
 
     elif callable(method) is not True:
-        CouchPotatoCannotFindMethod()
+        raise CouchPotatoCannotFindMethod()
 
     else:
         # Execute the method under test
