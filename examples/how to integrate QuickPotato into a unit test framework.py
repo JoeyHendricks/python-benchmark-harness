@@ -11,14 +11,14 @@ class TestPerformance(unittest.TestCase):
         Disable the selection of failed or untested test results.
         This will make sure QuickPotato will only compare you tests against a valid baseline.
         """
-        options.enable_the_selection_of_untested_or_failed_test_ids = False
+        options.enable_policy_to_filter_out_invalid_test_ids = False
 
     def tearDown(self):
         """
         Enabling the selection of failed or untested test results.
         We enable this setting after the test so it will not bother you when quick profiling.
         """
-        options.enable_the_selection_of_untested_or_failed_test_ids = True
+        options.enable_policy_to_filter_out_invalid_test_ids = True
 
     def test_performance_of_method(self):
         """

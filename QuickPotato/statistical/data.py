@@ -236,7 +236,7 @@ class CodePaths(Crud):
 
         self._matched_code_path = None
 
-    def _map_out_hierarchical_stack_relationships(self, test_case_name, sample_id):
+    def _map_out_hierarchical_stack_relationships(self, database_name, sample_id):
         """
         Will map out the parent child relationships for each function to form hierarchical data structure.
         This structure can than be used to generate D3 flame graphs.
@@ -247,7 +247,7 @@ class CodePaths(Crud):
         :return: An hierarchical data structure in JSON format.
         """
         stack = {}
-        collected_stack = self.select_call_stack_by_sample_id(test_case_name, sample_id)
+        collected_stack = self.select_call_stack_by_sample_id(database_name, sample_id)
         for line in collected_stack:
 
             if line["parent_function_name"] == collected_stack[0]['parent_function_name']:

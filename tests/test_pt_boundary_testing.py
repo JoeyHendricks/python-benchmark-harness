@@ -15,14 +15,14 @@ class TestPerformanceBoundaries(unittest.TestCase):
 
         """
         options.enable_intrusive_profiling = True
-        options.enable_the_selection_of_untested_or_failed_test_ids = False
+        options.enable_policy_to_filter_out_invalid_test_ids = False
 
     def tearDown(self):
         """
 
         """
         options.enable_intrusive_profiling = False
-        options.enable_the_selection_of_untested_or_failed_test_ids = True
+        options.enable_policy_to_filter_out_invalid_test_ids = True
         self.clean_up()
 
     @staticmethod

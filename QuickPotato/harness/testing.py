@@ -30,8 +30,8 @@ class PerformanceTest(Crud, Boundaries, Metrics, RegressionSettings):
         self.silence_warning_messages = False
 
         self._test_case_name = default_test_case_name
-        self._no_test_case_mode = True
-        self.enable_untested_or_failed_test_selection = False
+        self._database_name = default_test_case_name
+        self.filter_out_invalid_test_ids = False
 
     @property
     def benchmark_measurements(self):
@@ -56,6 +56,19 @@ class PerformanceTest(Crud, Boundaries, Metrics, RegressionSettings):
         return RawData(test_id=self.previous_test_id, database_name=self._test_case_name)
 
     @property
+    def database_name(self):
+        """
+
+        :return:
+        """
+        return self._database_name
+
+    @database_name.setter
+    def database_name(self, value):
+        self._create_and_populate_test_case_database(value)
+        self._database_name = value
+
+    @property
     def test_case_name(self):
         """
         The test case name that has been defined in the unit load test.
@@ -64,13 +77,7 @@ class PerformanceTest(Crud, Boundaries, Metrics, RegressionSettings):
         -------
             AgentCannotFindTestCase If no test case is found
         """
-        if self._no_test_case_mode is False:
-            return self._test_case_name
-
-        else:
-            self._create_and_populate_test_case_database(default_test_case_name)
-            self.current_test_id = self._generate_random_test_id()
-            return default_test_case_name
+        return self._test_case_name
 
     @test_case_name.setter
     def test_case_name(self, value):
@@ -90,13 +97,10 @@ class PerformanceTest(Crud, Boundaries, Metrics, RegressionSettings):
             the new value of the test case name that will
             be defined by the developer.
         """
-        self._create_and_populate_test_case_database(value)
-        self._no_test_case_mode = False
-        self.enable_untested_or_failed_test_selection = options.enable_the_selection_of_untested_or_failed_test_ids
-
-        # Refresh Test ID's
-        self._reset_performance_test(database_name=value)
+        self.filter_out_invalid_test_ids = options.enable_policy_to_filter_out_invalid_test_ids
         self._test_case_name = value
+        self._create_and_populate_test_case_database(self._database_name)
+        self._reset_performance_test(database_name=self.database_name, test_case_name=value)
 
     def verify_benchmark_against_set_boundaries(self):
         results = self._check_breach_benchmark_defined_boundaries()
@@ -122,7 +126,8 @@ class PerformanceTest(Crud, Boundaries, Metrics, RegressionSettings):
             StatisticsInterpreter(
                 performance_statistics=pf.performance_statistics,
                 total_response_time=pf.total_response_time,
-                database_name=self.test_case_name,
+                database_name=self.database_name,
+                test_case_name=self.test_case_name,
                 test_id=self.current_test_id,
                 method_name=method.__name__,
                 sample_id=sample_id
@@ -180,7 +185,7 @@ class PerformanceTest(Crud, Boundaries, Metrics, RegressionSettings):
         self.spawn_regression_test_evidence_schema(database_name)
         self.enforce_test_result_retention_policy(database_name)
 
-    def _reset_performance_test(self, database_name):
+    def _reset_performance_test(self, database_name, test_case_name):
         """
         The method will reset the performance test test class to its original state.
 
@@ -189,10 +194,10 @@ class PerformanceTest(Crud, Boundaries, Metrics, RegressionSettings):
         database_name
             The name of the database also known as the test case name
         """
-        if self.enable_untested_or_failed_test_selection is False:
-            self.previous_test_id = str(self.select_previous_passed_test_id(database_name))
+        if self.filter_out_invalid_test_ids is False:
+            self.previous_test_id = str(self.select_previous_passed_test_id(database_name, test_case_name))
         else:
-            self.previous_test_id = str(self.select_previous_test_id(database_name))
+            self.previous_test_id = str(self.select_previous_test_id(database_name, test_case_name))
 
         self.current_test_id = self._generate_random_test_id()
 

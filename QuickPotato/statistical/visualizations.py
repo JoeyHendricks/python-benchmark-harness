@@ -1,7 +1,7 @@
 from QuickPotato.database.queries import Crud
 from QuickPotato.statistical.data import CodePaths
 from QuickPotato.utilities.html_templates import flame_graph_template, heatmap_template
-from QuickPotato.utilities.defaults import default_test_case_name
+from QuickPotato.utilities.defaults import default_test_case_name, default_database_name
 from QuickPotato.utilities.exceptions import UnableToGenerateVisualizations, \
     UnableToExportVisualization, UnAcceptableTestIdFound
 from datetime import datetime
@@ -15,7 +15,7 @@ import os
 
 class FlameGraph(CodePaths):
 
-    def __init__(self, test_case_name=default_test_case_name, test_id=None):
+    def __init__(self, test_case_name=default_test_case_name, database_name=default_database_name, test_id=None):
         """
         When initialized it will generate a hieratical json stack for each sample
         in the test id attached to the specified test case and make it possible to render D3-flame-graphs.
@@ -30,19 +30,23 @@ class FlameGraph(CodePaths):
                         default the latest available test id wil be used.
         """
         super(FlameGraph, self).__init__()
-
-        if test_id is None and test_case_name == default_test_case_name:
-            test_id = self.select_test_ids_with_performance_statistics(database=test_case_name)[-1]
-
-        elif test_id is None:
+        if test_id is None:
             raise UnableToGenerateVisualizations()
 
-        self.list_of_samples = self.select_all_sample_ids(test_case_name, test_id)
+        self.list_of_samples = self.select_all_sample_ids(
+            database_name=database_name,
+            test_id=test_id
+        )
         self._current_number_of_children = 0
         self.test_case_name = test_case_name
 
         self.json = [
-            self._count_code_path_length(self._map_out_hierarchical_stack_relationships(test_case_name, sample))
+            self._count_code_path_length(
+                self._map_out_hierarchical_stack_relationships(
+                    database_name=database_name,
+                    sample_id=sample
+                )
+            )
             for sample in self.list_of_samples
         ]
         self.html = self._render_html()
@@ -105,27 +109,30 @@ class FlameGraph(CodePaths):
 
 class CsvFile(Crud):
 
-    def __init__(self, test_case_name=default_test_case_name, test_id=None, delimiter=","):
+    def __init__(self, test_case_name=default_test_case_name, database_name=default_database_name,
+                 test_id=None, delimiter=","):
         """
         Will build up the object, when no test id is given and when test case name is default.
         It will take the last known test id.
 
         :param test_case_name: The name of the test case
         :param delimiter: The delimiter of the csv file
+        :param database_name:
         :param test_id: The test id within the test case
         """
         super(CsvFile, self).__init__()
         self.test_case_name = test_case_name
+        self.database_name = database_name
         self.delimiter = delimiter
         self.test_id = test_id
 
-        if self.test_id is None and test_case_name == default_test_case_name:
-            self.test_id = self.select_test_ids_with_performance_statistics(database=test_case_name)[-1]
-
-        elif self.test_id is None:
+        if self.test_id is None:
             raise UnableToGenerateVisualizations()
 
-        self.list_of_samples = self.select_all_sample_ids(test_case_name, self.test_id)
+        self.list_of_samples = self.select_all_sample_ids(
+            database_name=self.database_name,
+            test_id=self.test_id
+        )
 
     def export(self, path):
         """
@@ -136,7 +143,10 @@ class CsvFile(Crud):
         if os.path.isdir(path):
             content = []
             for sample_id in self.list_of_samples:
-                stack = self.select_call_stack_by_sample_id(self.test_case_name, sample_id)
+                stack = self.select_call_stack_by_sample_id(
+                    database_name=self.database_name,
+                    sample_id=sample_id
+                )
                 for line in stack:
                     content.append(line)
 
@@ -152,34 +162,39 @@ class CsvFile(Crud):
 
 class HeatMap(CodePaths):
 
-    def __init__(self, test_case_name=default_test_case_name, test_ids=None, order_by="latency",
-                 detect_code_paths=True):
+    def __init__(self, test_case_name=default_test_case_name, database_name=default_database_name,
+                 test_ids=None, order_by="latency", detect_code_paths=True):
         """
 
         :param test_case_name:
+        :param database_name
         :param test_ids:
         :param order_by:
         """
         super(HeatMap, self).__init__()
         self.list_of_test_ids = test_ids
-        if test_ids is None and test_case_name == default_test_case_name:
-            self.list_of_test_ids = [self.select_test_ids_with_performance_statistics(database=test_case_name)[-1]]
-
-        elif test_ids is None or type(test_ids) is not list:
+        if test_ids is None or type(test_ids) is not list:
             raise UnableToGenerateVisualizations()
 
         self._decimals = 25
         self._order_by = order_by
         self.test_case_name = test_case_name
+        self.database_name = database_name
         self._all_recorded_method_response_times = []
 
         self.statistics = {}
         self.sample_list = {}
         for tid in test_ids:
-            self.sample_list[tid] = self.select_all_sample_ids(test_case_name, tid)
+            self.sample_list[tid] = self.select_all_sample_ids(
+                database_name=self.database_name,
+                test_id=tid
+            )
             self.statistics[tid] = {}
             for sample in self.sample_list[tid]:
-                self.statistics[tid][sample] = self.select_call_stack_by_sample_id(test_case_name, sample)
+                self.statistics[tid][sample] = self.select_call_stack_by_sample_id(
+                    database_name=self.database_name,
+                    sample_id=sample
+                )
 
         self.json = self.generate_json_payload(detect_code_paths)
 
@@ -256,7 +271,10 @@ class HeatMap(CodePaths):
             for sample_id in self.sample_list[test_id]:
 
                 if detect_code_paths:
-                    hierarchical_stack = self._map_out_hierarchical_stack_relationships(self.test_case_name, sample_id)
+                    hierarchical_stack = self._map_out_hierarchical_stack_relationships(
+                        database_name=self.database_name,
+                        sample_id=sample_id
+                    )
 
                 else:
                     hierarchical_stack = None
@@ -333,10 +351,12 @@ class HeatMap(CodePaths):
 
 class BarChart(Crud):
 
-    def __init__(self, test_case_name=default_test_case_name, test_ids=None, order_by="latency"):
+    def __init__(self, test_case_name=default_test_case_name, database_name=default_database_name,
+                 test_ids=None, order_by="latency"):
         """
 
         :param test_case_name:
+        :param database_name:
         :param test_ids:
         :param order_by:
         """
@@ -344,12 +364,10 @@ class BarChart(Crud):
 
         # Sorting out the test-id's
         self.test_case_name = test_case_name
+        self.database_name = database_name
         self._order_by = order_by
         if test_ids is None or type(test_ids) is not list:
             raise UnableToGenerateVisualizations()
-
-        elif test_ids is None and test_case_name == default_test_case_name:
-            self.list_of_test_ids = [self.select_test_ids_with_performance_statistics(database=test_case_name)[-1]]
 
         else:
             self.list_of_test_ids = test_ids
@@ -357,7 +375,10 @@ class BarChart(Crud):
         # Gathering relevant performance metrics
         self.statistics = {}
         for tid in self.list_of_test_ids:
-            self.statistics[tid] = self.select_call_stack_by_test_id(test_case_name, tid)
+            self.statistics[tid] = self.select_call_stack_by_test_id(
+                database_name=self.database_name,
+                test_id=tid
+            )
 
         self.json = self.generate_json()
 

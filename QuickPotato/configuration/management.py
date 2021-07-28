@@ -31,11 +31,11 @@ class Configuration(object):
         self.dump_configuration_to_yaml_file(self.contents)
 
     @property
-    def enable_the_selection_of_untested_or_failed_test_ids(self):
+    def enable_policy_to_filter_out_invalid_test_ids(self):
         return self.contents["enable_the_selection_of_untested_or_failed_test_ids"]
 
-    @enable_the_selection_of_untested_or_failed_test_ids.setter
-    def enable_the_selection_of_untested_or_failed_test_ids(self, value):
+    @enable_policy_to_filter_out_invalid_test_ids.setter
+    def enable_policy_to_filter_out_invalid_test_ids(self, value):
         self.contents["enable_the_selection_of_untested_or_failed_test_ids"] = value
         self.dump_configuration_to_yaml_file(self.contents)
 
@@ -85,11 +85,11 @@ class Configuration(object):
         self.dump_configuration_to_yaml_file(self.contents)
 
     @property
-    def maximum_number_saved_test_results(self):
+    def max_number_saved_test_results(self):
         return self.contents["maximum_number_saved_test_results"]
 
-    @maximum_number_saved_test_results.setter
-    def maximum_number_saved_test_results(self, value):
+    @max_number_saved_test_results.setter
+    def max_number_saved_test_results(self, value):
         self.contents["maximum_number_saved_test_results"] = value
         self.dump_configuration_to_yaml_file(self.contents)
 

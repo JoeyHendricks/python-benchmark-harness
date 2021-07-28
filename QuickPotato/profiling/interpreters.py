@@ -6,13 +6,16 @@ import asyncio
 
 class StatisticsInterpreter(Crud):
 
-    def __init__(self, database_name, performance_statistics, total_response_time, method_name, sample_id, test_id):
+    def __init__(self, test_case_name, database_name, performance_statistics,
+                 total_response_time, method_name, sample_id, test_id):
+
         super(StatisticsInterpreter, self).__init__()
 
         self.performance_statistics = performance_statistics
         self.total_response_time = total_response_time
         self.using_server_less_database = bool(self._validate_connection_url(database_name)[0:6] == "sqlite")
 
+        self.test_case_name = test_case_name
         self.database_name = database_name
         self.method_name = method_name
         self.sample_id = sample_id
@@ -76,7 +79,7 @@ class StatisticsInterpreter(Crud):
                 yield {
                     "test_id": self.test_id,
                     "sample_id": self.sample_id,
-                    "test_case_name": self.database_name,
+                    "test_case_name": self.test_case_name,
                     "name_of_method_under_test": self.method_name,
                     "epoch_timestamp": self.epoch_timestamp,
                     "human_timestamp": self.human_timestamp,
@@ -100,7 +103,7 @@ class StatisticsInterpreter(Crud):
                     yield {
                         "test_id": self.test_id,
                         "sample_id": self.sample_id,
-                        "test_case_name": self.database_name,
+                        "test_case_name": self.test_case_name,
                         "name_of_method_under_test": self.method_name,
                         "epoch_timestamp": self.epoch_timestamp,
                         "human_timestamp": self.human_timestamp,

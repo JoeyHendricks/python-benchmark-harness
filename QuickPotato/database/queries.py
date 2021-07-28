@@ -1,4 +1,4 @@
-from sqlalchemy import select, func
+from sqlalchemy import select, func, and_
 from QuickPotato.database.operations import ContextManager
 from QuickPotato.configuration.management import options
 
@@ -121,21 +121,21 @@ class Read(ContextManager):
         self.close_connection(engine, connection)
         return results
 
-    def select_test_ids_with_performance_statistics(self, database, number=options.maximum_number_saved_test_results):
+    def select_test_ids_with_performance_statistics(self, database_name, number=options.max_number_saved_test_results):
         """
 
-        :param database:
+        :param database_name:
         :param number:
         :return:
         """
         table = ContextManager.performance_statistics_schema()
-        engine, connection = self.spawn_connection(database)
+        engine, connection = self.spawn_connection(database_name)
         query = select([table.c.test_id]).distinct().limit(number)
         results = [str(row.test_id) for row in self.execute_query(connection, query)]
         self.close_connection(engine, connection)
         return results
 
-    def select_validated_test_ids(self, database, number=options.maximum_number_saved_test_results):
+    def select_validated_test_ids(self, database, number=options.max_number_saved_test_results):
         """
 
         :param database:
@@ -149,28 +149,31 @@ class Read(ContextManager):
         self.close_connection(engine, connection)
         return results
 
-    def select_previous_test_id(self, database):
+    def select_previous_test_id(self, database, test_case_name):
         """
 
+        :param test_case_name:
         :param database:
         :return:
         """
         table = ContextManager.performance_statistics_schema()
         engine, connection = self.spawn_connection(database)
-        query = select([table.c.test_id]).distinct()
+        query = select([table.c.test_id]).where(table.c.test_case_name == test_case_name).distinct()
         results = [str(row.test_id) for row in self.execute_query(connection, query)]
         self.close_connection(engine, connection)
         return None if len(results) == 0 else results[-1]
 
-    def select_previous_passed_test_id(self, database):
+    def select_previous_passed_test_id(self, database, test_case_name):
         """
 
+        :param test_case_name:
         :param database:
         :return:
         """
         table = ContextManager.test_report_schema()
         engine, connection = self.spawn_connection(database)
-        query = select([table.c.test_id]).where(table.c.status == "1").order_by(table.c.id.desc()).limit(1)
+        query = select([table.c.test_id]).where(
+            and_(table.c.status == "1", table.c.test_case_name == test_case_name)).order_by(table.c.id.desc()).limit(1)
         results = [str(row.test_id) for row in self.execute_query(connection, query)]
         self.close_connection(engine, connection)
         return results[0] if len(results) == 1 else None
@@ -188,15 +191,15 @@ class Read(ContextManager):
         self.close_connection(engine, connection)
         return results
 
-    def select_call_stack_by_sample_id(self, database, sample_id):
+    def select_call_stack_by_sample_id(self, database_name, sample_id):
         """
 
-        :param database:
+        :param database_name:
         :param sample_id:
         :return:
         """
         table = ContextManager.performance_statistics_schema()
-        engine, connection = self.spawn_connection(database)
+        engine, connection = self.spawn_connection(database_name)
         query = table.select().where(table.c.sample_id == str(sample_id)).order_by(table.c.cumulative_time.desc())
 
         results = []
@@ -225,15 +228,15 @@ class Read(ContextManager):
         self.close_connection(engine, connection)
         return results
 
-    def select_call_stack_by_test_id(self, database, test_id):
+    def select_call_stack_by_test_id(self, database_name, test_id):
         """
 
-        :param database:
+        :param database_name:
         :param test_id:
         :return:
         """
         table = ContextManager.performance_statistics_schema()
-        engine, connection = self.spawn_connection(database)
+        engine, connection = self.spawn_connection(database_name)
         query = table.select().where(table.c.test_id == str(test_id)).order_by(table.c.cumulative_time.desc())
 
         results = []
@@ -262,15 +265,16 @@ class Read(ContextManager):
         self.close_connection(engine, connection)
         return results
 
-    def select_all_sample_ids(self, database, test_id):
+    def select_all_sample_ids(self, database_name, test_id):
         """
 
-        :param database:
+        :param database_name:
+        :param test_case_name:
         :param test_id:
         :return:
         """
         table = ContextManager.performance_statistics_schema()
-        engine, connection = self.spawn_connection(database)
+        engine, connection = self.spawn_connection(database_name)
         query = select([table.c.sample_id]).where(table.c.test_id == test_id).distinct()
         results = [str(row.sample_id) for row in self.execute_query(connection, query)]
         self.close_connection(engine, connection)
@@ -359,14 +363,14 @@ class Crud(Create, Read, Update, Delete):
         :param database:
         """
         current_number_of_test_ids = self.select_count_of_test_ids(database)
-        maximum_number_of_test_ids = options.maximum_number_saved_test_results
+        maximum_number_of_test_ids = options.max_number_saved_test_results
 
         if current_number_of_test_ids > maximum_number_of_test_ids and \
                 options.enable_auto_clean_up_old_test_results is True:
 
             oldest_test_ids = self.select_test_ids_with_performance_statistics(
-                database=database,
-                number=options.maximum_number_saved_test_results - 1
+                database_name=database,
+                number=options.max_number_saved_test_results - 1
             )
 
             for test_id in oldest_test_ids:
@@ -385,7 +389,7 @@ class Crud(Create, Read, Update, Delete):
         """
         all_test_ids = self.select_validated_test_ids(
             database=database_name,
-            number=options.maximum_number_saved_test_results - 1
+            number=options.max_number_saved_test_results - 1
         )
 
         if test_id in all_test_ids:
