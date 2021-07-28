@@ -424,7 +424,6 @@ class BarChart(Crud):
                 size=12,
             )
         )
-
         for method_signature in df.method_signature.unique():
             plot_df = df[df.method_signature == method_signature]
             fig.add_trace(

@@ -3,7 +3,7 @@ from QuickPotato.statistical.visualizations import FlameGraph, CsvFile
 from QuickPotato.configuration.management import options
 from QuickPotato.utilities.defaults import default_test_case_name
 from QuickPotato.database.queries import Crud
-from examples.example_code import fast_method
+from examples.non_intrusive_example_code import fast_method
 import unittest
 
 
