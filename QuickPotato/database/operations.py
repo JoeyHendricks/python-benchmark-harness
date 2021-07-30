@@ -27,14 +27,14 @@ class ContextManager(RawStatisticsSchemas, UnitPerformanceTestResultSchemas):
         except Exception:
             raise DatabaseConnectionCannotBeSpawned()
 
-    def spawn_connection(self, database):
+    def spawn_connection(self, database_name):
         """
 
-        :param database:
+        :param database_name:
         :return:
         """
         try:
-            engine = self.spawn_engine(database)
+            engine = self.spawn_engine(database_name)
             return engine, engine.connect()
 
         except Exception:

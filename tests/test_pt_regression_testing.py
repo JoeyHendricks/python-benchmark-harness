@@ -1,11 +1,11 @@
-from QuickPotato.profiling.intrusive import performance_test as pt
+from QuickPotato import performance_test as pt
 from QuickPotato.database.queries import Crud
 from QuickPotato.configuration.management import options
 from examples.non_intrusive_example_code import *
 import unittest
 
 SAMPLE_SIZE = 10
-UNIT_TEST_DATABASE_NAME = "upt_unit_tests_regression_detection_with_t_test"
+UNIT_TEST_NAME = "upt_unit_tests_regression_detection_with_t_test"
 
 
 class TestRegressionTesting(unittest.TestCase):
@@ -31,7 +31,7 @@ class TestRegressionTesting(unittest.TestCase):
 
         """
         database_manager = Crud()
-        database_manager.delete_result_database(UNIT_TEST_DATABASE_NAME)
+        database_manager.delete_result_database(UNIT_TEST_NAME)
 
     @staticmethod
     def create_baseline(slow_baseline=False, fast_baseline=False):
@@ -39,7 +39,8 @@ class TestRegressionTesting(unittest.TestCase):
 
         """
         # Defining test case
-        pt.test_case_name = UNIT_TEST_DATABASE_NAME
+        pt.test_case_name = UNIT_TEST_NAME
+        pt.database_name = "test123"
         pt.silence_warning_messages = True
 
         # Execute statistical test
@@ -47,11 +48,19 @@ class TestRegressionTesting(unittest.TestCase):
         pt.silence_warning_messages = True
 
         # Run baseline test
-        for _ in range(0, SAMPLE_SIZE):
-            if slow_baseline and fast_baseline is False:
-                slow_method()
-            else:
-                fast_method()
+        if slow_baseline and fast_baseline is False:
+            pt.measure_method_performance(
+                method=slow_method,
+                arguments=[],
+                iteration=SAMPLE_SIZE,
+                pacing=0
+            )
+        else:
+            pt.measure_method_performance(
+                method=fast_method,
+                iteration=SAMPLE_SIZE,
+                pacing=0
+            )
 
         # Analyse test results
         results = pt.verify_benchmark_against_previous_baseline()
@@ -79,11 +88,15 @@ class TestRegressionTesting(unittest.TestCase):
         self.create_baseline(fast_baseline=True)
 
         # Defining test case
-        pt.test_case_name = UNIT_TEST_DATABASE_NAME
+        pt.test_case_name = UNIT_TEST_NAME
+        pt.database_name = "test123"
         pt.run_t_test = True
 
-        for _ in range(0, SAMPLE_SIZE):
-            slow_method()
+        pt.measure_method_performance(
+            method=slow_method,
+            iteration=SAMPLE_SIZE,
+            pacing=0
+        )
 
         # Analyse test results
         results = pt.verify_benchmark_against_previous_baseline()
@@ -107,7 +120,7 @@ class TestRegressionTesting(unittest.TestCase):
         self.create_baseline(slow_baseline=True)
 
         # Defining test case
-        pt.test_case_name = UNIT_TEST_DATABASE_NAME
+        pt.test_case_name = UNIT_TEST_NAME
         pt.run_t_test = True
 
         for _ in range(0, SAMPLE_SIZE):
@@ -135,7 +148,7 @@ class TestRegressionTesting(unittest.TestCase):
         self.create_baseline(fast_baseline=True)
 
         # Defining test case
-        pt.test_case_name = UNIT_TEST_DATABASE_NAME
+        pt.test_case_name = UNIT_TEST_NAME
         pt.run_t_test = True
 
         for _ in range(0, SAMPLE_SIZE):
@@ -167,7 +180,7 @@ class TestRegressionTesting(unittest.TestCase):
             # ----------- Test 1 slower code -----------
 
             # Defining test case
-            pt.test_case_name = UNIT_TEST_DATABASE_NAME
+            pt.test_case_name = UNIT_TEST_NAME
             pt.run_t_test = True
 
             # Run your code
@@ -192,7 +205,7 @@ class TestRegressionTesting(unittest.TestCase):
             # ------------ Test 2 same code ------------
 
             # Defining test case
-            pt.test_case_name = UNIT_TEST_DATABASE_NAME
+            pt.test_case_name = UNIT_TEST_NAME
             pt.run_t_test = True
 
             # Run your code
@@ -226,9 +239,10 @@ class TestRegressionTesting(unittest.TestCase):
         results = []
 
         for _ in range(0, 20):
+            print(_)
 
             # Define Test Case
-            pt.test_case_name = UNIT_TEST_DATABASE_NAME
+            pt.test_case_name = UNIT_TEST_NAME
             pt.run_t_test = True
 
             # Execute method under test

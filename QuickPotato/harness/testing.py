@@ -1,7 +1,7 @@
 from QuickPotato.statistical.verification import check_max_boundary_of_measurement, check_min_boundary_of_measurement
 from QuickPotato.configuration.settings import Boundaries, RegressionSettings
 from QuickPotato.configuration.management import options
-from QuickPotato.utilities.defaults import default_test_case_name
+from QuickPotato.utilities.defaults import default_test_case_name, default_database_name
 from QuickPotato.statistical.hypothesis_tests import TTest
 from QuickPotato.harness.measurements import Metrics
 from QuickPotato.database.queries import Crud
@@ -30,7 +30,7 @@ class PerformanceTest(Crud, Boundaries, Metrics, RegressionSettings):
         self.silence_warning_messages = False
 
         self._test_case_name = default_test_case_name
-        self._database_name = default_test_case_name
+        self._database_name = default_database_name
         self.filter_out_invalid_test_ids = False
 
     @property
@@ -42,7 +42,7 @@ class PerformanceTest(Crud, Boundaries, Metrics, RegressionSettings):
         -------
             A raw data object that contains all benchmark measurements.
         """
-        return RawData(test_id=self.current_test_id, database_name=self._test_case_name)
+        return RawData(test_id=self.current_test_id, database_name=self._database_name)
 
     @property
     def baseline_measurements(self):
@@ -53,7 +53,7 @@ class PerformanceTest(Crud, Boundaries, Metrics, RegressionSettings):
         -------
             A raw data object that contains all baseline measurements.
         """
-        return RawData(test_id=self.previous_test_id, database_name=self._test_case_name)
+        return RawData(test_id=self.previous_test_id, database_name=self._database_name)
 
     @property
     def database_name(self):
@@ -99,7 +99,6 @@ class PerformanceTest(Crud, Boundaries, Metrics, RegressionSettings):
         """
         self.filter_out_invalid_test_ids = options.enable_policy_to_filter_out_invalid_test_ids
         self._test_case_name = value
-        self._create_and_populate_test_case_database(self._database_name)
         self._reset_performance_test(database_name=self.database_name, test_case_name=value)
 
     def verify_benchmark_against_set_boundaries(self):
@@ -121,7 +120,10 @@ class PerformanceTest(Crud, Boundaries, Metrics, RegressionSettings):
             time.sleep(pacing)
             sample_id = ''.join(random.choices(string.ascii_uppercase + string.digits, k=8))
             pf = Profiler()
-            pf.profile_method_under_test(method, *arguments)
+            if arguments is None:
+                pf.profile_method_under_test(method)
+            else:
+                pf.profile_method_under_test(method)
 
             StatisticsInterpreter(
                 performance_statistics=pf.performance_statistics,
@@ -252,6 +254,7 @@ class PerformanceTest(Crud, Boundaries, Metrics, RegressionSettings):
         report = TestReport()
         report.test_id = self.current_test_id
         report.test_case_name = self._test_case_name
+        report.database_name = self._database_name
         report.epoch_timestamp = datetime.now().timestamp()
         report.human_timestamp = datetime.now()
 
@@ -278,7 +281,7 @@ class PerformanceTest(Crud, Boundaries, Metrics, RegressionSettings):
             True if the test passes and False if it False
         """
         results = []
-        self._collect_measurements(test_id=self.current_test_id, database_name=self._test_case_name)
+        self._collect_measurements(test_id=self.current_test_id, database_name=self._database_name)
         for boundary_key, measurements_key in zip(self.boundary_policy, self.threshold_measurements):
             if self.boundary_policy[boundary_key]["max"] is not None:
                 results.append(
@@ -321,6 +324,7 @@ class PerformanceTest(Crud, Boundaries, Metrics, RegressionSettings):
                 t_test = TTest(
                     test_id=self.current_test_id,
                     test_case_name=self._test_case_name,
+                    database_name=self._database_name,
                     baseline_measurements=self.baseline_measurements.response_times(),
                     benchmark_measurements=self.benchmark_measurements.response_times()
                 )

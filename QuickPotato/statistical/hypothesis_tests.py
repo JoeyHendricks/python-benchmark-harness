@@ -10,7 +10,7 @@ np.seterr(divide='ignore')
 
 class TTest(RegressionTestEvidence):
 
-    def __init__(self, test_id, test_case_name, baseline_measurements, benchmark_measurements):
+    def __init__(self, test_id, test_case_name, database_name, baseline_measurements, benchmark_measurements):
         super(TTest, self).__init__()
 
         # Baseline calculations
@@ -28,6 +28,7 @@ class TTest(RegressionTestEvidence):
         # Information for test evidence report
         self.test_id = test_id
         self.test_case_name = test_case_name
+        self.database_name = database_name
         self.epoch_timestamp = datetime.now().timestamp()
         self.human_timestamp = datetime.now()
         self.verification_name = "T-Test"

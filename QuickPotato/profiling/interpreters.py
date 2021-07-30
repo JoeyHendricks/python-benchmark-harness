@@ -57,12 +57,18 @@ class StatisticsInterpreter(Crud):
             # Dividing payload into multiple inserts to work around server-less variable restrictions
             if self.using_server_less_database is True and len(payload) == 999:
                 # Sending and nuking payload variable when exceeding SQLite's max amount of variables.
-                self.insert_performance_statistics(payload=payload, database=self.database_name)
+                self.insert_performance_statistics(
+                    database_name=self.database_name,
+                    payload=payload
+                )
                 payload = []
             payload.append(row)
 
         # Inserting full payload into server-based database or sending left-overs to sever-less database
-        self.insert_performance_statistics(payload=payload, database=self.database_name)
+        self.insert_performance_statistics(
+            database_name=self.database_name,
+            payload=payload
+        )
 
     def iterate_through_profiled_stack(self):
         """

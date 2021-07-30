@@ -8,6 +8,7 @@ class BoundariesTestEvidence(Crud):
 
         self.test_id = None
         self.test_case_name = None
+        self.database_name = None
         self.epoch_timestamp = None
         self.human_timestamp = None
         self.verification_name = None
@@ -33,7 +34,10 @@ class BoundariesTestEvidence(Crud):
             "value": self.value,
             "boundary": self.boundary
         }
-        return self.insert_boundaries_test_evidence(self.test_case_name, payload)
+        return self.insert_boundaries_test_evidence(
+            database_name=self.database_name,
+            payload=payload
+        )
 
 
 class RegressionTestEvidence(Crud):
@@ -43,6 +47,7 @@ class RegressionTestEvidence(Crud):
 
         self.test_id = None
         self.test_case_name = None
+        self.database_name = None
         self.epoch_timestamp = None
         self.human_timestamp = None
         self.verification_name = None
@@ -68,7 +73,10 @@ class RegressionTestEvidence(Crud):
             "value": self.value,
             "critical_value": self.critical_value
         }
-        return self.insert_regression_test_evidence(self.test_case_name, payload)
+        return self.insert_regression_test_evidence(
+            database_name=self.database_name,
+            payload=payload
+        )
 
 
 class TestReport(Crud):
@@ -78,6 +86,7 @@ class TestReport(Crud):
 
         self.test_id = None
         self.test_case_name = None
+        self.database_name = None
         self.epoch_timestamp = None
         self.human_timestamp = None
         self.status = None
@@ -101,12 +110,19 @@ class TestReport(Crud):
             "boundaries_breached": self.boundaries_breached,
             "regression_found": self.regression_found
         }
-        if self.check_if_test_id_exists_in_test_report(self.test_case_name, self.test_id):
+        if self.check_if_test_id_exists_in_test_report(self.database_name, self.test_id):
 
             # Update existing test results
-            return self.update_results_in_test_report(self.test_case_name, self.test_id, payload)
+            return self.update_results_in_test_report(
+                database_name=self.database_name,
+                test_id=self.test_id,
+                payload=payload
+            )
 
         else:
 
             # Insert new test results
-            return self.insert_results_into_test_report(self.test_case_name, payload)
+            return self.insert_results_into_test_report(
+                database_name=self.database_name,
+                payload=payload
+            )

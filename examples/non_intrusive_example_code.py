@@ -1,15 +1,12 @@
-from QuickPotato.profiling.intrusive import performance_breakpoint
 import time
 import math
 
 
-@performance_breakpoint
 def slow_method():
     num = 6 ** 6 ** 6
     return len(str(num))
 
 
-@performance_breakpoint
 def fast_method():
     num = 6 ** 6 ** 6
     return int(math.log10(num))
