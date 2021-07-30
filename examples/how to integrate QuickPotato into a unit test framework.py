@@ -28,7 +28,7 @@ class TestPerformance(unittest.TestCase):
         pt.test_case_name = "test_performance"  # <-- Define test case name
 
         # Defining the boundaries
-        pt.max_and_min_boundary_for_average = {"max": 10, "min": 0.001}
+        pt.max_and_min_boundary_for_average = {"max": 20, "min": 0.001}
 
         # Execute your code in a non-intrusive way
         pt.measure_method_performance(

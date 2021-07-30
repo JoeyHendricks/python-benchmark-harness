@@ -123,7 +123,7 @@ class PerformanceTest(Crud, Boundaries, Metrics, RegressionSettings):
             if arguments is None:
                 pf.profile_method_under_test(method)
             else:
-                pf.profile_method_under_test(method)
+                pf.profile_method_under_test(method, *arguments)
 
             StatisticsInterpreter(
                 performance_statistics=pf.performance_statistics,
@@ -288,6 +288,7 @@ class PerformanceTest(Crud, Boundaries, Metrics, RegressionSettings):
                     check_max_boundary_of_measurement(
                         test_id=self.current_test_id,
                         test_case_name=self._test_case_name,
+                        database_name=self._database_name,
                         validation_name="validate_max_boundary_for_" + measurements_key,
                         boundary=self.boundary_policy[boundary_key]["max"],
                         value=self.threshold_measurements[measurements_key]())
@@ -297,6 +298,7 @@ class PerformanceTest(Crud, Boundaries, Metrics, RegressionSettings):
                     check_min_boundary_of_measurement(
                         test_id=self.current_test_id,
                         test_case_name=self._test_case_name,
+                        database_name=self._database_name,
                         validation_name="validate_min_boundary_for_" + measurements_key,
                         boundary=self.boundary_policy[boundary_key]["min"],
                         value=self.threshold_measurements[measurements_key]())
