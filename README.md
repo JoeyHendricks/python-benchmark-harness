@@ -74,6 +74,11 @@ pt.measure_method_performance(
 FlameGraph(pt.test_case_name, test_id=pt.current_test_id).export("C:\\temp\\")
 ```
 
+> Short notice on an issue that occurred in my code while using QuicPotato
+> If QuicPotato cannot find the starting function no Flame Graph will be displayed or a weird one.
+> To fix this simply encapsulate youur code under a simple function and profile that.
+> I will come with a fix for this soon an example for this can be found [here](https://github.com/JoeyHendricks/automated-performance-test-result-analysis/blob/master/tests/test_project.py)
+
 ## Generating Heatmaps (Beta)
 
 [![Example of a Python heatmap](/images/python-code-performance-heatmap.png "heatmap Python")](
