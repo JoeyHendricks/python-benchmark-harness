@@ -1,9 +1,9 @@
 from sqlalchemy import select, func, and_
-from QuickPotato.database.operations import ContextManager
+from QuickPotato.database.operations import DatabaseContextManager
 from QuickPotato.configuration.management import options
 
 
-class Create(ContextManager):
+class Create(DatabaseContextManager):
 
     def __init__(self):
         super(Create, self).__init__()
@@ -88,7 +88,7 @@ class Create(ContextManager):
         self.create_database(database_name)
 
 
-class Read(ContextManager):
+class Read(DatabaseContextManager):
 
     def __init__(self):
         super(Read, self).__init__()
@@ -100,7 +100,7 @@ class Read(ContextManager):
         :param test_id:
         :return:
         """
-        table = ContextManager.performance_statistics_schema()
+        table = DatabaseContextManager.performance_statistics_schema()
         engine, connection = self.spawn_connection(database_name)
         query = select([table.c.sample_id.distinct(), table.c.total_response_time]).where(table.c.test_id == test_id)
         results = [float(row.total_response_time) for row in self.execute_query(connection, query)]
@@ -114,7 +114,7 @@ class Read(ContextManager):
         :param test_id:
         :return:
         """
-        table = ContextManager.performance_statistics_schema()
+        table = DatabaseContextManager.performance_statistics_schema()
         engine, connection = self.spawn_connection(database_name)
         query = select([table.c.sample_id.distinct(), table.c.cumulative_time]).where(table.c.test_id == test_id)
         results = [float(row.cumulative_time) for row in self.execute_query(connection, query)]
@@ -128,7 +128,7 @@ class Read(ContextManager):
         :param number:
         :return:
         """
-        table = ContextManager.performance_statistics_schema()
+        table = DatabaseContextManager.performance_statistics_schema()
         engine, connection = self.spawn_connection(database_name)
         query = select([table.c.test_id]).distinct().limit(number)
         results = [str(row.test_id) for row in self.execute_query(connection, query)]
@@ -142,7 +142,7 @@ class Read(ContextManager):
         :param number:
         :return:
         """
-        table = ContextManager.test_report_schema()
+        table = DatabaseContextManager.test_report_schema()
         engine, connection = self.spawn_connection(database_name)
         query = select([table.c.test_id]).distinct().limit(number)
         results = [str(row.test_id) for row in self.execute_query(connection, query)]
@@ -156,7 +156,7 @@ class Read(ContextManager):
         :param database_name:
         :return:
         """
-        table = ContextManager.performance_statistics_schema()
+        table = DatabaseContextManager.performance_statistics_schema()
         engine, connection = self.spawn_connection(database_name)
         query = select([table.c.test_id]).where(table.c.test_case_name == test_case_name).distinct()
         results = [str(row.test_id) for row in self.execute_query(connection, query)]
@@ -170,7 +170,7 @@ class Read(ContextManager):
         :param database_name:
         :return:
         """
-        table = ContextManager.test_report_schema()
+        table = DatabaseContextManager.test_report_schema()
         engine, connection = self.spawn_connection(database_name)
         query = select([table.c.test_id]).where(
             and_(table.c.status == "1", table.c.test_case_name == test_case_name)).order_by(table.c.id.desc()).limit(1)
@@ -184,7 +184,7 @@ class Read(ContextManager):
         :param database:
         :return:
         """
-        table = ContextManager.performance_statistics_schema()
+        table = DatabaseContextManager.performance_statistics_schema()
         engine, connection = self.spawn_connection(database)
         query = select([func.count(table.c.test_id.distinct())])
         results = int([row[0] for row in self.execute_query(connection, query)][0])
@@ -198,7 +198,7 @@ class Read(ContextManager):
         :param sample_id:
         :return:
         """
-        table = ContextManager.performance_statistics_schema()
+        table = DatabaseContextManager.performance_statistics_schema()
         engine, connection = self.spawn_connection(database_name)
         query = table.select().where(table.c.sample_id == str(sample_id)).order_by(table.c.cumulative_time.desc())
 
@@ -235,7 +235,7 @@ class Read(ContextManager):
         :param test_id:
         :return:
         """
-        table = ContextManager.performance_statistics_schema()
+        table = DatabaseContextManager.performance_statistics_schema()
         engine, connection = self.spawn_connection(database_name)
         query = table.select().where(table.c.test_id == str(test_id)).order_by(table.c.cumulative_time.desc())
 
@@ -273,7 +273,7 @@ class Read(ContextManager):
         :param test_id:
         :return:
         """
-        table = ContextManager.performance_statistics_schema()
+        table = DatabaseContextManager.performance_statistics_schema()
         engine, connection = self.spawn_connection(database_name)
         query = select([table.c.sample_id]).where(table.c.test_id == test_id).distinct()
         results = [str(row.sample_id) for row in self.execute_query(connection, query)]
@@ -281,7 +281,7 @@ class Read(ContextManager):
         return results
 
 
-class Update(ContextManager):
+class Update(DatabaseContextManager):
 
     def __init__(self):
         super(Update, self).__init__()
@@ -293,14 +293,14 @@ class Update(ContextManager):
         :param test_id:
         :param payload:
         """
-        table = ContextManager.test_report_schema()
+        table = DatabaseContextManager.test_report_schema()
         query = table.update().where(table.c.test_id == str(test_id)).values(payload)
         engine, connection = self.spawn_connection(database_name)
         self.execute_query(connection, query)
         self.close_connection(engine, connection)
 
 
-class Delete(ContextManager):
+class Delete(DatabaseContextManager):
 
     def __init__(self):
         super(Delete, self).__init__()
@@ -311,7 +311,7 @@ class Delete(ContextManager):
         :param database_name:
         :param test_id:
         """
-        table = ContextManager.performance_statistics_schema()
+        table = DatabaseContextManager.performance_statistics_schema()
         query = table.delete().where(table.c.test_id == str(test_id))
         engine, connection = self.spawn_connection(database_name)
         self.execute_query(connection, query)

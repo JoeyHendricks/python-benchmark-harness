@@ -7,7 +7,7 @@ from sqlalchemy_utils import database_exists, create_database, drop_database
 import tempfile
 
 
-class ContextManager(RawStatisticsSchemas, UnitPerformanceTestResultSchemas):
+class DatabaseContextManager(RawStatisticsSchemas, UnitPerformanceTestResultSchemas):
 
     URL = options.connection_url
 
@@ -49,8 +49,6 @@ class ContextManager(RawStatisticsSchemas, UnitPerformanceTestResultSchemas):
         :return:
         """
         connection.close()
-        engine.dispose()
-        return True
 
     @staticmethod
     def execute_query(connection, query):
