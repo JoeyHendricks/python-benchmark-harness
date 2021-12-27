@@ -18,7 +18,7 @@ class BoundariesTestEvidence(Crud):
 
     def save(self):
         """
-        Will insert the test results into the database.
+        Will bulk_insert the test results into the database.
 
         Returns
         -------
@@ -57,7 +57,7 @@ class RegressionTestEvidence(Crud):
 
     def save_test_evidence(self):
         """
-        Will insert the test results into the database.
+        Will bulk_insert the test results into the database.
 
         Returns
         -------
@@ -95,7 +95,7 @@ class TestReport(Crud):
 
     def save(self):
         """
-        Will insert the test results into the database.
+        Will bulk_insert the test results into the database.
 
         Returns
         -------

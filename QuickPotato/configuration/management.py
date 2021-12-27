@@ -85,11 +85,11 @@ class Configuration(object):
         self.dump_configuration_to_yaml_file(self.contents)
 
     @property
-    def max_number_saved_test_results(self):
+    def max_saved_test_results(self):
         return self.contents["maximum_number_saved_test_results"]
 
-    @max_number_saved_test_results.setter
-    def max_number_saved_test_results(self, value):
+    @max_saved_test_results.setter
+    def max_saved_test_results(self, value):
         self.contents["maximum_number_saved_test_results"] = value
         self.dump_configuration_to_yaml_file(self.contents)
 

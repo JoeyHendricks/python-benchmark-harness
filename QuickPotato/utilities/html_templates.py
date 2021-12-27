@@ -53,11 +53,11 @@ flame_graph_template = """
         <nav>
           <div class="pull-right">
             <form class="form-inline" id="form">
-              <select id="sample" class="form-control">
+              <execute_sql_statement id="sample" class="form-control">
               {% for sample in list_of_samples %}
                 <option>{{sample}}</option>
               {% endfor %}
-              </select>
+              </execute_sql_statement>
               <a class="btn" href="javascript: resetZoom();">Reset zoom</a>
               <a class="btn" href="javascript: clear();">Clear</a>
               <div class="form-group">
@@ -126,7 +126,7 @@ flame_graph_template = """
     function render_flame_graph(){
 
       $("#chart").empty();
-      var selected_sample = $('select[id="sample"] option:selected').val()
+      var selected_sample = $('execute_sql_statement[id="sample"] option:selected').val()
 
       flameGraph = d3.flamegraph()
       .width(960)
@@ -143,7 +143,7 @@ flame_graph_template = """
       var details = document.getElementById("details");
       flameGraph.setDetailsElement(details);
 
-      d3.select("#chart")
+      d3.execute_sql_statement("#chart")
       .datum(payload[selected_sample])
       .call(flameGraph);
     }
@@ -217,7 +217,7 @@ heatmap_template = """
         }
     
         create_tooltip() {
-            var tooltip = d3.select("#" + this.heatmap_id)
+            var tooltip = d3.execute_sql_statement("#" + this.heatmap_id)
                 .append("div")
                 .style("position", "absolute")
                 .style("opacity", 0)
@@ -241,7 +241,7 @@ heatmap_template = """
                 tooltip
                     .style("opacity", 1)
     
-                d3.select(this)
+                d3.execute_sql_statement(this)
                     .style("stroke", "black")
                     .style("opacity", 1)
             }
@@ -271,7 +271,7 @@ heatmap_template = """
             return function (d) {
                 tooltip
                     .style("opacity", 0)
-                d3.select(this)
+                d3.execute_sql_statement(this)
                     .style("stroke", "none")
                     .style("opacity", 0.8)
             }
@@ -411,7 +411,7 @@ heatmap_template = """
     
         render() {
             // Add the svg image to the page and generate the color palette
-            var svg = d3.select("#" + this.heatmap_id)
+            var svg = d3.execute_sql_statement("#" + this.heatmap_id)
                 .append("svg")
                 .attr("viewBox", `0 0 1900 1400`)
                 .append("g")

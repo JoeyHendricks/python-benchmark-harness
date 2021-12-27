@@ -1,212 +1,151 @@
-from sqlalchemy import select, func, and_
-from QuickPotato.database.operations import DatabaseContextManager
+from sqlalchemy import select, func
+from QuickPotato.database.common import CommonDatabaseInteractions
 from QuickPotato.configuration.management import options
 
 
-class Create(DatabaseContextManager):
+class Create(CommonDatabaseInteractions):
 
     def __init__(self):
         super(Create, self).__init__()
 
-    def insert_performance_statistics(self, database_name, payload):
+    def insert_benchmark_performance_statistics(self, url: str, payload: list, tcn: str) -> None:
         """
 
-        :param database_name:
+        :param url:
         :param payload:
+        :param tcn:
+        :return:
         """
-        table = self.performance_statistics_schema()
-        engine, connection = self.spawn_connection(database_name)
-        self.execute_query(connection, query=table.insert().values(payload))
-        self.close_connection(engine, connection)
+        return self.bulk_insert(
+            connection_url=url,
+            table=self.c_profiler_statistics_data_model(test_case_name=tcn),
+            payload=payload
+        )
 
-    def insert_boundaries_test_evidence(self, database_name, payload):
+    def insert_benchmark_verification_results(self, url: str, payload: list, tcn: str) -> None:
         """
 
-        :param database_name:
+        :param url:
         :param payload:
+        :param tcn:
+        :return:
         """
-        table = self.boundaries_test_evidence_schema()
-        engine, connection = self.spawn_connection(database_name)
-        self.execute_query(connection, query=table.insert().values(payload))
-        self.close_connection(engine, connection)
-
-    def insert_regression_test_evidence(self, database_name, payload):
-        """
-
-        :param database_name:
-        :param payload:
-        """
-        table = self.regression_test_evidence_schema()
-        engine, connection = self.spawn_connection(database_name)
-        self.execute_query(connection, query=table.insert().values(payload))
-        self.close_connection(engine, connection)
-
-    def insert_results_into_test_report(self, database_name, payload):
-        """
-
-        :param database_name:
-        :param payload:
-        """
-        table = self.test_report_schema()
-        engine, connection = self.spawn_connection(database_name)
-        self.execute_query(connection, query=table.insert().values(payload))
-        self.close_connection(engine, connection)
-
-    def spawn_performance_statistics_schema(self, database_name):
-        """
-
-        :param database_name:
-        """
-        self.create_schema(database_name, self.performance_statistics_schema())
-
-    def spawn_test_report_schema(self, database_name):
-        """
-
-        :param database_name:
-        """
-        self.create_schema(database_name, self.test_report_schema())
-
-    def spawn_boundaries_test_evidence_schema(self, database_name):
-        """
-
-        :param database_name:
-        """
-        self.create_schema(database_name, self.boundaries_test_evidence_schema())
-
-    def spawn_regression_test_evidence_schema(self, database_name):
-        """
-
-        :param database_name:
-        """
-        self.create_schema(database_name, self.regression_test_evidence_schema())
-
-    def spawn_result_database(self, database_name):
-        """
-
-        :param database_name:
-        """
-        self.create_database(database_name)
+        return self.bulk_insert(
+            connection_url=url,
+            table=self.test_report_model(test_case_name=tcn),
+            payload=payload
+        )
 
 
-class Read(DatabaseContextManager):
+class Read(CommonDatabaseInteractions):
 
     def __init__(self):
         super(Read, self).__init__()
 
-    def select_response_times(self, database_name, test_id):
+    def select_benchmark_profiled_method_response_times(self, url: str, tcn: str, test_id: int) -> list:
         """
 
-        :param database_name:
+        :param url:
+        :param tcn:
         :param test_id:
         :return:
         """
-        table = DatabaseContextManager.performance_statistics_schema()
-        engine, connection = self.spawn_connection(database_name)
-        query = select([table.c.sample_id.distinct(), table.c.total_response_time]).where(table.c.test_id == test_id)
-        results = [float(row.total_response_time) for row in self.execute_query(connection, query)]
-        self.close_connection(engine, connection)
-        return results
+        table = self.c_profiler_statistics_data_model(test_case_name=tcn)
+        return [
+            float(row.total_response_time) for row in self.execute_sql_statement(
+                connection_url=url,
+                query=select(
+                    [
+                        table.c.sample_id.distinct(),
+                        table.c.total_response_time
+                    ]
+                ).where(table.c.test_id == test_id)
+            )
+        ]
 
-    def select_cumulative_latency(self, database_name, test_id):
+    def select_benchmark_profiled_method_cumulative_latency(self, url: str, tcn: str, test_id: int) -> list:
         """
 
-        :param database_name:
+        :param url:
+        :param tcn:
         :param test_id:
         :return:
         """
-        table = DatabaseContextManager.performance_statistics_schema()
-        engine, connection = self.spawn_connection(database_name)
-        query = select([table.c.sample_id.distinct(), table.c.cumulative_time]).where(table.c.test_id == test_id)
-        results = [float(row.cumulative_time) for row in self.execute_query(connection, query)]
-        self.close_connection(engine, connection)
-        return results
+        table = self.c_profiler_statistics_data_model(test_case_name=tcn)
+        return [
+            float(row.cumulative_time) for row in self.execute_sql_statement(
+                connection_url=url,
+                query=select(
+                    [
+                        table.c.sample_id.distinct(),
+                        table.c.cumulative_time
+                    ]
+                ).where(table.c.test_id == test_id)
+            )
+        ]
 
-    def select_test_ids_with_performance_statistics(self, database_name, number=options.max_number_saved_test_results):
+    def select_benchmarks_with_statistics(self, url: str, tcn: str, number=options.max_saved_test_results) -> list:
         """
 
-        :param database_name:
+        :param url:
+        :param tcn:
         :param number:
         :return:
         """
-        table = DatabaseContextManager.performance_statistics_schema()
-        engine, connection = self.spawn_connection(database_name)
-        query = select([table.c.test_id]).distinct().limit(number)
-        results = [str(row.test_id) for row in self.execute_query(connection, query)]
-        self.close_connection(engine, connection)
-        return results
+        table = self.c_profiler_statistics_data_model(test_case_name=tcn)
+        return [
+            str(row.test_id) for row in self.execute_sql_statement(
+                connection_url=url,
+                query=select([table.c.test_id]).distinct().limit(number)
+            )
+        ]
 
-    def select_validated_test_ids(self, database_name, number=options.max_number_saved_test_results):
+    def select_verified_benchmarks(self, url: str, tcn: str, number=options.max_saved_test_results) -> list:
         """
 
-        :param database_name:
+        :param url:
+        :param tcn:
         :param number:
         :return:
         """
-        table = DatabaseContextManager.test_report_schema()
-        engine, connection = self.spawn_connection(database_name)
-        query = select([table.c.test_id]).distinct().limit(number)
-        results = [str(row.test_id) for row in self.execute_query(connection, query)]
-        self.close_connection(engine, connection)
-        return results
+        table = self.test_report_model(test_case_name=tcn)
+        return [
+            str(row.test_id) for row in self.execute_sql_statement(
+                connection_url=url,
+                query=select([table.c.test_id]).distinct().limit(number)
+            )
+        ]
 
-    def select_previous_test_id(self, database_name, test_case_name):
+    def select_count_of_all_available_benchmarks(self, url: str, tcn: str) -> int:
         """
 
-        :param test_case_name:
-        :param database_name:
+        :param url:
+        :param tcn:
         :return:
         """
-        table = DatabaseContextManager.performance_statistics_schema()
-        engine, connection = self.spawn_connection(database_name)
-        query = select([table.c.test_id]).where(table.c.test_case_name == test_case_name).distinct()
-        results = [str(row.test_id) for row in self.execute_query(connection, query)]
-        self.close_connection(engine, connection)
-        return None if len(results) == 0 else results[-1]
+        table = self.c_profiler_statistics_data_model(test_case_name=tcn)
+        return int(
+            [
+                row[0] for row in self.execute_sql_statement(
+                    connection_url=url,
+                    query=select([func.count(table.c.test_id.distinct())])
+                )
+            ]
+            [0]
+        )
 
-    def select_previous_passed_test_id(self, database_name, test_case_name):
+    def select_benchmark_call_stack_by_sample_id(self, url: str, tcn: str, sample_id: str) -> list:
         """
 
-        :param test_case_name:
-        :param database_name:
-        :return:
-        """
-        table = DatabaseContextManager.test_report_schema()
-        engine, connection = self.spawn_connection(database_name)
-        query = select([table.c.test_id]).where(
-            and_(table.c.status == "1", table.c.test_case_name == test_case_name)).order_by(table.c.id.desc()).limit(1)
-        results = [str(row.test_id) for row in self.execute_query(connection, query)]
-        self.close_connection(engine, connection)
-        return results[0] if len(results) == 1 else None
-
-    def select_count_of_test_ids(self, database):
-        """
-
-        :param database:
-        :return:
-        """
-        table = DatabaseContextManager.performance_statistics_schema()
-        engine, connection = self.spawn_connection(database)
-        query = select([func.count(table.c.test_id.distinct())])
-        results = int([row[0] for row in self.execute_query(connection, query)][0])
-        self.close_connection(engine, connection)
-        return results
-
-    def select_call_stack_by_sample_id(self, database_name, sample_id):
-        """
-
-        :param database_name:
+        :param url:
+        :param tcn:
         :param sample_id:
         :return:
         """
-        table = DatabaseContextManager.performance_statistics_schema()
-        engine, connection = self.spawn_connection(database_name)
-        query = table.select().where(table.c.sample_id == str(sample_id)).order_by(table.c.cumulative_time.desc())
-
-        results = []
-        for row in self.execute_query(connection, query):
-            results.append(
-                {
-                    "id": row.id,
+        table = self.c_profiler_statistics_data_model(test_case_name=tcn)
+        return [
+            {
+                    "uuid": row.uuid,
                     "test_id": row.test_id,
                     "test_case_name": row.test_case_name,
                     "sample_id": row.sample_id,
@@ -223,153 +162,126 @@ class Read(DatabaseContextManager):
                     "total_time": float(row.total_time),
                     "cumulative_time": float(row.cumulative_time),
                     "total_response_time": float(row.total_response_time)
-                }
+            }
+            for row in self.execute_sql_statement(
+                connection_url=url,
+                query=table.select().where(
+                    table.c.sample_id == str(sample_id)
+                ).order_by(
+                    table.c.cumulative_time.desc()
+                )
             )
-        self.close_connection(engine, connection)
-        return results
+        ]
 
-    def select_call_stack_by_test_id(self, database_name, test_id):
+    def select_benchmark_call_stack_by_test_id(self, url: str, tcn: str, test_id: str) -> list:
         """
 
-        :param database_name:
+        :param url:
+        :param tcn:
         :param test_id:
         :return:
         """
-        table = DatabaseContextManager.performance_statistics_schema()
-        engine, connection = self.spawn_connection(database_name)
-        query = table.select().where(table.c.test_id == str(test_id)).order_by(table.c.cumulative_time.desc())
-
-        results = []
-        for row in self.execute_query(connection, query):
-            results.append(
-                {
-                    "id": row.id,
-                    "test_id": row.test_id,
-                    "test_case_name": row.test_case_name,
-                    "sample_id": row.sample_id,
-                    "name_of_method_under_test": row.name_of_method_under_test,
-                    "epoch_timestamp": int(row.epoch_timestamp),
-                    "human_timestamp": row.human_timestamp,
-                    "child_path": row.child_path,
-                    "child_line_number": row.child_line_number,
-                    "child_function_name": row.child_function_name,
-                    "parent_path": row.parent_path,
-                    "parent_line_number": row.parent_line_number,
-                    "parent_function_name": row.parent_function_name,
-                    "number_of_calls": row.number_of_calls,
-                    "total_time": float(row.total_time),
-                    "cumulative_time": float(row.cumulative_time),
-                    "total_response_time": float(row.total_response_time)
-                }
+        table = self.c_profiler_statistics_data_model(test_case_name=tcn)
+        return [
+            {
+                "uuid": row.uuid,
+                "test_id": row.test_id,
+                "test_case_name": row.test_case_name,
+                "sample_id": row.sample_id,
+                "name_of_method_under_test": row.name_of_method_under_test,
+                "epoch_timestamp": int(row.epoch_timestamp),
+                "human_timestamp": row.human_timestamp,
+                "child_path": row.child_path,
+                "child_line_number": row.child_line_number,
+                "child_function_name": row.child_function_name,
+                "parent_path": row.parent_path,
+                "parent_line_number": row.parent_line_number,
+                "parent_function_name": row.parent_function_name,
+                "number_of_calls": row.number_of_calls,
+                "total_time": float(row.total_time),
+                "cumulative_time": float(row.cumulative_time),
+                "total_response_time": float(row.total_response_time)
+            }
+            for row in self.execute_sql_statement(
+                connection_url=url,
+                query=table.select().where(
+                    table.c.test_id == str(test_id)
+                ).order_by(
+                    table.c.cumulative_time.desc()
+                )
             )
-        self.close_connection(engine, connection)
-        return results
+        ]
 
-    def select_all_sample_ids(self, database_name, test_id):
+    def select_all_sample_ids_in_benchmark_by_test_id(self, url: str, tcn: str, test_id: str) -> list:
         """
 
-        :param database_name:
-        :param test_case_name:
+        :param url:
+        :param tcn:
         :param test_id:
         :return:
         """
-        table = DatabaseContextManager.performance_statistics_schema()
-        engine, connection = self.spawn_connection(database_name)
-        query = select([table.c.sample_id]).where(table.c.test_id == test_id).distinct()
-        results = [str(row.sample_id) for row in self.execute_query(connection, query)]
-        self.close_connection(engine, connection)
-        return results
+        table = self.c_profiler_statistics_data_model(test_case_name=tcn)
+        return [
+            str(row.sample_id) for row in self.execute_sql_statement(
+                connection_url=url,
+                query=select(
+                    [
+                        table.c.sample_id
+                    ]
+                ).where(
+                    table.c.test_id == test_id
+                ).distinct()
+            )
+        ]
 
 
-class Update(DatabaseContextManager):
-
-    def __init__(self):
-        super(Update, self).__init__()
-
-    def update_results_in_test_report(self, database_name, test_id, payload):
-        """
-
-        :param database_name:
-        :param test_id:
-        :param payload:
-        """
-        table = DatabaseContextManager.test_report_schema()
-        query = table.update().where(table.c.test_id == str(test_id)).values(payload)
-        engine, connection = self.spawn_connection(database_name)
-        self.execute_query(connection, query)
-        self.close_connection(engine, connection)
-
-
-class Delete(DatabaseContextManager):
+class Delete(CommonDatabaseInteractions):
 
     def __init__(self):
         super(Delete, self).__init__()
 
-    def delete_performance_statistics_that_match_test_id(self, database_name, test_id):
+    def delete_performance_statistics_that_match_test_id(self, url: str, tcn: str, test_id: str) -> None:
         """
 
-        :param database_name:
+        :param url:
+        :param tcn:
         :param test_id:
+        :return:
         """
-        table = DatabaseContextManager.performance_statistics_schema()
-        query = table.delete().where(table.c.test_id == str(test_id))
-        engine, connection = self.spawn_connection(database_name)
-        self.execute_query(connection, query)
-        self.close_connection(engine, connection)
-
-    def delete_result_database(self, database_name):
-        """
-
-        :param database_name:
-        """
-        self.delete_database(database_name)
+        table = self.c_profiler_statistics_data_model(test_case_name=tcn)
+        self.execute_sql_statement(
+            connection_url=url,
+            query=table.delete().where(table.c.test_id == str(test_id))
+        )
 
 
-class Crud(Create, Read, Update, Delete):
+class Crud(Create, Read, Delete):
 
     def __init__(self):
         super(Crud, self).__init__()
 
-    def enforce_test_result_retention_policy(self, database_name):
+    def enforce_data_retention_policy(self, url: str, tcn: str):
         """
 
-        :param database_name:
+        :param url:
+        :param tcn:
+        :return:
         """
-        current_number_of_test_ids = self.select_count_of_test_ids(database_name)
-        maximum_number_of_test_ids = options.max_number_saved_test_results
+        current_number_of_test_ids = self.select_count_of_all_available_benchmarks(url, tcn)
+        maximum_number_of_test_ids = options.max_saved_test_results
 
         if current_number_of_test_ids > maximum_number_of_test_ids and \
                 options.enable_auto_clean_up_old_test_results is True:
 
-            oldest_test_ids = self.select_test_ids_with_performance_statistics(
-                database_name=database_name,
-                number=options.max_number_saved_test_results - 1
+            oldest_test_ids = self.select_benchmarks_with_statistics(
+                url=url,
+                tcn=tcn,
+                number=options.max_saved_test_results - 1
             )
 
             for test_id in oldest_test_ids:
                 self.delete_performance_statistics_that_match_test_id(
-                    database_name=database_name,
+                    url=url,
+                    tcn=tcn,
                     test_id=test_id
                 )
-
-    def check_if_test_id_exists_in_test_report(self, database_name, test_id):
-        """
-        This method finds out if the test report needs to be updated or created.
-        Parameters
-        ----------
-        database_name: the name of the database (This is equal to the test case)
-        test_id: The tests id that needs to be found.
-        Returns
-        -------
-        When test id is found it will output True, if not it will output False
-        """
-        all_test_ids = self.select_validated_test_ids(
-            database_name=database_name,
-            number=options.max_number_saved_test_results - 1
-        )
-
-        if test_id in all_test_ids:
-            return True
-
-        else:
-            return False
