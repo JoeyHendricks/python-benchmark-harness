@@ -4,7 +4,7 @@ from QuickPotato.configuration.management import options
 from QuickPotato.utilities.defaults import default_test_case_name, default_database_name
 from QuickPotato.statistical.hypothesis_tests import TTest
 from QuickPotato.harness.measurements import Metrics
-from QuickPotato.database.queries import Crud
+from QuickPotato.database.dialect import Crud
 from QuickPotato.harness.results import TestReport
 from QuickPotato.harness.measurements import RawData
 from QuickPotato.profiling.instrumentation import Profiler

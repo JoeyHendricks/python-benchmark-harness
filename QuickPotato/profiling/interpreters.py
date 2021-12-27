@@ -1,4 +1,4 @@
-from QuickPotato.database.queries import Crud
+from QuickPotato.database.dialect import Crud
 from QuickPotato.configuration.management import options
 from datetime import datetime
 import asyncio

@@ -1,4 +1,4 @@
-from QuickPotato.database.queries import Crud
+from QuickPotato.database.dialect import Crud
 import numpy as np
 
 

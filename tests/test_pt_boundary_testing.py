@@ -1,5 +1,5 @@
 from QuickPotato import performance_test as pt
-from QuickPotato.database.queries import Crud
+from QuickPotato.database.dialect import Crud
 from QuickPotato.configuration.management import options
 from examples.non_intrusive_example_code import *
 import unittest

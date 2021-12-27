@@ -1,4 +1,4 @@
-from QuickPotato.database.queries import Crud
+from QuickPotato.database.dialect import Crud
 
 
 class BoundariesTestEvidence(Crud):
