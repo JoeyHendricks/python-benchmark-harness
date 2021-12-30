@@ -38,4 +38,3 @@ default_quick_potato_configuration = {
     }
 
 default_test_case_name = "QuickProfiling"
-default_database_name = "PythonCodePerformanceStatistics"

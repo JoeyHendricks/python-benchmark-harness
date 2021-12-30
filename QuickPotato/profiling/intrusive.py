@@ -4,7 +4,7 @@ from functools import wraps, partial
 from QuickPotato import performance_test as pt
 from QuickPotato.configuration.management import options
 from QuickPotato.profiling.instrumentation import Profiler
-from QuickPotato.profiling.interpreters import StatisticsInterpreter
+from QuickPotato.profiling.interpreters import ProfilerStatisticsInterpreter
 from QuickPotato.utilities.exceptions import CouchPotatoCannotFindMethod
 from QuickPotato.utilities.defaults import default_test_case_name, default_database_name
 
@@ -39,14 +39,14 @@ def performance_breakpoint(method=None, enabled=True, test_case_name=default_tes
             pf = Profiler()
             pf.profile_method_under_test(method, *args, **kwargs)
 
-            pt.database_name = database_name
+            pt.database_connection_url = database_name
             pt.test_case_name = test_case_name
 
-            StatisticsInterpreter(
+            ProfilerStatisticsInterpreter(
                 performance_statistics=pf.performance_statistics,
                 total_response_time=pf.total_response_time,
                 test_case_name=pt.test_case_name,
-                database_name=pt.database_name,
+                database_name=pt.database_connection_url,
                 test_id=pt.current_test_id if test_id is None else test_id,
                 method_name=method.__name__,
                 sample_id=sample_id

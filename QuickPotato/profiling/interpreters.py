@@ -1,22 +1,21 @@
-from QuickPotato.database.dialect import Crud
+from QuickPotato.database.collection import Crud
 from QuickPotato.configuration.management import options
 from datetime import datetime
 import asyncio
 
 
-class StatisticsInterpreter(Crud):
+class ProfilerStatisticsInterpreter(Crud):
 
-    def __init__(self, test_case_name, database_name, performance_statistics,
+    def __init__(self, test_case_name, connection_url, performance_statistics,
                  total_response_time, method_name, sample_id, test_id):
 
-        super(StatisticsInterpreter, self).__init__()
+        super(ProfilerStatisticsInterpreter, self).__init__()
 
         self.performance_statistics = performance_statistics
         self.total_response_time = total_response_time
-        self.using_server_less_database = bool(self._validate_connection_url(database_name)[0:6] == "sqlite")
+        self._connection_url = connection_url
 
         self.test_case_name = test_case_name
-        self.database_name = database_name
         self.method_name = method_name
         self.sample_id = sample_id
         self.test_id = test_id
@@ -55,18 +54,20 @@ class StatisticsInterpreter(Crud):
         payload = []
         for row in self.iterate_through_profiled_stack():
             # Dividing payload into multiple inserts to work around server-less variable restrictions
-            if self.using_server_less_database is True and len(payload) == 999:
+            if self._connection_url[0:6] == "sqlite" and len(payload) == 10:
                 # Sending and nuking payload variable when exceeding SQLite's max amount of variables.
-                self.insert_performance_statistics(
-                    database_name=self.database_name,
+                self.bulk_insert(
+                    connection_url=self._connection_url,
+                    table=self.c_profiler_statistics_data_model(self.test_case_name),
                     payload=payload
                 )
                 payload = []
             payload.append(row)
 
-        # Inserting full payload into server-based database or sending left-overs to sever-less database
-        self.insert_performance_statistics(
-            database_name=self.database_name,
+        # Inserting full payload into server-based database or sending the left-overs to sever-less database
+        self.bulk_insert(
+            connection_url=self._connection_url,
+            table=self.c_profiler_statistics_data_model(self.test_case_name),
             payload=payload
         )
 

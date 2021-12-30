@@ -2,7 +2,7 @@ from QuickPotato.profiling.intrusive import performance_test as pt
 from QuickPotato.statistical.visualizations import FlameGraph, CsvFile
 from QuickPotato.configuration.management import options
 from QuickPotato.utilities.defaults import default_test_case_name
-from QuickPotato.database.dialect import Crud
+from QuickPotato.database.collection import Crud
 from examples.non_intrusive_example_code import fast_method
 import unittest
 

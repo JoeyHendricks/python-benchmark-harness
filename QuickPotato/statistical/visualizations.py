@@ -1,4 +1,4 @@
-from QuickPotato.database.dialect import Crud
+from QuickPotato.database.collection import Crud
 from QuickPotato.statistical.data import CodePaths
 from QuickPotato.utilities.html_templates import flame_graph_template, heatmap_template
 from QuickPotato.utilities.defaults import default_test_case_name, default_database_name

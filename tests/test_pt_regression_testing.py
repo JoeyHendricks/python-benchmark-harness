@@ -1,5 +1,5 @@
 from QuickPotato import performance_test as pt
-from QuickPotato.database.dialect import Crud
+from QuickPotato.database.collection import Crud
 from QuickPotato.configuration.management import options
 from examples.non_intrusive_example_code import *
 import unittest
@@ -40,7 +40,7 @@ class TestRegressionTesting(unittest.TestCase):
         """
         # Defining test case
         pt.test_case_name = UNIT_TEST_NAME
-        pt.database_name = "test123"
+        pt.database_connection_url = "test123"
         pt.silence_warning_messages = True
 
         # Execute statistical test
@@ -89,7 +89,7 @@ class TestRegressionTesting(unittest.TestCase):
 
         # Defining test case
         pt.test_case_name = UNIT_TEST_NAME
-        pt.database_name = "test123"
+        pt.database_connection_url = "test123"
         pt.run_t_test = True
 
         pt.measure_method_performance(

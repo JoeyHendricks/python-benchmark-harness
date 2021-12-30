@@ -84,7 +84,7 @@ class Read(CommonDatabaseInteractions):
             )
         ]
 
-    def select_benchmarks_with_statistics(self, url: str, tcn: str, number=options.max_saved_test_results) -> list:
+    def select_benchmarks_tests_with_statistics(self, url: str, tcn: str, number=options.max_saved_tests) -> list:
         """
 
         :param url:
@@ -94,13 +94,13 @@ class Read(CommonDatabaseInteractions):
         """
         table = self.c_profiler_statistics_data_model(test_case_name=tcn)
         return [
-            str(row.test_id) for row in self.execute_sql_statement(
+            float(row.test_id) for row in self.execute_sql_statement(
                 connection_url=url,
                 query=select([table.c.test_id]).distinct().limit(number)
             )
         ]
 
-    def select_verified_benchmarks(self, url: str, tcn: str, number=options.max_saved_test_results) -> list:
+    def select_validated_benchmarks(self, url: str, tcn: str, number=options.max_saved_tests) -> list:
         """
 
         :param url:
@@ -260,7 +260,7 @@ class Crud(Create, Read, Delete):
     def __init__(self):
         super(Crud, self).__init__()
 
-    def enforce_data_retention_policy(self, url: str, tcn: str):
+    def _enforce_data_retention_policy(self, url: str, tcn: str) -> None:
         """
 
         :param url:
@@ -268,15 +268,15 @@ class Crud(Create, Read, Delete):
         :return:
         """
         current_number_of_test_ids = self.select_count_of_all_available_benchmarks(url, tcn)
-        maximum_number_of_test_ids = options.max_saved_test_results
+        maximum_number_of_test_ids = options.max_saved_tests
 
         if current_number_of_test_ids > maximum_number_of_test_ids and \
                 options.enable_auto_clean_up_old_test_results is True:
 
-            oldest_test_ids = self.select_benchmarks_with_statistics(
+            oldest_test_ids = self.select_benchmarks_tests_with_statistics(
                 url=url,
                 tcn=tcn,
-                number=options.max_saved_test_results - 1
+                number=options.max_saved_tests - 1
             )
 
             for test_id in oldest_test_ids:
@@ -284,4 +284,30 @@ class Crud(Create, Read, Delete):
                     url=url,
                     tcn=tcn,
                     test_id=test_id
+                )
+
+    def _verify_and_create_relevant_tables_in_database(self, url: str, tcn: str) -> None:
+        """
+
+        :param url:
+        :param tcn:
+        :return:
+        """
+        # Models that need to be available in the database
+        models = [
+            self.c_profiler_statistics_data_model(test_case_name=tcn),
+            self.test_report_model(test_case_name=tcn)
+        ]
+
+        for table_model in models:
+
+            # verify if relevant table exists
+            if self.check_if_table_exists(connection_url=url, table_name=str(table_model.name)):
+                continue
+
+            # table does not exist creating it in database
+            else:
+                self.spawn_table(
+                    connection_url=url,
+                    model=table_model
                 )

@@ -5,7 +5,7 @@ setup(
     version='1.0.1',
     packages=[
         'QuickPotato',
-        'QuickPotato.harness',
+        'QuickPotato.benchmarking',
         'QuickPotato.database',
         'QuickPotato.profiling',
         'QuickPotato.utilities',

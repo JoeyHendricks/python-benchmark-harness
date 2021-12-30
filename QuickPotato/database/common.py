@@ -14,7 +14,7 @@ class CommonDatabaseContextManager(StatisticsModels, TestResultModels):
         :return: an SQLAlchemy engine object to create a connection
         """
         return create_engine(
-            URL=connection_url,
+            connection_url,
             echo=True,
             max_identifier_length=128
         )
@@ -61,15 +61,15 @@ class CommonDatabaseContextManager(StatisticsModels, TestResultModels):
         engine = self.spawn_engine(connection_url)
         return database_exists(repr(engine.url))
 
-    def spawn_table(self, connection_url: str, schema: object) -> None:
+    def spawn_table(self, connection_url: str, model: object) -> None:
         """
         Spawn an table in the target database.
         :param connection_url: The connection url
-        :param schema: The table schema which is used to describe the table.
+        :param model: The table schema which is used to describe the table.
         :return:
         """
         engine = self.spawn_engine(connection_url)
-        schema.metadata.create_all(engine)
+        model.metadata.create_all(engine)
         engine.dispose()
 
     def drop_table(self, connection_url: str, schema: object) -> None:

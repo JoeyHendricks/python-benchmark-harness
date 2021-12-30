@@ -1,4 +1,4 @@
-from QuickPotato.statistical.data import RawData
+from QuickPotato.statistical.data import Statistics
 
 
 class Metrics(object):
@@ -40,29 +40,29 @@ class Metrics(object):
         -------
 
         """
-        raw_data = RawData(test_id, database_name)
-        self.metric_average = raw_data.average_response_time
-        self.metric_allowed_max_outlier = raw_data.maximum_outlier_in_response_times
-        self.metric_allowed_min_outlier = raw_data.minimum_outlier_in_response_times
-        self.metric_percentile_5th = raw_data.percentile_5th
-        self.metric_percentile_10th = raw_data.percentile_10th
-        self.metric_percentile_15th = raw_data.percentile_15th
-        self.metric_percentile_20th = raw_data.percentile_20th
-        self.metric_percentile_25th = raw_data.percentile_25th
-        self.metric_percentile_30th = raw_data.percentile_30th
-        self.metric_percentile_35th = raw_data.percentile_35th
-        self.metric_percentile_40th = raw_data.percentile_40th
-        self.metric_percentile_45th = raw_data.percentile_45th
-        self.metric_percentile_50th = raw_data.percentile_50th
-        self.metric_percentile_55th = raw_data.percentile_55th
-        self.metric_percentile_60th = raw_data.percentile_60th
-        self.metric_percentile_65th = raw_data.percentile_65th
-        self.metric_percentile_70th = raw_data.percentile_70th
-        self.metric_percentile_75th = raw_data.percentile_75th
-        self.metric_percentile_80th = raw_data.percentile_80th
-        self.metric_percentile_85th = raw_data.percentile_85th
-        self.metric_percentile_90th = raw_data.percentile_90th
-        self.metric_percentile_95th = raw_data.percentile_95th
+        statistics = Statistics(test_id, database_name)
+        self.metric_average = statistics.average_response_time
+        self.metric_allowed_max_outlier = statistics.maximum_outlier_in_response_times
+        self.metric_allowed_min_outlier = statistics.minimum_outlier_in_response_times
+        self.metric_percentile_5th = statistics.percentile_5th
+        self.metric_percentile_10th = statistics.percentile_10th
+        self.metric_percentile_15th = statistics.percentile_15th
+        self.metric_percentile_20th = statistics.percentile_20th
+        self.metric_percentile_25th = statistics.percentile_25th
+        self.metric_percentile_30th = statistics.percentile_30th
+        self.metric_percentile_35th = statistics.percentile_35th
+        self.metric_percentile_40th = statistics.percentile_40th
+        self.metric_percentile_45th = statistics.percentile_45th
+        self.metric_percentile_50th = statistics.percentile_50th
+        self.metric_percentile_55th = statistics.percentile_55th
+        self.metric_percentile_60th = statistics.percentile_60th
+        self.metric_percentile_65th = statistics.percentile_65th
+        self.metric_percentile_70th = statistics.percentile_70th
+        self.metric_percentile_75th = statistics.percentile_75th
+        self.metric_percentile_80th = statistics.percentile_80th
+        self.metric_percentile_85th = statistics.percentile_85th
+        self.metric_percentile_90th = statistics.percentile_90th
+        self.metric_percentile_95th = statistics.percentile_95th
         return True
 
     @property

@@ -1,4 +1,4 @@
-from QuickPotato.harness.results import BoundariesTestEvidence
+from QuickPotato.benchmarking.results import BoundariesTestEvidence
 from functools import wraps
 from datetime import datetime
 
@@ -30,7 +30,7 @@ def save_boundary_evidence(fnc):
         """
         evidence = BoundariesTestEvidence()
         evidence.test_id = kwargs["test_id"]
-        evidence.database_name = kwargs["database_name"]
+        evidence.database_name = kwargs["database_connection_url"]
         evidence.test_case_name = kwargs["test_case_name"]
         evidence.epoch_timestamp = datetime.now().timestamp()
         evidence.human_timestamp = datetime.now()
@@ -42,7 +42,7 @@ def save_boundary_evidence(fnc):
         del kwargs["test_id"]
         del kwargs["test_case_name"]
         del kwargs["validation_name"]
-        del kwargs["database_name"]
+        del kwargs["database_connection_url"]
 
         evidence.status = fnc(*args, **kwargs)
         evidence.save()

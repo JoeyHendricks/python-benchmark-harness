@@ -1,3 +1,3 @@
-from QuickPotato.harness.testing import PerformanceTest
+from QuickPotato.benchmarking.testing import PerformanceTest
 
 performance_test = PerformanceTest()

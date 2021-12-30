@@ -1,11 +1,11 @@
-from QuickPotato.database.dialect import Crud
+from QuickPotato.database.collection import Crud
 import numpy as np
 
 
-class RawData(Crud):
+class Statistics(Crud):
 
     def __init__(self, test_id, database_name):
-        super(RawData, self).__init__()
+        super(Statistics, self).__init__()
 
         self.test_id = test_id
         self.database_name = database_name

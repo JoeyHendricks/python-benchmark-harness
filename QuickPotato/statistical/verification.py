@@ -1,7 +1,5 @@
-from QuickPotato.utilities.decorators import save_boundary_evidence
 
 
-@save_boundary_evidence
 def check_max_boundary_of_measurement(value, boundary):
     """
     :return:
@@ -16,7 +14,6 @@ def check_max_boundary_of_measurement(value, boundary):
         return False
 
 
-@save_boundary_evidence
 def check_min_boundary_of_measurement(value, boundary):
     """
     :return:

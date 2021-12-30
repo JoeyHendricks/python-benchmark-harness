@@ -9,7 +9,7 @@ class StatisticsModels(object):
         table = Table(
             test_case_name + "_c_profiler_statistics_data", meta,
             Column('uuid', String(99)),
-            Column('test_id', String(99)),
+            Column('test_id', Float),
             Column("test_case_name", String(999)),
             Column('sample_id', String(99)),
             Column("name_of_method_under_test", String(999)),
@@ -37,7 +37,7 @@ class TestResultModels(object):
         table = Table(
             test_case_name + "_test_report", meta,
             Column('uuid', String(99)),
-            Column('test_id', String(99)),
+            Column('test_id', Float),
             Column("test_case_name", String(999)),
             Column("epoch_timestamp", Integer),
             Column("human_timestamp", String(99)),
