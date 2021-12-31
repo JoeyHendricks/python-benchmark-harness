@@ -6,7 +6,7 @@ from QuickPotato.statistical.visualizations import FlameGraph, HeatMap, CsvFile,
 """
 
 # Create a test case
-pt.test_case_name = "exploratory performance test"
+pt.test_case_name = "exploratory_performance_test"
 
 # Attach the method from which you want to performance test
 pt.measure_method_performance(

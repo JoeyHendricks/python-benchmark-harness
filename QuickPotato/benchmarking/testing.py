@@ -27,7 +27,8 @@ class PerformanceTest(Crud, Boundaries, Metrics, RegressionSettings):
         self.current_test_id = None
         self.previous_test_id = None
 
-        self._test_case_name = "ProfilerStatistics"
+        self._test_case_name = "Default"
+        self._database_name = "QuickPotatoBenchmarking"
         self._url = None
 
     @property
@@ -39,7 +40,7 @@ class PerformanceTest(Crud, Boundaries, Metrics, RegressionSettings):
         if self._url is None:
             temp_directory = gettempdir()
             separator = "\\" if '\\' in gettempdir() else "/"
-            return "sqlite:///" + temp_directory + separator + self._test_case_name + ".db"
+            return "sqlite:///" + temp_directory + separator + self._database_name + ".db"
 
         else:
             return self._url

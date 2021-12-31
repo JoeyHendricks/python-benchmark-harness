@@ -298,7 +298,7 @@ class Crud(Create, Read, Delete):
             self.c_profiler_statistics_data_model(test_case_name=tcn),
             self.test_report_model(test_case_name=tcn)
         ]
-
+        print(url)
         for table_model in models:
 
             # verify if relevant table exists

@@ -49,8 +49,13 @@ class CommonDatabaseContextManager(StatisticsModels, TestResultModels):
         :param table_name:
         :return: a bool which is either true or false
         """
-        engine = self.spawn_engine(connection_url)
-        return inspect(engine).has_table(table_name)
+        inspector = inspect(
+            self.spawn_engine(
+                connection_url
+            )
+        )
+        tables_in_db = inspector.get_table_names()
+        return True if table_name in tables_in_db else False
 
     def check_if_database_exists(self, connection_url: str) -> bool:
         """
@@ -95,7 +100,7 @@ class CommonDatabaseContextManager(StatisticsModels, TestResultModels):
 
 class CommonDatabaseInteractions(CommonDatabaseContextManager):
 
-    def execute_sql_statement(self, connection_url: str, query: object) -> tuple:
+    def execute_sql_statement(self, connection_url: str, query: object) -> list:
         """
         Will perform an generic execute_sql_statement statement on the selected database
         and return the results object.
@@ -105,7 +110,7 @@ class CommonDatabaseInteractions(CommonDatabaseContextManager):
         engine, connection = self.spawn_connection(connection_url)
 
         # Executing statement and binding results to variable
-        results = self.execute(connection, query)
+        results = [row for row in self.execute(connection, query)]
 
         # Closing connection
         self.close_connection(connection)
