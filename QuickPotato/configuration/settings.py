@@ -54,19 +54,3 @@ class Boundaries(object):
     @boundary_policy.setter
     def boundary_policy(self, new_policy):
         self.__dict__.update(new_policy)
-
-
-class RegressionSettings(object):
-
-    def __init__(self):
-        self.run_t_test = True
-
-    @property
-    def regression_settings_policy(self):
-        return {
-            "run_t_test": self.run_t_test
-        }
-
-    @regression_settings_policy.setter
-    def regression_settings_policy(self, new_policy):
-        self.__dict__.update(new_policy)

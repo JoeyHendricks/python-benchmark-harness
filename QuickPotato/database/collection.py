@@ -84,7 +84,7 @@ class Read(CommonDatabaseInteractions):
             )
         ]
 
-    def select_benchmarks_tests_with_statistics(self, url: str, tcn: str, number=options.max_saved_tests) -> list:
+    def select_benchmarks_with_statistics(self, url: str, tcn: str, number=options.max_saved_tests) -> list:
         """
 
         :param url:
@@ -273,7 +273,7 @@ class Crud(Create, Read, Delete):
         if current_number_of_test_ids > maximum_number_of_test_ids and \
                 options.enable_auto_clean_up_old_test_results is True:
 
-            oldest_test_ids = self.select_benchmarks_tests_with_statistics(
+            oldest_test_ids = self.select_benchmarks_with_statistics(
                 url=url,
                 tcn=tcn,
                 number=options.max_saved_tests - 1

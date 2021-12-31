@@ -1,6 +1,5 @@
 from QuickPotato.statistical.verification import check_max_boundary_of_measurement, check_min_boundary_of_measurement
-from QuickPotato.configuration.settings import Boundaries, RegressionSettings
-from QuickPotato.configuration.management import options
+from QuickPotato.configuration.settings import Boundaries
 from QuickPotato.statistical.hypothesis_tests import TTest
 from QuickPotato.benchmarking.metrics import Metrics
 from QuickPotato.database.collection import Crud
@@ -16,13 +15,12 @@ import random
 import time
 
 
-class PerformanceTest(Crud, Boundaries, Metrics, RegressionSettings):
+class PerformanceTest(Crud, Boundaries, Metrics):
 
     def __init__(self):
         Crud.__init__(self)
         Boundaries.__init__(self)
         Metrics.__init__(self)
-        RegressionSettings.__init__(self)
 
         self.current_test_id = None
         self.previous_test_id = None
@@ -201,11 +199,12 @@ class PerformanceTest(Crud, Boundaries, Metrics, RegressionSettings):
         :param test_case_name:
         :return:
         """
-        self.previous_test_id = self.select_benchmarks_tests_with_statistics(
+        benchmarks = self.select_benchmarks_with_statistics(
             url=self.database_connection_url,
             tcn=test_case_name,
             number=1
-        )[0]
+        )
+        self.previous_test_id = benchmarks[0] if len(benchmarks) > 0 else None
         self.current_test_id = datetime.now().timestamp()
 
     def _inspect_test_results(self, results):

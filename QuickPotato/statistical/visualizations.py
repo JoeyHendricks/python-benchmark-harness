@@ -1,7 +1,6 @@
 from QuickPotato.database.collection import Crud
 from QuickPotato.statistical.data import CodePaths
 from QuickPotato.utilities.html_templates import flame_graph_template, heatmap_template
-from QuickPotato.utilities.defaults import default_test_case_name, default_database_name
 from QuickPotato.utilities.exceptions import UnableToGenerateVisualizations, \
     UnableToExportVisualization, UnAcceptableTestIdFound
 from datetime import datetime
@@ -15,7 +14,7 @@ import os
 
 class FlameGraph(CodePaths):
 
-    def __init__(self, test_case_name=default_test_case_name, database_name=default_database_name, test_id=None):
+    def __init__(self, test_case_name, database_name, test_id=None):
         """
         When initialized it will generate a hieratical json stack for each sample
         in the test id attached to the specified test case and make it possible to render D3-flame-graphs.

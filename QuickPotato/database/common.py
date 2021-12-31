@@ -15,7 +15,7 @@ class CommonDatabaseContextManager(StatisticsModels, TestResultModels):
         """
         return create_engine(
             connection_url,
-            echo=True,
+            echo=False,
             max_identifier_length=128
         )
 
