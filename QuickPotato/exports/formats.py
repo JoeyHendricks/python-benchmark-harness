@@ -1,6 +1,5 @@
 from QuickPotato.database.collection import Crud
-from QuickPotato.utilities.exceptions import UnableToGenerateVisualizations, \
-    UnableToExportVisualization
+from QuickPotato.utilities.exceptions import UnableToExportVisualization
 from datetime import datetime
 import pandas as pd
 import os
@@ -8,29 +7,25 @@ import os
 
 class CsvFile(Crud):
 
-    def __init__(self, test_case_name=default_test_case_name, database_name=default_database_name,
-                 test_id=None, delimiter=","):
+    def __init__(self, test_case_name: str, test_id: str, connection_url=None, delimiter=","):
         """
         Will build up the object, when no test id is given and when test case name is default.
         It will take the last known test id.
 
         :param test_case_name: The name of the test case
         :param delimiter: The delimiter of the csv file
-        :param database_name:
+        :param connection_url: the connection url to the database
         :param test_id: The test id within the test case
         """
         super(CsvFile, self).__init__()
         self.test_case_name = test_case_name
-        self.database_name = database_name
+        self._url = connection_url
         self.delimiter = delimiter
         self.test_id = test_id
-
-        if self.test_id is None:
-            raise UnableToGenerateVisualizations()
-
-        self.list_of_samples = self.select_all_sample_ids(
-            database_name=self.database_name,
-            test_id=self.test_id
+        self.list_of_samples = self.select_all_sample_ids_in_benchmark_by_test_id(
+            url=self._url,
+            tcn=test_case_name,
+            test_id=test_id
         )
 
     def export(self, path):
@@ -42,8 +37,9 @@ class CsvFile(Crud):
         if os.path.isdir(path):
             content = []
             for sample_id in self.list_of_samples:
-                stack = self.select_call_stack_by_sample_id(
-                    database_name=self.database_name,
+                stack = self.select_benchmark_call_stack_by_sample_id(
+                    url=self._url,
+                    tcn=self.test_case_name,
                     sample_id=sample_id
                 )
                 for line in stack:
