@@ -1,6 +1,7 @@
 from QuickPotato.database.collection import Crud
 from QuickPotato.statistical.measurements import CodePaths
-from QuickPotato.utilities.html_templates import flame_graph_template, heatmap_template
+from QuickPotato.templates.flame_graph import flame_graph_template
+from QuickPotato.templates.heatmap import heatmap_template
 from QuickPotato.utilities.exceptions import UnableToGenerateVisualizations, \
     UnableToExportVisualization, UnAcceptableTestIdFound
 from datetime import datetime
@@ -14,8 +15,9 @@ import os
 
 class FlameGraph(CodePaths):
 
-    def __init__(self, test_case_name, database_name, test_id=None):
+    def __init__(self, test_case_name, database_connection_url, test_id=None):
         """
+
         When initialized it will generate a hieratical json stack for each sample
         in the test id attached to the specified test case and make it possible to render D3-flame-graphs.
         For more info about D3-flame-graphs visit:
@@ -27,13 +29,15 @@ class FlameGraph(CodePaths):
                                database/test case name.
         :param test_id: The generated test id, if it is not defined and the test case is rolled to
                         default the latest available test id wil be used.
+        :param database_connection_url: The connection url to the database.
         """
         super(FlameGraph, self).__init__()
         if test_id is None:
             raise UnableToGenerateVisualizations()
 
-        self.list_of_samples = self.select_all_sample_ids(
-            database_name=database_name,
+        self.list_of_samples = self.select_all_sample_ids_in_benchmark_by_test_id(
+            url=database_connection_url,
+            tcn=test_case_name,
             test_id=test_id
         )
         self._current_number_of_children = 0
@@ -42,11 +46,12 @@ class FlameGraph(CodePaths):
         self.json = [
             self._count_code_path_length(
                 self._map_out_hierarchical_stack_relationships(
-                    database_name=database_name,
-                    sample_id=sample
+                    url=database_connection_url,
+                    tcn=test_case_name,
+                    sample_id=sample_id
                 )
             )
-            for sample in self.list_of_samples
+            for sample_id in self.list_of_samples
         ]
         self.html = self._render_html()
 
