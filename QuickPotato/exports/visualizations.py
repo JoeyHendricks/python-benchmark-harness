@@ -113,11 +113,12 @@ class FlameGraph(CodePaths):
 
 class HeatMap(CodePaths):
 
-    def __init__(self, test_case_name, database_connection_url, test_ids=None, order_by="latency", detect_code_paths=True):
+    def __init__(self, test_case_name: str, database_connection_url: str,
+                 test_ids=None, order_by="latency", detect_code_paths=True) -> None:
         """
 
         :param test_case_name:
-        :param database_name
+        :param database_connection_url
         :param test_ids:
         :param order_by:
         """
@@ -129,55 +130,57 @@ class HeatMap(CodePaths):
         self._decimals = 25
         self._order_by = order_by
         self.test_case_name = test_case_name
-        self.database_name = database_name
+        self.database_connection_url = database_connection_url
         self._all_recorded_method_response_times = []
 
         self.statistics = {}
         self.sample_list = {}
         for tid in test_ids:
-            self.sample_list[tid] = self.select_all_sample_ids(
-                database_name=self.database_name,
+            self.sample_list[tid] = self.select_all_sample_ids_in_benchmark_by_test_id(
+                url=database_connection_url,
+                tcn=test_case_name,
                 test_id=tid
             )
             self.statistics[tid] = {}
             for sample in self.sample_list[tid]:
-                self.statistics[tid][sample] = self.select_call_stack_by_sample_id(
-                    database_name=self.database_name,
+                self.statistics[tid][sample] = self.select_benchmark_call_stack_by_sample_id(
+                    url=database_connection_url,
+                    tcn=test_case_name,
                     sample_id=sample
                 )
 
         self.json = self.generate_json_payload(detect_code_paths)
 
-    def look_up_method_latency(self, parent_function_name, child_function_name, sample_id, test_id):
+    def look_up_method_latency(self, parent_func_name: str, child_func_name: str, sample_id: str, test_id) -> float:
         """
 
-        :param parent_function_name:
-        :param child_function_name:
+        :param parent_func_name:
+        :param child_func_name:
         :param sample_id:
         :param test_id:
         :return:
         """
         for frame in self.statistics[test_id][sample_id]:
-            if frame["sample_id"] == sample_id and child_function_name == frame["child_function_name"] \
-                    and parent_function_name == frame["parent_function_name"]:
+            if frame["sample_id"] == sample_id and child_func_name == frame["child_function_name"] \
+                    and parent_func_name == frame["parent_function_name"]:
                 time = float(format(frame["cumulative_time"], f".{self._decimals}f").lstrip().rstrip('0'))
                 return time
 
             else:
                 continue
 
-    def look_up_method_meta_data(self, parent_function_name, child_function_name, sample_id, test_id):
+    def find_method_meta_data(self, parent_func_name: str, child_func_name: str, sample_id: str, test_id: str) -> dict:
         """
 
-        :param parent_function_name:
-        :param child_function_name:
+        :param parent_func_name:
+        :param child_func_name:
         :param sample_id:
         :param test_id:
         :return:
         """
         for frame in self.statistics[test_id][sample_id]:
-            if frame["sample_id"] == sample_id and child_function_name == frame["child_function_name"] \
-                    and parent_function_name == frame["parent_function_name"]:
+            if frame["sample_id"] == sample_id and child_func_name == frame["child_function_name"] \
+                    and parent_func_name == frame["parent_function_name"]:
                 return {
                     "parent_path": frame["parent_path"],
                     "parent_line_number": frame["parent_line_number"],
@@ -190,7 +193,7 @@ class HeatMap(CodePaths):
                 continue
 
     @staticmethod
-    def generate_y_axis_identifier(parent, child, sample_id):
+    def generate_y_axis_identifier(parent: str, child: str, sample_id: str) -> str:
         """
         
         :param parent: 
@@ -207,7 +210,7 @@ class HeatMap(CodePaths):
             text = text.replace(">", " ")
             return text
 
-    def generate_json_payload(self, detect_code_paths):
+    def generate_json_payload(self, detect_code_paths: bool) -> json.dumps:
         """
 
         :return:
@@ -222,7 +225,8 @@ class HeatMap(CodePaths):
 
                 if detect_code_paths:
                     hierarchical_stack = self._map_out_hierarchical_stack_relationships(
-                        database_name=self.database_name,
+                        url=self.database_connection_url,
+                        tcn=self.test_case_name,
                         sample_id=sample_id
                     )
 
@@ -244,15 +248,15 @@ class HeatMap(CodePaths):
                     else:
                         predicted_code_path = "Code path could not be predicted."
 
-                    meta_data = self.look_up_method_meta_data(
-                        parent_function_name=frame['parent_function_name'],
-                        child_function_name=frame['child_function_name'],
+                    meta_data = self.find_method_meta_data(
+                        parent_func_name=frame['parent_function_name'],
+                        child_func_name=frame['child_function_name'],
                         sample_id=sample_id,
                         test_id=test_id
                     )
                     latency = self.look_up_method_latency(
-                        parent_function_name=frame['parent_function_name'],
-                        child_function_name=frame['child_function_name'],
+                        parent_func_name=frame['parent_function_name'],
+                        child_func_name=frame['child_function_name'],
                         sample_id=sample_id,
                         test_id=test_id
                     )
@@ -274,7 +278,7 @@ class HeatMap(CodePaths):
 
         return json.dumps(sorted(data, key=lambda k: k[self._order_by], reverse=True))
 
-    def render_html(self):
+    def render_html(self) -> Template.render:
         """
 
         :return:
