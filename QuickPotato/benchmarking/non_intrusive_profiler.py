@@ -1,5 +1,5 @@
 from QuickPotato.statistical.verification import check_max_boundary_of_measurement, check_min_boundary_of_measurement
-from QuickPotato.benchmarking.c_profiler_interpreter import ProfilerStatisticsInterpreter
+from QuickPotato.benchmarking.result_interpreters import ProfilerStatisticsInterpreter
 from QuickPotato.benchmarking.code_instrumentation import Profiler
 from QuickPotato.statistical.measurements import Statistics
 from QuickPotato.statistical.hypothesis_tests import TTest
