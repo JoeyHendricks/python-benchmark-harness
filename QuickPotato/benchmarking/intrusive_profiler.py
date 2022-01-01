@@ -6,11 +6,11 @@ from QuickPotato.configuration.management import options
 from QuickPotato.benchmarking.code_instrumentation import Profiler
 from QuickPotato.benchmarking.c_profiler_interpreter import ProfilerStatisticsInterpreter
 from QuickPotato.utilities.exceptions import CouchPotatoCannotFindMethod
-from QuickPotato.utilities.defaults import default_test_case_name, default_database_name
+from QuickPotato.utilities.defaults import default_test_case_name, default_sqlite_database_name
 
 
 def performance_breakpoint(method=None, enabled=True, test_case_name=default_test_case_name,
-                           database_name=default_database_name, test_id=None):
+                           database_name=default_sqlite_database_name, test_id=None):
     """
     This decorator can be used to gather performance statistical
     on a method.

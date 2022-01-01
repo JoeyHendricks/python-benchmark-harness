@@ -7,19 +7,19 @@ import os
 
 class CsvFile(Crud):
 
-    def __init__(self, test_case_name: str, test_id: str, connection_url=None, delimiter=","):
+    def __init__(self, test_case_name: str, test_id: str, database_connection_url=None, delimiter=","):
         """
         Will build up the object, when no test id is given and when test case name is default.
         It will take the last known test id.
 
         :param test_case_name: The name of the test case
         :param delimiter: The delimiter of the csv file
-        :param connection_url: the connection url to the database
+        :param database_connection_url: the connection url to the database
         :param test_id: The test id within the test case
         """
         super(CsvFile, self).__init__()
         self.test_case_name = test_case_name
-        self._url = connection_url
+        self._url = self._create_default_db_url() if database_connection_url is None else database_connection_url
         self.delimiter = delimiter
         self.test_id = test_id
         self.list_of_samples = self.select_all_sample_ids_in_benchmark_by_test_id(

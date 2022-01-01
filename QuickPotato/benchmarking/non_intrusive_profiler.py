@@ -5,7 +5,6 @@ from QuickPotato.statistical.measurements import Statistics
 from QuickPotato.statistical.hypothesis_tests import TTest
 from QuickPotato.database.collection import Crud
 from multiprocessing import Process
-from tempfile import gettempdir
 from datetime import datetime
 import warnings
 import string
@@ -22,7 +21,6 @@ class MicroBenchmark(Crud):
         self.current_test_id = None
         self.previous_test_id = None
         self._test_case_name = "Default"
-        self._database_name = "QuickPotatoBenchmarking"
         self._url = None
 
     @property
@@ -63,9 +61,7 @@ class MicroBenchmark(Crud):
         :return:
         """
         if self._url is None:
-            temp_directory = gettempdir()
-            separator = "\\" if '\\' in gettempdir() else "/"
-            return "sqlite:///" + temp_directory + separator + self._database_name + ".db"
+            return self._create_default_db_url()
 
         else:
             return self._url

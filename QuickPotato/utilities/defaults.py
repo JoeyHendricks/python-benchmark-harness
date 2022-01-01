@@ -36,3 +36,5 @@ default_quick_potato_configuration = {
     "maximum_number_saved_test_results": 100,
 
     }
+
+default_sqlite_database_name = "MicroBenchmarkStatistics"

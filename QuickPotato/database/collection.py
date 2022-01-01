@@ -1,6 +1,8 @@
-from sqlalchemy import select, func
 from QuickPotato.database.common import CommonDatabaseInteractions
+from QuickPotato.utilities.defaults import default_sqlite_database_name
 from QuickPotato.configuration.management import options
+from sqlalchemy import select, func
+from tempfile import gettempdir
 
 
 class Create(CommonDatabaseInteractions):
@@ -259,6 +261,16 @@ class Crud(Create, Read, Delete):
 
     def __init__(self):
         super(Crud, self).__init__()
+
+    @staticmethod
+    def _create_default_db_url():
+        """
+
+        :return:
+        """
+        temp_directory = gettempdir()
+        separator = "\\" if '\\' in gettempdir() else "/"
+        return "sqlite:///" + temp_directory + separator + default_sqlite_database_name + ".db"
 
     def _enforce_data_retention_policy(self, url: str, tcn: str) -> None:
         """
