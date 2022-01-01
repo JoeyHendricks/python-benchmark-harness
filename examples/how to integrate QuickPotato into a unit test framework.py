@@ -39,5 +39,5 @@ class TestPerformance(unittest.TestCase):
         )
 
         # Pass or fail the performance test
-        self.assertTrue(pt.verify_benchmark_against_previous_baseline())
-        self.assertTrue(pt.verify_benchmark_against_set_boundaries())
+        self.assertTrue(pt.compare())
+        self.assertTrue(pt.verify_boundaries())

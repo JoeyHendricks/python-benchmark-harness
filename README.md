@@ -58,7 +58,7 @@ In the following way you can generate a Python flame graph with QuickPotato:
 ```python
 from examples.non_intrusive_example_code import FancyCode
 from QuickPotato import performance_test as pt
-from QuickPotato.statistical.visualizations import FlameGraph
+from QuickPotato.exports.visualizations import FlameGraph
 
 # Create a test case
 pt.test_case_name = "FlameGraph"
@@ -70,7 +70,7 @@ pt.measure_method_performance(
   pacing=0  # <-- How much seconds you want to wait between iterations.
 )
 
-# Generate the flame graph visualizations to analyse your code performance.
+# Generate the flame graph exports to analyse your code performance.
 FlameGraph(pt.test_case_name, test_id=pt.current_test_id).export("C:\\temp\\")
 ```
 
@@ -98,7 +98,7 @@ In the following way you can generate a Python heatmap with QuickPotato:
 ```python
 from examples.non_intrusive_example_code import FancyCode
 from QuickPotato import performance_test as pt
-from QuickPotato.statistical.visualizations import HeatMap
+from QuickPotato.exports.visualizations import HeatMap
 
 # Create a test case
 pt.test_case_name = "Heatmap"
@@ -111,7 +111,7 @@ pt.measure_method_performance(
   pacing=0  # <-- How much seconds you want to wait between iterations.
 )
 
-# Generate the heatmap visualizations to analyse your code performance.
+# Generate the heatmap exports to analyse your code performance.
 HeatMap(pt.test_case_name, test_ids=[pt.current_test_id, pt.previous_test_id]).export("C:\\temp\\")
 
 ```
@@ -128,7 +128,7 @@ You can generate a CSV export in the following way:
 ```python
 from examples.non_intrusive_example_code import FancyCode
 from QuickPotato import performance_test as pt
-from QuickPotato.statistical.visualizations import CsvFile
+from QuickPotato.exports.visualizations import CsvFile
 
 # Create a test case
 pt.test_case_name = "exporting to csv"
@@ -166,7 +166,7 @@ You can generate a simple interactive bar chart in the following way:
 ```python
 from examples.non_intrusive_example_code import FancyCode
 from QuickPotato import performance_test as pt
-from QuickPotato.statistical.visualizations import BarChart
+from QuickPotato.exports.visualizations import BarChart
 
 # Create a test case
 pt.test_case_name = "bar chart"
@@ -179,7 +179,7 @@ pt.measure_method_performance(
   pacing=0  # <-- How much seconds you want to wait between iterations.
 )
 
-# Generate visualizations to analyse your code.
+# Generate exports to analyse your code.
 BarChart(pt.test_case_name, test_ids=[pt.current_test_id, pt.previous_test_id]).export("C:\\temp\\")
 
 ```
@@ -201,14 +201,14 @@ pt.max_and_min_boundary_for_average = {"max": 1, "min": 0.001}
 
 # Execute your code in a non-intrusive way
 pt.measure_method_performance(
-  method=FancyCode().say_my_name_and_more,  # <-- The Method which you want to test.
-  arguments=["joey hendricks"],  # <-- Your arguments go here.
-  iteration=10,  # <-- The number of times you want to execute this method.
-  pacing=0  # <-- How much seconds you want to wait between iterations.
+    method=FancyCode().say_my_name_and_more,  # <-- The Method which you want to test.
+    arguments=["joey hendricks"],  # <-- Your arguments go here.
+    iteration=10,  # <-- The number of times you want to execute this method.
+    pacing=0  # <-- How much seconds you want to wait between iterations.
 )
 
 # Analyse results for change True if there is no change otherwise False
-results = pt.verify_benchmark_against_previous_baseline()
+results = pt.compare()
 
 ```
 
@@ -230,14 +230,14 @@ pt.test_case_name = "test_performance"  # <-- Define test case name
 
 # Execute your code in a non-intrusive way
 pt.measure_method_performance(
-  method=FancyCode().say_my_name_and_more,  # <-- The Method which you want to test.
-  arguments=["joey hendricks"],  # <-- Your arguments go here.
-  iteration=10,  # <-- The number of times you want to execute this method.
-  pacing=0  # <-- How much seconds you want to wait between iterations.
+    method=FancyCode().say_my_name_and_more,  # <-- The Method which you want to test.
+    arguments=["joey hendricks"],  # <-- Your arguments go here.
+    iteration=10,  # <-- The number of times you want to execute this method.
+    pacing=0  # <-- How much seconds you want to wait between iterations.
 )
 
 # Analyse results for change True if there is no change otherwise False
-results = pt.verify_benchmark_against_previous_baseline()
+results = pt.compare()
 ```
 
 ## Integrating with unit testing frameworks
@@ -287,8 +287,8 @@ class TestPerformance(unittest.TestCase):
     )
 
     # Pass or fail the performance test
-    self.assertTrue(pt.verify_benchmark_against_previous_baseline())
-    self.assertTrue(pt.verify_benchmark_against_set_boundaries())
+    self.assertTrue(pt.compare())
+    self.assertTrue(pt.verify_boundaries())
 
 ````
 

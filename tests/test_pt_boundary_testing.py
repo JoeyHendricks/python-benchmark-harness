@@ -46,7 +46,7 @@ class TestPerformanceBoundaries(unittest.TestCase):
             slow_method()
 
         # Analyse profiled results
-        results = pt.verify_benchmark_against_set_boundaries()
+        results = pt.verify_boundaries()
 
         self.assertTrue(results)
 
@@ -63,7 +63,7 @@ class TestPerformanceBoundaries(unittest.TestCase):
             slow_method()
 
         # Analyse profiled results
-        results = pt.verify_benchmark_against_set_boundaries()
+        results = pt.verify_boundaries()
 
         self.assertFalse(results)
 
@@ -100,6 +100,6 @@ class TestPerformanceBoundaries(unittest.TestCase):
             slow_method()
 
         # Analyse profiled results
-        results = pt.verify_benchmark_against_set_boundaries()
+        results = pt.verify_boundaries()
 
         self.assertTrue(results)

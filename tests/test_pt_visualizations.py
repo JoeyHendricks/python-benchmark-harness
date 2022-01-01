@@ -1,5 +1,5 @@
-from QuickPotato.profiling.intrusive import performance_test as pt
-from QuickPotato.statistical.visualizations import FlameGraph, CsvFile
+from QuickPotato.benchmarking.intrusive_profiler import performance_test as pt
+from QuickPotato.exports.visualizations import FlameGraph
 from QuickPotato.configuration.management import options
 from QuickPotato.utilities.defaults import default_test_case_name
 from QuickPotato.database.collection import Crud

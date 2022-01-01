@@ -1,3 +1,3 @@
-from QuickPotato.benchmarking.testing import PerformanceTest
+from QuickPotato.benchmarking.non_intrusive_profiler import MicroBenchmark
 
-performance_test = PerformanceTest()
+performance_test = MicroBenchmark()

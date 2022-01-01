@@ -2,7 +2,7 @@ from examples.non_intrusive_example_code import FancyCode
 from QuickPotato import performance_test as pt
 
 """
-from QuickPotato.statistical.visualizations import FlameGraph, HeatMap, CsvFile, BarChart
+from QuickPotato.statistical.exports import FlameGraph, HeatMap, CsvFile, BarChart
 """
 
 # Create a test case
@@ -19,7 +19,7 @@ pt.measure_method_performance(
 
 
 """
-# Generate visualizations to analyse your code.
+# Generate exports to analyse your code.
 barchart = BarChart(
     test_case_name=pt.test_case_name,
     database_name=pt.database_connection_url,

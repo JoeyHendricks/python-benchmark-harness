@@ -63,7 +63,7 @@ class TestRegressionTesting(unittest.TestCase):
             )
 
         # Analyse test results
-        results = pt.verify_benchmark_against_previous_baseline()
+        results = pt.compare()
 
         # printing information message about baseline
         print("------------------------------BASELINE------------------------------")
@@ -99,7 +99,7 @@ class TestRegressionTesting(unittest.TestCase):
         )
 
         # Analyse test results
-        results = pt.verify_benchmark_against_previous_baseline()
+        results = pt.compare()
         
         # Print Details of this test
         print("------------------------------BENCHMARK-----------------------------")
@@ -127,7 +127,7 @@ class TestRegressionTesting(unittest.TestCase):
             fast_method()
 
         # Analyse test results
-        results = pt.verify_benchmark_against_previous_baseline()
+        results = pt.compare()
 
         # Print Details of this test
         print("------------------------------BENCHMARK-----------------------------")
@@ -155,7 +155,7 @@ class TestRegressionTesting(unittest.TestCase):
             fast_method()
 
         # Analyse test results
-        results = pt.verify_benchmark_against_previous_baseline()
+        results = pt.compare()
 
         # Print Details of this test
         print("------------------------------BENCHMARK-----------------------------")
@@ -188,7 +188,7 @@ class TestRegressionTesting(unittest.TestCase):
                 slow_method()  # <--- SLOWER
 
             # Analyse test results
-            results = pt.verify_benchmark_against_previous_baseline()
+            results = pt.compare()
 
             # Expected results is a failure because the test changed
             print("------------------------------BENCHMARK 1 -----------------------------")
@@ -213,7 +213,7 @@ class TestRegressionTesting(unittest.TestCase):
                 fast_method()  # <--- FASTER
 
             # Analyse test results
-            results = pt.verify_benchmark_against_previous_baseline()
+            results = pt.compare()
 
             # Expected results is a failure because the test changed
             print("------------------------------BENCHMARK 2 -----------------------------")
@@ -250,7 +250,7 @@ class TestRegressionTesting(unittest.TestCase):
                 fast_method()
 
             # Analyse results
-            output = pt.verify_benchmark_against_previous_baseline()
+            output = pt.compare()
             results.append(output)
 
         print(f"passed: {results.count(True)} failed: {results.count(False)} total: 100")

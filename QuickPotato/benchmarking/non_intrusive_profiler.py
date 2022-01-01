@@ -1,87 +1,29 @@
 from QuickPotato.statistical.verification import check_max_boundary_of_measurement, check_min_boundary_of_measurement
-from QuickPotato.configuration.settings import Boundaries
+from QuickPotato.benchmarking.profiler_interpreter import ProfilerStatisticsInterpreter
+from QuickPotato.benchmarking.code_instrumentation import Profiler
+from QuickPotato.statistical.measurements import Statistics
 from QuickPotato.statistical.hypothesis_tests import TTest
-from QuickPotato.benchmarking.metrics import Metrics
 from QuickPotato.database.collection import Crud
-from QuickPotato.benchmarking.metrics import Statistics
-from QuickPotato.profiling.instrumentation import Profiler
-from QuickPotato.profiling.interpreters import ProfilerStatisticsInterpreter
-from datetime import datetime
 from multiprocessing import Process
 from tempfile import gettempdir
+from datetime import datetime
 import warnings
 import string
 import random
 import time
 
 
-class PerformanceTest(Crud, Boundaries, Metrics):
+class MicroBenchmark(Crud):
 
     def __init__(self):
         Crud.__init__(self)
-        Boundaries.__init__(self)
-        Metrics.__init__(self)
 
+        # Test Meta variables
         self.current_test_id = None
         self.previous_test_id = None
-
         self._test_case_name = "Default"
         self._database_name = "QuickPotatoBenchmarking"
         self._url = None
-
-    @property
-    def database_connection_url(self):
-        """
-
-        :return:
-        """
-        if self._url is None:
-            temp_directory = gettempdir()
-            separator = "\\" if '\\' in gettempdir() else "/"
-            return "sqlite:///" + temp_directory + separator + self._database_name + ".db"
-
-        else:
-            return self._url
-
-    @database_connection_url.setter
-    def database_connection_url(self, value):
-        """
-
-        :param value:
-        :return:
-        """
-        self._url = value
-
-    @property
-    def benchmark_measurements(self):
-        """
-        All of the performance measurements that are collected by the benchmark.
-
-        Returns
-        -------
-            A statistical object that contains all benchmark measurements.
-        """
-        return Statistics(test_id=self.current_test_id, database_name=self.database_connection_url)
-
-    @property
-    def baseline_measurements(self):
-        """
-        All of the performance measurements that are collected by the baseline.
-
-        Returns
-        -------
-            A statistical object that contains all baseline measurements.
-        """
-        return Statistics(test_id=self.previous_test_id, database_name=self.database_connection_url)
-
-    @database_connection_url.setter
-    def database_connection_url(self, value):
-        """
-
-        :param value:
-        :return:
-        """
-        self.database_connection_url = value
 
     @property
     def test_case_name(self):
@@ -114,15 +56,101 @@ class PerformanceTest(Crud, Boundaries, Metrics):
         self._test_case_name = value
         self._reset_performance_test(value)
 
-    def verify_benchmark_against_set_boundaries(self):
+    @property
+    def database_connection_url(self):
         """
 
         :return:
         """
-        results = self._check_breach_benchmark_defined_boundaries()
-        return results
+        if self._url is None:
+            temp_directory = gettempdir()
+            separator = "\\" if '\\' in gettempdir() else "/"
+            return "sqlite:///" + temp_directory + separator + self._database_name + ".db"
 
-    def verify_benchmark_against_previous_baseline(self):
+        else:
+            return self._url
+
+    @database_connection_url.setter
+    def database_connection_url(self, value):
+        """
+
+        :param value:
+        :return:
+        """
+        self._url = value
+
+    @property
+    def benchmark_statistics(self):
+        """
+        All of the performance measurements that are collected by the benchmark.
+
+        Returns
+        -------
+            A statistical object that contains all benchmark measurements.
+        """
+        response_times = self.select_benchmark_profiled_method_response_times(
+            url=self.database_connection_url,
+            tcn=self.test_case_name,
+            test_id=self.current_test_id
+        )
+        return Statistics(
+            measurements=response_times
+        )
+
+    @property
+    def baseline_statistics(self):
+        """
+        All of the performance measurements that are collected by the baseline.
+
+        Returns
+        -------
+            A statistical object that contains all baseline measurements.
+        """
+        response_times = self.select_benchmark_profiled_method_response_times(
+            url=self.database_connection_url,
+            tcn=self.test_case_name,
+            test_id=self.previous_test_id
+        )
+        return Statistics(
+            measurements=response_times
+        )
+
+    @staticmethod
+    def verify_boundaries(boundaries: list) -> bool or None:
+        """
+
+        :return:
+        """
+        results = []
+        for boundary in boundaries:
+            results.append(
+                {
+                    "boundary_name": boundary["name"],
+                    "value": boundary["value"],
+                    "minimum_boundary": boundary["minimum"],
+                    "maximum_boundary": boundary["maximum"],
+                    "minimum_verification_results": check_min_boundary_of_measurement(
+                        boundary["value"],
+                        boundary["minimum"]
+                    ),
+                    "maximum_verification_results": check_max_boundary_of_measurement(
+                        boundary["value"],
+                        boundary["maximum"]
+                    ),
+                }
+            )
+
+        if len(results) == 0:
+            warnings.warn("Warning no test have been executed against the benchmark")
+            return None
+
+        elif False in results:
+            return False
+
+        else:
+            return True
+
+    def compare(self):
         """
 
         :return:
@@ -207,53 +235,6 @@ class PerformanceTest(Crud, Boundaries, Metrics):
         self.previous_test_id = benchmarks[0] if len(benchmarks) > 0 else None
         self.current_test_id = datetime.now().timestamp()
 
-    def _inspect_test_results(self, results):
-        """
-        Will verify the test results and will give an appropriate output
-        and  warning message.
-
-        Returns
-        -------
-            - True = Test Passed
-            - False = Test Failed
-            _ None = No test performed (throws an warning message)
-        """
-        if len(results) == 0:
-            warnings.warn("Warning no test have been executed against the benchmark")
-            return True
-
-        elif False in results:
-            return False
-
-        else:
-            return True
-
-    def _check_breach_benchmark_defined_boundaries(self):
-        """
-        This method will validate how well the benchmark will hold up to the
-        set threshold in the service level agreement.
-
-        Returns
-        -------
-            True if the test passes and False if it False
-        """
-        results = []
-        self._collect_measurements(test_id=self.current_test_id, database_name=self.database_connection_url)
-        for boundary_key, measurements_key in zip(self.boundary_policy, self.threshold_measurements):
-            if self.boundary_policy[boundary_key]["max"] is not None:
-                results.append(
-                    check_max_boundary_of_measurement(
-                        boundary=self.boundary_policy[boundary_key]["max"],
-                        value=self.threshold_measurements[measurements_key]())
-                )
-            if self.boundary_policy[boundary_key]["min"] is not None:
-                results.append(
-                    check_min_boundary_of_measurement(
-                        boundary=self.boundary_policy[boundary_key]["min"],
-                        value=self.threshold_measurements[measurements_key]())
-                )
-        return self._inspect_test_results(results)
-
     def _check_difference_between_baseline_benchmark(self):
         """
         Will test the benchmark against the baseline.
@@ -270,9 +251,9 @@ class PerformanceTest(Crud, Boundaries, Metrics):
         # Validate if there is a proper baseline and benchmark present
         t_test = TTest(
             test_id=self.current_test_id,
-            test_case_name=self._test_case_name,
+            test_case_name=self.test_case_name,
             database_name=self.database_connection_url,
-            baseline_measurements=self.baseline_measurements.response_times(),
-            benchmark_measurements=self.benchmark_measurements.response_times()
+            baseline_measurements=self.baseline_statistics.raw_data,
+            benchmark_measurements=self.benchmark_statistics.raw_data
         )
         print(t_test.results)

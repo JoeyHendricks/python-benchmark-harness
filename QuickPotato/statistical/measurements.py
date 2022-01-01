@@ -4,229 +4,251 @@ import numpy as np
 
 class Statistics(Crud):
 
-    def __init__(self, test_id, database_name):
+    def __init__(self, measurements):
         super(Statistics, self).__init__()
 
-        self.test_id = test_id
-        self.database_name = database_name
-        self._response_times = self.select_response_times(self.database_name, self.test_id)
+        self._collected_measurements = measurements
 
-    def response_times(self):
+    @property
+    def raw_data(self) -> list:
         """
 
         Returns
         -------
 
         """
-        return self._response_times
+        return self._collected_measurements
 
-    def normalized_response_times(self):
+    @property
+    def normalized_response_times(self) -> list:
         """
 
         Returns
         -------
 
         """
-        measurements = np.array(self._response_times)
+        measurements = np.array(self._collected_measurements)
         return measurements[abs(measurements - np.mean(measurements)) < 2 * np.std(measurements)]
 
-    def average_response_time(self):
+    @property
+    def average_response_time(self) -> float:
         """
 
         Returns
         -------
 
         """
-        return sum(self._response_times) / len(self._response_times)
+        return float(sum(self._collected_measurements) / len(self._collected_measurements))
 
-    def maximum_outlier_in_response_times(self):
+    @property
+    def maximum_outlier_in_response_times(self) -> float:
         """
 
         Returns
         -------
 
         """
-        return max(self._response_times)
+        return float(max(self._collected_measurements))
 
-    def minimum_outlier_in_response_times(self):
+    @property
+    def minimum_outlier_in_response_times(self) -> float:
         """
 
         Returns
         -------
 
         """
-        return min(self._response_times)
+        return float(min(self._collected_measurements))
 
-    def percentile_5th(self):
+    @property
+    def percentile_5th(self) -> float:
         """
 
         Returns
         -------
 
         """
-        return np.percentile(np.array(self._response_times), 5)
+        return float(np.percentile(np.array(self._collected_measurements), 5))
 
-    def percentile_10th(self):
+    @property
+    def percentile_10th(self) -> float:
         """
 
         Returns
         -------
 
         """
-        return np.percentile(np.array(self._response_times), 10)
+        return float(np.percentile(np.array(self._collected_measurements), 10))
 
-    def percentile_15th(self):
+    @property
+    def percentile_15th(self) -> float:
         """
 
         Returns
         -------
 
         """
-        return np.percentile(np.array(self._response_times), 15)
+        return float(np.percentile(np.array(self._collected_measurements), 15))
 
-    def percentile_20th(self):
+    @property
+    def percentile_20th(self) -> float:
         """
 
         Returns
         -------
 
         """
-        return np.percentile(np.array(self._response_times), 20)
+        return float(np.percentile(np.array(self._collected_measurements), 20))
 
-    def percentile_25th(self):
+    @property
+    def percentile_25th(self) -> float:
         """
 
         Returns
         -------
 
         """
-        return np.percentile(np.array(self._response_times), 25)
+        return float(np.percentile(np.array(self._collected_measurements), 25))
 
-    def percentile_30th(self):
+    @property
+    def percentile_30th(self) -> float:
         """
 
         Returns
         -------
 
         """
-        return np.percentile(np.array(self._response_times), 30)
+        return float(np.percentile(np.array(self._collected_measurements), 30))
 
-    def percentile_35th(self):
+    @property
+    def percentile_35th(self) -> float:
         """
 
         Returns
         -------
 
         """
-        return np.percentile(np.array(self._response_times), 35)
+        return float(np.percentile(np.array(self._collected_measurements), 35))
 
-    def percentile_40th(self):
+    @property
+    def percentile_40th(self) -> float:
         """
 
         Returns
         -------
 
         """
-        return np.percentile(np.array(self._response_times), 40)
+        return float(np.percentile(np.array(self._collected_measurements), 40))
 
-    def percentile_45th(self):
+    @property
+    def percentile_45th(self) -> float:
         """
 
         Returns
         -------
 
         """
-        return np.percentile(np.array(self._response_times), 45)
+        return float(np.percentile(np.array(self._collected_measurements), 45))
 
-    def percentile_50th(self):
+    @property
+    def percentile_50th(self) -> float:
         """
 
         Returns
         -------
 
         """
-        return np.percentile(np.array(self._response_times), 50)
+        return float(np.percentile(np.array(self._collected_measurements), 50))
 
-    def percentile_55th(self):
+    @property
+    def percentile_55th(self) -> float:
         """
 
         Returns
         -------
 
         """
-        return np.percentile(np.array(self._response_times), 55)
+        return float(np.percentile(np.array(self._collected_measurements), 55))
 
-    def percentile_60th(self):
+    @property
+    def percentile_60th(self) -> float:
         """
 
         Returns
         -------
 
         """
-        return np.percentile(np.array(self._response_times), 60)
+        return float(np.percentile(np.array(self._collected_measurements), 60))
 
-    def percentile_65th(self):
+    @property
+    def percentile_65th(self) -> float:
         """
 
         Returns
         -------
 
         """
-        return np.percentile(np.array(self._response_times), 65)
+        return float(np.percentile(np.array(self._collected_measurements), 65))
 
-    def percentile_70th(self):
+    @property
+    def percentile_70th(self) -> float:
         """
 
         Returns
         -------
 
         """
-        return np.percentile(np.array(self._response_times), 70)
+        return float(np.percentile(np.array(self._collected_measurements), 70))
 
-    def percentile_75th(self):
+    @property
+    def percentile_75th(self) -> float:
         """
 
         Returns
         -------
 
         """
-        return np.percentile(np.array(self._response_times), 75)
+        return float(np.percentile(np.array(self._collected_measurements), 75))
 
-    def percentile_80th(self):
+    @property
+    def percentile_80th(self) -> float:
         """
 
         Returns
         -------
 
         """
-        return np.percentile(np.array(self._response_times), 80)
+        return float(np.percentile(np.array(self._collected_measurements), 80))
 
-    def percentile_85th(self):
+    @property
+    def percentile_85th(self) -> float:
         """
 
         Returns
         -------
 
         """
-        return np.percentile(np.array(self._response_times), 85)
+        return float(np.percentile(np.array(self._collected_measurements), 85))
 
-    def percentile_90th(self):
+    @property
+    def percentile_90th(self) -> float:
         """
 
         Returns
         -------
 
         """
-        return np.percentile(np.array(self._response_times), 90)
+        return float(np.percentile(np.array(self._collected_measurements), 90))
 
-    def percentile_95th(self):
+    @property
+    def percentile_95th(self) -> float:
         """
 
         Returns
         -------
 
         """
-        return np.percentile(np.array(self._response_times), 95)
+        return float(np.percentile(np.array(self._collected_measurements), 95))
 
 
 class CodePaths(Crud):
@@ -236,7 +258,7 @@ class CodePaths(Crud):
 
         self._matched_code_path = None
 
-    def _map_out_hierarchical_stack_relationships(self, database_name, sample_id):
+    def _map_out_hierarchical_stack_relationships(self, url: str, tcn: str, sample_id: str) -> dict:
         """
         Will map out the parent child relationships for each function to form hierarchical data structure.
         This structure can than be used to generate D3 flame graphs.
@@ -244,10 +266,13 @@ class CodePaths(Crud):
         (Function uses recursion to travel through the hierarchical
         JSON stack until no more row in the collected stack trace can be found.)
 
+        :param url: The database connection url
+        :param tcn: The test case name
+        :param sample_id: The found sample id
         :return: An hierarchical data structure in JSON format.
         """
         stack = {}
-        collected_stack = self.select_call_stack_by_sample_id(database_name, sample_id)
+        collected_stack = self.select_benchmark_call_stack_by_sample_id(url, tcn, sample_id)
         for line in collected_stack:
 
             if line["parent_function_name"] == collected_stack[0]['parent_function_name']:
@@ -267,7 +292,7 @@ class CodePaths(Crud):
                 )
         return stack
 
-    def _recursively_update_number_of_parent_child_relationship(self, stack, parent, child):
+    def _recursively_update_number_of_parent_child_relationship(self, stack: dict, parent: str, child: str) -> None:
         """
         Helps map out the call stack by extending or updating the
         hierarchical stack with new members.
