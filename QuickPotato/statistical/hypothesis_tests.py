@@ -1,5 +1,3 @@
-from QuickPotato.benchmarking.results import RegressionTestEvidence
-from datetime import datetime
 import numpy as np
 from decimal import Decimal
 from scipy import stats
@@ -8,9 +6,9 @@ from scipy import stats
 np.seterr(divide='ignore')
 
 
-class TTest(RegressionTestEvidence):
+class TTest:
 
-    def __init__(self, test_id, test_case_name, database_name, baseline_measurements, benchmark_measurements):
+    def __init__(self, baseline_measurements: list, benchmark_measurements: list) -> None:
         super(TTest, self).__init__()
 
         # Baseline calculations
@@ -26,19 +24,12 @@ class TTest(RegressionTestEvidence):
         self.benchmark_number_of_samples = self.benchmark_measurements.size
 
         # Information for test evidence report
-        self.test_id = test_id
-        self.test_case_name = test_case_name
-        self.database_name = database_name
-        self.epoch_timestamp = datetime.now().timestamp()
-        self.human_timestamp = datetime.now()
-        self.verification_name = "T-Test"
         self.status = self._run_t_test()
         self.value = float(self.t_value)
         self.critical_value = float(self.critical_t_value)
-        self.save_test_evidence()
 
     @property
-    def results(self):
+    def results(self) -> bool:
         """
 
         Returns
@@ -48,7 +39,7 @@ class TTest(RegressionTestEvidence):
         return self.status
 
     @property
-    def t_value(self):
+    def t_value(self) -> float:
         """
 
         Returns
@@ -70,7 +61,7 @@ class TTest(RegressionTestEvidence):
             return abs(signal / noise)
 
     @property
-    def critical_t_value(self):
+    def critical_t_value(self) -> float:
         """
 
         Returns
@@ -79,7 +70,7 @@ class TTest(RegressionTestEvidence):
         """
         return stats.t.ppf(q=1-.05/2, df=self.baseline_number_of_samples-2)
 
-    def _verify_both_arrays_for_zeros(self):
+    def _verify_both_arrays_for_zeros(self) -> bool:
         """
 
         Returns
@@ -94,7 +85,7 @@ class TTest(RegressionTestEvidence):
             # There is change valid input for T-test.
             return True
 
-    def _run_t_test(self):
+    def _run_t_test(self) -> bool:
         """
 
         Returns

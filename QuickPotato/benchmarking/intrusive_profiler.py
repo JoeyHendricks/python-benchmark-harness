@@ -4,7 +4,7 @@ from functools import wraps, partial
 from QuickPotato import performance_test as pt
 from QuickPotato.configuration.management import options
 from QuickPotato.benchmarking.code_instrumentation import Profiler
-from QuickPotato.benchmarking.profiler_interpreter import ProfilerStatisticsInterpreter
+from QuickPotato.benchmarking.c_profiler_interpreter import ProfilerStatisticsInterpreter
 from QuickPotato.utilities.exceptions import CouchPotatoCannotFindMethod
 from QuickPotato.utilities.defaults import default_test_case_name, default_database_name
 

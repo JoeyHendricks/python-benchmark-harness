@@ -36,5 +36,3 @@ default_quick_potato_configuration = {
     "maximum_number_saved_test_results": 100,
 
     }
-
-default_test_case_name = "QuickProfiling"

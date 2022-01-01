@@ -1,5 +1,5 @@
 from QuickPotato.statistical.verification import check_max_boundary_of_measurement, check_min_boundary_of_measurement
-from QuickPotato.benchmarking.profiler_interpreter import ProfilerStatisticsInterpreter
+from QuickPotato.benchmarking.c_profiler_interpreter import ProfilerStatisticsInterpreter
 from QuickPotato.benchmarking.code_instrumentation import Profiler
 from QuickPotato.statistical.measurements import Statistics
 from QuickPotato.statistical.hypothesis_tests import TTest
@@ -250,9 +250,6 @@ class MicroBenchmark(Crud):
         """
         # Validate if there is a proper baseline and benchmark present
         t_test = TTest(
-            test_id=self.current_test_id,
-            test_case_name=self.test_case_name,
-            database_name=self.database_connection_url,
             baseline_measurements=self.baseline_statistics.raw_data,
             benchmark_measurements=self.benchmark_statistics.raw_data
         )
