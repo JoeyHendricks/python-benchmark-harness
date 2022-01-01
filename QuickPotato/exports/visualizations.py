@@ -15,7 +15,7 @@ import os
 
 class FlameGraph(CodePaths):
 
-    def __init__(self, test_case_name, database_connection_url, test_id=None):
+    def __init__(self, test_case_name: str, database_connection_url: str, test_id=None) -> None:
         """
 
         When initialized it will generate a hieratical json stack for each sample
@@ -55,7 +55,7 @@ class FlameGraph(CodePaths):
         ]
         self.html = self._render_html()
 
-    def export(self, path):
+    def export(self, path: str) -> None:
         """
         Export the flame graph as a HTML report on disk.
         :param path: The path on disk where the file needs to be written.
@@ -68,7 +68,7 @@ class FlameGraph(CodePaths):
         else:
             raise UnableToExportVisualization()
 
-    def _render_html(self):
+    def _render_html(self) -> Template.render:
         """
         Renders a HTML web page that contains the flame graph.
         :return: A filled in HTML template
@@ -79,7 +79,7 @@ class FlameGraph(CodePaths):
             payload=self.json,
         )
 
-    def _recursively_count_samples(self, stack, function_name):
+    def _recursively_count_samples(self, stack: dict, function_name: str) -> None:
         """
         Will count how many children/samples the given function name has.
 
@@ -93,7 +93,7 @@ class FlameGraph(CodePaths):
         for relationship in stack["children"]:
             self._recursively_count_samples(relationship, function_name)
 
-    def _count_code_path_length(self, stack):
+    def _count_code_path_length(self, stack: dict) -> dict:
         """
         Will travel down the discovered hierarchical stack and add the amount of samples per member.
 
@@ -113,8 +113,7 @@ class FlameGraph(CodePaths):
 
 class HeatMap(CodePaths):
 
-    def __init__(self, test_case_name=default_test_case_name, database_name=default_database_name,
-                 test_ids=None, order_by="latency", detect_code_paths=True):
+    def __init__(self, test_case_name, database_connection_url, test_ids=None, order_by="latency", detect_code_paths=True):
         """
 
         :param test_case_name:
