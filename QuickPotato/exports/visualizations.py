@@ -305,12 +305,11 @@ class HeatMap(CodePaths):
 
 class BarChart(Crud):
 
-    def __init__(self, test_case_name=default_test_case_name, database_name=default_database_name,
-                 test_ids=None, order_by="latency"):
+    def __init__(self, test_case_name: str, database_connection_url: str, test_ids=None, order_by="latency") -> None:
         """
 
         :param test_case_name:
-        :param database_name:
+        :param database_connection_url:
         :param test_ids:
         :param order_by:
         """
@@ -318,7 +317,7 @@ class BarChart(Crud):
 
         # Sorting out the test-id's
         self.test_case_name = test_case_name
-        self.database_name = database_name
+        self.database_name = database_connection_url
         self._order_by = order_by
         if test_ids is None or type(test_ids) is not list:
             raise UnableToGenerateVisualizations()
@@ -329,14 +328,15 @@ class BarChart(Crud):
         # Gathering relevant performance metrics
         self.statistics = {}
         for tid in self.list_of_test_ids:
-            self.statistics[tid] = self.select_call_stack_by_test_id(
-                database_name=self.database_name,
+            self.statistics[tid] = self.select_benchmark_call_stack_by_test_id(
+                url=database_connection_url,
+                tcn=test_case_name,
                 test_id=tid
             )
 
         self.json = self.generate_json()
 
-    def generate_json(self):
+    def generate_json(self) -> list:
         """
 
         :return:
@@ -361,7 +361,7 @@ class BarChart(Crud):
                 )
         return sorted(payload, key=lambda k: k[self._order_by], reverse=True)
 
-    def render_html(self):
+    def render_html(self) -> str:
         """
 
         :return:
@@ -386,20 +386,16 @@ class BarChart(Crud):
                     y=plot_df.latency,
                     name=method_signature,
                     meta=[method_signature],
-                    hovertemplate=
-                    '<br>Test-ID: %{x[0]}</b>'
+                    hovertemplate='<br>Test-ID: %{x[0]}</b>'
                     '<br>Sample-ID: %{x[1]}</b>'
                     '<br>method name: %{meta[0]}</b>' +
                     '<br>Time Spent %{y}</b>' +
                     '<extra></extra>'
                 ),
             )
+        return fig.to_html(config={"displaylogo": False})
 
-        return fig.to_html(config={
-            "displaylogo": False
-        })
-
-    def export(self, path):
+    def export(self, path: str) -> None:
         """
         Export the bar chart as a HTML report on disk.
         :param path: The path on disk where the file needs to be written.
