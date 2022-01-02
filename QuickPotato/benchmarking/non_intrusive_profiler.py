@@ -1,9 +1,9 @@
-from QuickPotato.statistical.verification import check_max_boundary, check_min_boundary, check_letter_rank_boundary
-from QuickPotato.benchmarking.result_interpreters import ProfilerStatisticsInterpreter
-from QuickPotato.statistical.heuristics import StatisticalDistanceTest
-from QuickPotato.benchmarking.code_instrumentation import Profiler
-from QuickPotato.statistical.measurements import Statistics
-from QuickPotato.database.collection import Crud
+from ..statistical.verification import check_max_boundary, check_min_boundary, check_letter_rank_boundary
+from ..benchmarking.result_interpreters import ProfilerStatisticsInterpreter
+from ..statistical.heuristics import StatisticalDistanceTest
+from ..benchmarking.code_instrumentation import Profiler
+from ..statistical.measurements import Statistics
+from .._database.collection import Crud
 from multiprocessing import Process
 from datetime import datetime
 import warnings
@@ -48,7 +48,7 @@ class MicroBenchmark(Crud):
             else:
                 pf.profile_method_under_test(method, *arguments)
 
-            # Wrangle data into format and upload it to database
+            # Wrangle data into format and upload it to _database
             ProfilerStatisticsInterpreter(
                 performance_statistics=pf.performance_statistics,
                 total_response_time=pf.total_response_time,
@@ -150,7 +150,7 @@ class MicroBenchmark(Crud):
         When the test case name is changed by a performance unit test.
         The following automatic action will be performed:
 
-            - Create the necessary tables in target database.
+            - Create the necessary tables in target _database.
             - Find the previous test id
             - Generate the current test id
 

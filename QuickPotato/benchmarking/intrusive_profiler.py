@@ -1,8 +1,8 @@
 import random
 import string
 from functools import wraps, partial
-from QuickPotato import performance_test as pt
-from QuickPotato.configuration.management import options
+from QuickPotato import micro_benchmark as pt
+from QuickPotato._configuration.config import options
 from QuickPotato.benchmarking.code_instrumentation import Profiler
 from QuickPotato.benchmarking.result_interpreters import ProfilerStatisticsInterpreter
 from QuickPotato.utilities.exceptions import CouchPotatoCannotFindMethod
@@ -15,7 +15,7 @@ def performance_breakpoint(method=None, enabled=True, test_case_name=default_tes
     This decorator can be used to gather performance statistical
     on a method.
     :param test_id: Used to overwrite the automatically generated test id with a custom one.
-    :param database_name: the name of the database that this test case uses.
+    :param database_name: the name of the _database that this test case uses.
     :param test_case_name: Used to attach a test case name to this decorator.
     :param method: The method that is being profiled
     :param enabled: If True will profile the method under test
@@ -28,7 +28,7 @@ def performance_breakpoint(method=None, enabled=True, test_case_name=default_tes
         """
         An inner function that Will execute the method under test and enable the profiler.
         It will work together with the Results class to formulate a list containing dictionary
-        that will store all metrics in a database or csv file.
+        that will store all metrics in a _database or csv file.
         :param args: The Arguments of the method under test
         :param kwargs: The key word arguments of the method under test
         :return: the methods results

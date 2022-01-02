@@ -1,5 +1,5 @@
-from QuickPotato import performance_test as pt
-from QuickPotato.configuration.management import options
+from QuickPotato import micro_benchmark as pt
+from QuickPotato._configuration.config import options
 from examples.non_intrusive_example_code import FancyCode
 import unittest
 

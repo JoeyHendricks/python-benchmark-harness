@@ -1,6 +1,6 @@
-from QuickPotato.database.common import CommonDatabaseInteractions
-from QuickPotato.utilities.defaults import default_sqlite_database_name
-from QuickPotato.configuration.management import options
+from .._database.common import CommonDatabaseInteractions
+from ..utilities.defaults import default_sqlite_database_name
+from .._configuration import options
 from sqlalchemy import select, func
 from tempfile import gettempdir
 
@@ -86,7 +86,7 @@ class Read(CommonDatabaseInteractions):
             )
         ]
 
-    def select_benchmarks_with_statistics(self, url: str, tcn: str, number=options.max_saved_tests) -> list:
+    def select_benchmarks_with_statistics(self, url: str, tcn: str, number=options.set_max_saved_tests) -> list:
         """
 
         :param url:
@@ -102,7 +102,7 @@ class Read(CommonDatabaseInteractions):
             )
         ]
 
-    def select_validated_benchmarks(self, url: str, tcn: str, number=options.max_saved_tests) -> list:
+    def select_validated_benchmarks(self, url: str, tcn: str, number=options.set_max_saved_tests) -> list:
         """
 
         :param url:
@@ -280,7 +280,7 @@ class Crud(Create, Read, Delete):
         :return:
         """
         current_number_of_test_ids = self.select_count_of_all_available_benchmarks(url, tcn)
-        maximum_number_of_test_ids = options.max_saved_tests
+        maximum_number_of_test_ids = options.set_max_saved_tests
 
         if current_number_of_test_ids > maximum_number_of_test_ids and \
                 options.enable_auto_clean_up_old_test_results is True:
@@ -288,7 +288,7 @@ class Crud(Create, Read, Delete):
             oldest_test_ids = self.select_benchmarks_with_statistics(
                 url=url,
                 tcn=tcn,
-                number=options.max_saved_tests - 1
+                number=options.set_max_saved_tests - 1
             )
 
             for test_id in oldest_test_ids:
@@ -305,7 +305,7 @@ class Crud(Create, Read, Delete):
         :param tcn:
         :return:
         """
-        # Models that need to be available in the database
+        # Models that need to be available in the _database
         models = [
             self.c_profiler_statistics_data_model(test_case_name=tcn),
             self.test_report_model(test_case_name=tcn)
@@ -317,7 +317,7 @@ class Crud(Create, Read, Delete):
             if self.check_if_table_exists(connection_url=url, table_name=str(table_model.name)):
                 continue
 
-            # table does not exist creating it in database
+            # table does not exist creating it in _database
             else:
                 self.spawn_table(
                     connection_url=url,

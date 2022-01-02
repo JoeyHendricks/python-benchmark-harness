@@ -1,9 +1,8 @@
-from QuickPotato.database.collection import Crud
-from QuickPotato.statistical.measurements import CodePaths
-from QuickPotato.templates.flame_graph import flame_graph_template
-from QuickPotato.templates.heatmap import heatmap_template
-from QuickPotato.utilities.exceptions import UnableToGenerateVisualizations, \
-    UnableToExportVisualization, UnAcceptableTestIdFound
+from .._database.collection import Crud
+from ..statistical.measurements import CodePaths
+from ..templates.flame_graph import flame_graph_template
+from ..templates.heatmap import heatmap_template
+from ..utilities.exceptions import UnableToGenerateVisualizations, UnableToExportVisualization, UnAcceptableTestIdFound
 from datetime import datetime
 from jinja2 import Template
 import plotly.graph_objects as go
@@ -24,12 +23,12 @@ class FlameGraph(CodePaths):
 
         https://github.com/spiermar/d3-flame-graph
 
-        :param test_case_name: The name of the test case (This is also always the database name).
+        :param test_case_name: The name of the test case (This is also always the _database name).
                                If test case name is not defined it will default to the quick profiling
-                               database/test case name.
+                               _database/test case name.
         :param test_id: The generated test id, if it is not defined and the test case is rolled to
                         default the latest available test id wil be used.
-        :param database_connection_url: The connection url to the database.
+        :param database_connection_url: The connection url to the _database.
         """
         super(FlameGraph, self).__init__()
         if test_id is None:

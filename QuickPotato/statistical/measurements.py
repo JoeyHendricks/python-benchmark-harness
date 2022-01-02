@@ -1,4 +1,4 @@
-from QuickPotato.database.collection import Crud
+from .._database.collection import Crud
 import numpy as np
 
 
@@ -266,7 +266,7 @@ class CodePaths(Crud):
         (Function uses recursion to travel through the hierarchical
         JSON stack until no more row in the collected stack trace can be found.)
 
-        :param url: The database connection url
+        :param url: The _database connection url
         :param tcn: The test case name
         :param sample_id: The found sample id
         :return: An hierarchical data structure in JSON format.

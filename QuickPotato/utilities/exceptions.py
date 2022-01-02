@@ -21,7 +21,7 @@ class CouchPotatoCannotFindMethod(Exception):
 
 class DatabaseSchemaCannotBeSpawned(Exception):
     """
-    It was not possible to create a database with a specified connection URL, p
+    It was not possible to create a _database with a specified connection URL, p
     lease review your URL and try again.
     For more help, please consult the QuickPotato Documentation.
     """
@@ -31,8 +31,8 @@ class DatabaseSchemaCannotBeSpawned(Exception):
 
 class DatabaseTableCannotBeSpawned(Exception):
     """
-    It was not possible to create a table within the test cases database.
-    Please review your connection URL and database name.
+    It was not possible to create a table within the test cases _database.
+    Please review your connection URL and _database name.
     For more help, please consult the QuickPotato Documentation.
     """
     def __str__(self):
@@ -41,7 +41,7 @@ class DatabaseTableCannotBeSpawned(Exception):
 
 class DatabaseConnectionCannotBeSpawned(Exception):
     """
-    It was not possible to create a connection to the database server.
+    It was not possible to create a connection to the _database server.
     Please review your connection URL.
     For more help, please consult the QuickPotato Documentation.
     """

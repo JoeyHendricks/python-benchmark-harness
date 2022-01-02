@@ -4,7 +4,12 @@ from sqlalchemy import MetaData, Table, Column, Integer, Float, String, Boolean
 class StatisticsModels(object):
 
     @staticmethod
-    def c_profiler_statistics_data_model(test_case_name):
+    def c_profiler_statistics_data_model(test_case_name: str) -> Table:
+        """
+
+        :param test_case_name:
+        :return:
+        """
         meta = MetaData()
         table = Table(
             test_case_name + "_c_profiler_statistics_data", meta,
@@ -32,7 +37,12 @@ class StatisticsModels(object):
 class TestResultModels(object):
 
     @staticmethod
-    def test_report_model(test_case_name):
+    def test_report_model(test_case_name: str) -> Table:
+        """
+
+        :param test_case_name:
+        :return:
+        """
         meta = MetaData()
         table = Table(
             test_case_name + "_test_report", meta,

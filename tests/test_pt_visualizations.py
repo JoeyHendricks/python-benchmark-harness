@@ -1,8 +1,8 @@
 from QuickPotato.benchmarking.intrusive_profiler import performance_test as pt
 from QuickPotato.exports.visualizations import FlameGraph
-from QuickPotato.configuration.management import options
+from QuickPotato._configuration.config import options
 from QuickPotato.utilities.defaults import default_test_case_name
-from QuickPotato.database.collection import Crud
+from QuickPotato._database.collection import Crud
 from examples.non_intrusive_example_code import fast_method
 import unittest
 

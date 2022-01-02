@@ -1,5 +1,5 @@
-from QuickPotato.database.collection import Crud
-from QuickPotato.configuration.management import options
+from .._database.collection import Crud
+from .._configuration import options
 from datetime import datetime
 import asyncio
 
@@ -64,7 +64,7 @@ class ProfilerStatisticsInterpreter(Crud):
                 payload = []
             payload.append(row)
 
-        # Inserting full payload into server-based database or sending the left-overs to sever-less database
+        # Inserting full payload into server-based _database or sending the left-overs to sever-less _database
         self.bulk_insert(
             connection_url=self._connection_url,
             table=self.c_profiler_statistics_data_model(self.test_case_name),

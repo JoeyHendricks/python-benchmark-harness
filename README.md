@@ -57,7 +57,7 @@ In the following way you can generate a Python flame graph with QuickPotato:
 
 ```python
 from examples.non_intrusive_example_code import FancyCode
-from QuickPotato import performance_test as pt
+from QuickPotato import micro_benchmark as pt
 from QuickPotato.exports.visualizations import FlameGraph
 
 # Create a test case
@@ -97,7 +97,7 @@ In the following way you can generate a Python heatmap with QuickPotato:
 
 ```python
 from examples.non_intrusive_example_code import FancyCode
-from QuickPotato import performance_test as pt
+from QuickPotato import micro_benchmark as pt
 from QuickPotato.exports.visualizations import HeatMap
 
 # Create a test case
@@ -127,7 +127,7 @@ You can generate a CSV export in the following way:
 
 ```python
 from examples.non_intrusive_example_code import FancyCode
-from QuickPotato import performance_test as pt
+from QuickPotato import micro_benchmark as pt
 from QuickPotato.exports.visualizations import CsvFile
 
 # Create a test case
@@ -165,7 +165,7 @@ You can generate a simple interactive bar chart in the following way:
 
 ```python
 from examples.non_intrusive_example_code import FancyCode
-from QuickPotato import performance_test as pt
+from QuickPotato import micro_benchmark as pt
 from QuickPotato.exports.visualizations import BarChart
 
 # Create a test case
@@ -190,7 +190,7 @@ Within QuickPotato, it is possible to create a performance test that validates i
 defined boundary or not. An example of this sort of test can be found in the snippet below:
 
 ```python
-from QuickPotato import performance_test as pt
+from QuickPotato import micro_benchmark as pt
 from examples.non_intrusive_example_code import FancyCode
 
 # Create a test case
@@ -201,10 +201,10 @@ pt.max_and_min_boundary_for_average = {"max": 1, "min": 0.001}
 
 # Execute your code in a non-intrusive way
 pt.measure_method_performance(
-    method=FancyCode().say_my_name_and_more,  # <-- The Method which you want to test.
-    arguments=["joey hendricks"],  # <-- Your arguments go here.
-    iteration=10,  # <-- The number of times you want to execute this method.
-    pacing=0  # <-- How much seconds you want to wait between iterations.
+  method=FancyCode().say_my_name_and_more,  # <-- The Method which you want to test.
+  arguments=["joey hendricks"],  # <-- Your arguments go here.
+  iteration=10,  # <-- The number of times you want to execute this method.
+  pacing=0  # <-- How much seconds you want to wait between iterations.
 )
 
 # Analyse results for change True if there is no change otherwise False
@@ -218,8 +218,8 @@ It is also possible to verify that there is no regression between the current be
 The method for creating such a test can also be found in the snippet below:
 
 ```python
-from QuickPotato import performance_test as pt
-from QuickPotato.configuration.management import options
+from QuickPotato import micro_benchmark as pt
+from QuickPotato._configuration.config import options
 from examples.non_intrusive_example_code import FancyCode
 
 # Disabling this setting will filter out untested or failed test-id's out of your baseline selection.
@@ -230,10 +230,10 @@ pt.test_case_name = "test_performance"  # <-- Define test case name
 
 # Execute your code in a non-intrusive way
 pt.measure_method_performance(
-    method=FancyCode().say_my_name_and_more,  # <-- The Method which you want to test.
-    arguments=["joey hendricks"],  # <-- Your arguments go here.
-    iteration=10,  # <-- The number of times you want to execute this method.
-    pacing=0  # <-- How much seconds you want to wait between iterations.
+  method=FancyCode().say_my_name_and_more,  # <-- The Method which you want to test.
+  arguments=["joey hendricks"],  # <-- Your arguments go here.
+  iteration=10,  # <-- The number of times you want to execute this method.
+  pacing=0  # <-- How much seconds you want to wait between iterations.
 )
 
 # Analyse results for change True if there is no change otherwise False
@@ -246,8 +246,8 @@ Uplifting basic performance tests into a test framework is easy within QuickPota
 the following way:
 
 ````python
-from QuickPotato import performance_test as pt
-from QuickPotato.configuration.management import options
+from QuickPotato import micro_benchmark as pt
+from QuickPotato._configuration.config import options
 from examples.non_intrusive_example_code import *
 import unittest
 

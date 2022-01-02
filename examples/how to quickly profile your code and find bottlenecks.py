@@ -1,5 +1,5 @@
 from examples.non_intrusive_example_code import FancyCode
-from QuickPotato import performance_test as pt
+from QuickPotato import micro_benchmark as pt
 
 """
 from QuickPotato.statistical.exports import FlameGraph, HeatMap, CsvFile, BarChart
@@ -16,7 +16,7 @@ pt.measure_method_performance(
     pacing=0,  # <-- How much seconds you want to wait between iterations.
 )
 
-
+pt.compare_benchmark(minimum_score=90, minimum_letter_rank="A")
 
 """
 # Generate exports to analyse your code.

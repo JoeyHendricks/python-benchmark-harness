@@ -1,6 +1,6 @@
-from QuickPotato import performance_test as pt
-from QuickPotato.database.collection import Crud
-from QuickPotato.configuration.management import options
+from QuickPotato import micro_benchmark as pt
+from QuickPotato._database.collection import Crud
+from QuickPotato._configuration.config import options
 from examples.non_intrusive_example_code import *
 import unittest
 
@@ -83,7 +83,7 @@ class TestRegressionTesting(unittest.TestCase):
         """
 
         """
-        # Establishing slow baseline and cleaning up database
+        # Establishing slow baseline and cleaning up _database
         self.clean_up()
         self.create_baseline(fast_baseline=True)
 

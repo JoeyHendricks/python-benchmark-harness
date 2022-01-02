@@ -1,5 +1,5 @@
-from QuickPotato.database.collection import Crud
-from QuickPotato.utilities.exceptions import UnableToExportVisualization
+from .._database.collection import Crud
+from ..utilities.exceptions import UnableToExportVisualization
 from datetime import datetime
 import pandas as pd
 import os
@@ -14,7 +14,7 @@ class CsvFile(Crud):
 
         :param test_case_name: The name of the test case
         :param delimiter: The delimiter of the csv file
-        :param database_connection_url: the connection url to the database
+        :param database_connection_url: the connection url to the _database
         :param test_id: The test id within the test case
         """
         super(CsvFile, self).__init__()

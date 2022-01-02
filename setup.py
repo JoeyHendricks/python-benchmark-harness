@@ -6,11 +6,11 @@ setup(
     packages=[
         'QuickPotato',
         'QuickPotato.benchmarking',
-        'QuickPotato.database',
+        'QuickPotato._database',
         'QuickPotato.profiling',
         'QuickPotato.utilities',
         'QuickPotato.statistical',
-        'QuickPotato.configuration'
+        'QuickPotato._configuration'
     ],
     install_requires=[
         'numpy',
