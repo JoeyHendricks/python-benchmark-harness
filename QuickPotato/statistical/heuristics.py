@@ -34,13 +34,13 @@ class StatisticalDistanceTest:
     # The letter rank that interprets the wasserstein & kolmogorov smirnov distance.
     LETTER_RANKS = [
 
-        {"wasserstein_boundary": 0.030, "kolmogorov_smirnov_boundary": 0.080, "rank": "S"},
-        {"wasserstein_boundary": 0.060, "kolmogorov_smirnov_boundary": 0.150, "rank": "A"},
-        {"wasserstein_boundary": 0.100, "kolmogorov_smirnov_boundary": 0.180, "rank": "B"},
-        {"wasserstein_boundary": 0.125, "kolmogorov_smirnov_boundary": 0.220, "rank": "C"},
-        {"wasserstein_boundary": 0.150, "kolmogorov_smirnov_boundary": 0.260, "rank": "D"},
-        {"wasserstein_boundary": 0.200, "kolmogorov_smirnov_boundary": 0.300, "rank": "E"},
-        {"wasserstein_boundary": 0.250, "kolmogorov_smirnov_boundary": 0.340, "rank": "F"},
+        {"wasserstein_boundary": 0.030, "kolmogorov_smirnov_boundary": 0.150, "rank": "S"},
+        {"wasserstein_boundary": 0.060, "kolmogorov_smirnov_boundary": 0.200, "rank": "A"},
+        {"wasserstein_boundary": 0.100, "kolmogorov_smirnov_boundary": 0.250, "rank": "B"},
+        {"wasserstein_boundary": 0.125, "kolmogorov_smirnov_boundary": 0.300, "rank": "C"},
+        {"wasserstein_boundary": 0.150, "kolmogorov_smirnov_boundary": 0.350, "rank": "D"},
+        {"wasserstein_boundary": 0.200, "kolmogorov_smirnov_boundary": 0.400, "rank": "E"},
+        {"wasserstein_boundary": 0.250, "kolmogorov_smirnov_boundary": 0.450, "rank": "F"},
 
     ]
 

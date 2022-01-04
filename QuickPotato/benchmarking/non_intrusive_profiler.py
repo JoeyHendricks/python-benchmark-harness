@@ -82,7 +82,7 @@ class MicroBenchmark(Crud):
         -------
             A statistical object that contains all benchmark measurements.
         """
-        response_times = self.select_benchmark_profiled_method_response_times(
+        response_times = self.select_benchmark_profiled_method_cumulative_latency(
             url=self.database_connection_url,
             tcn=self.test_case_name,
             test_id=self.current_test_id
@@ -100,7 +100,7 @@ class MicroBenchmark(Crud):
         -------
             A statistical object that contains all baseline measurements.
         """
-        response_times = self.select_benchmark_profiled_method_response_times(
+        response_times = self.select_benchmark_profiled_method_cumulative_latency(
             url=self.database_connection_url,
             tcn=self.test_case_name,
             test_id=self.previous_test_id

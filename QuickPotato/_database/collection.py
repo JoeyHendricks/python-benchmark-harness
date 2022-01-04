@@ -98,7 +98,8 @@ class Read(CommonDatabaseInteractions):
         return [
             float(row.test_id) for row in self.execute_sql_statement(
                 connection_url=url,
-                query=select([table.c.test_id]).distinct().limit(number)
+                query=select([table.c.test_id]).distinct().limit(number).order_by(table.c.test_id.desc()
+                )
             )
         ]
 
