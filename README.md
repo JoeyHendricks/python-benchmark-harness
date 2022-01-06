@@ -58,7 +58,7 @@ In the following way you can generate a Python flame graph with QuickPotato:
 ```python
 from examples.non_intrusive_example_code import FancyCode
 from QuickPotato import micro_benchmark as pt
-from QuickPotato.exports.visualizations import FlameGraph
+from QuickPotato.visualizations.visualizations import FlameGraph
 
 # Create a test case
 pt.test_case_name = "FlameGraph"
@@ -70,7 +70,7 @@ pt.measure_method_performance(
   pacing=0  # <-- How much seconds you want to wait between iterations.
 )
 
-# Generate the flame graph exports to analyse your code performance.
+# Generate the flame graph visualizations to analyse your code performance.
 FlameGraph(pt.test_case_name, test_id=pt.current_test_id).export("C:\\temp\\")
 ```
 
@@ -98,7 +98,7 @@ In the following way you can generate a Python heatmap with QuickPotato:
 ```python
 from examples.non_intrusive_example_code import FancyCode
 from QuickPotato import micro_benchmark as pt
-from QuickPotato.exports.visualizations import HeatMap
+from QuickPotato.visualizations.visualizations import HeatMap
 
 # Create a test case
 pt.test_case_name = "Heatmap"
@@ -111,7 +111,7 @@ pt.measure_method_performance(
   pacing=0  # <-- How much seconds you want to wait between iterations.
 )
 
-# Generate the heatmap exports to analyse your code performance.
+# Generate the heatmap visualizations to analyse your code performance.
 HeatMap(pt.test_case_name, test_ids=[pt.current_test_id, pt.previous_test_id]).export("C:\\temp\\")
 
 ```
@@ -128,7 +128,7 @@ You can generate a CSV export in the following way:
 ```python
 from examples.non_intrusive_example_code import FancyCode
 from QuickPotato import micro_benchmark as pt
-from QuickPotato.exports.visualizations import CsvFile
+from QuickPotato.visualizations.visualizations import CsvFile
 
 # Create a test case
 pt.test_case_name = "exporting to csv"
@@ -166,7 +166,7 @@ You can generate a simple interactive bar chart in the following way:
 ```python
 from examples.non_intrusive_example_code import FancyCode
 from QuickPotato import micro_benchmark as pt
-from QuickPotato.exports.visualizations import BarChart
+from QuickPotato.visualizations.visualizations import BarChart
 
 # Create a test case
 pt.test_case_name = "bar chart"
@@ -179,7 +179,7 @@ pt.measure_method_performance(
   pacing=0  # <-- How much seconds you want to wait between iterations.
 )
 
-# Generate exports to analyse your code.
+# Generate visualizations to analyse your code.
 BarChart(pt.test_case_name, test_ids=[pt.current_test_id, pt.previous_test_id]).export("C:\\temp\\")
 
 ```

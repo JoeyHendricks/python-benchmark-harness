@@ -1,6 +1,6 @@
 from examples.non_intrusive_example_code import FancyCode
 from QuickPotato import micro_benchmark as pt
-from QuickPotato.exports.visualizations import FlameGraph, HeatMap, BarChart
+from QuickPotato.visualizations.visualizations import FlameGraph, HeatMap, BarChart
 from visuals import LineGraph
 import pandas as pd
 
@@ -52,7 +52,7 @@ FlameGraph(
 )
 
 """
-# Generate exports to analyse your code.
+# Generate visualizations to analyse your code.
 barchart = BarChart(
     test_case_name=pt.test_case_name,
     database_name=pt.database_connection_url,

@@ -1,5 +1,5 @@
-from .._database.collection import Crud
-from ..utilities.exceptions import UnableToExportVisualization
+from QuickPotato._database.collection import Crud
+from QuickPotato.utilities.exceptions import UnableToExportVisualization
 from datetime import datetime
 import pandas as pd
 import os
