@@ -90,10 +90,20 @@ class Configuration(object):
 
     @enable_auto_clean_up_old_test_results.setter
     def enable_auto_clean_up_old_test_results(self, value: bool) -> None:
+        """
+
+        :param value:
+        :return:
+        """
         self.contents["enable_auto_clean_up_old_test_results"] = value
         self._dump_configuration_to_yaml_file(self.contents)
 
     @set_max_saved_tests.setter
     def set_max_saved_tests(self, value: bool) -> None:
+        """
+
+        :param value:
+        :return:
+        """
         self.contents["maximum_number_saved_test_results"] = value
         self._dump_configuration_to_yaml_file(self.contents)

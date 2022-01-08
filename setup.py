@@ -8,7 +8,7 @@ setup(
         'QuickPotato.benchmarking',
         'QuickPotato._database',
         'QuickPotato.profiling',
-        'QuickPotato.utilities',
+        'QuickPotato._utilities',
         'QuickPotato.statistical',
         'QuickPotato._configuration'
     ],

@@ -32,19 +32,8 @@ class StatisticalDistanceTest:
     """
     SEED = 1996
     # The letter rank that interprets the wasserstein & kolmogorov smirnov distance.
-    LETTER_RANKS = [
 
-        {"wasserstein_boundary": 0.030, "kolmogorov_smirnov_boundary": 0.150, "rank": "S"},
-        {"wasserstein_boundary": 0.060, "kolmogorov_smirnov_boundary": 0.200, "rank": "A"},
-        {"wasserstein_boundary": 0.100, "kolmogorov_smirnov_boundary": 0.250, "rank": "B"},
-        {"wasserstein_boundary": 0.125, "kolmogorov_smirnov_boundary": 0.300, "rank": "C"},
-        {"wasserstein_boundary": 0.150, "kolmogorov_smirnov_boundary": 0.350, "rank": "D"},
-        {"wasserstein_boundary": 0.200, "kolmogorov_smirnov_boundary": 0.400, "rank": "E"},
-        {"wasserstein_boundary": 0.250, "kolmogorov_smirnov_boundary": 0.450, "rank": "F"},
-
-    ]
-
-    def __init__(self, population_a: list, population_b: list) -> None:
+    def __init__(self, population_a: list, population_b: list, letter_rank_matrix: list) -> None:
         """
         Will construct the class and calculate all the required statistics.
         After all of the computation have been completed the following information can then
@@ -53,11 +42,14 @@ class StatisticalDistanceTest:
         :param population_a: An list of floats of the A population (baseline).
         :param population_b: An list of floats of the B population (benchmark).
         """
+        # Letter Rank scoring matrix
+        self.letter_rank_matrix = letter_rank_matrix
+
         # Building scoring matrix
         self._wasserstein_lowest_boundary = 0.010
-        self._kolmogorov_smirnov_lowest_boundary = 0.040
+        self._kolmogorov_smirnov_lowest_boundary = 0.200
         self._matrix_size = 100
-        self.boundary_increment = 0.001
+        self.boundary_increment = 0.010
         self.SCORING_MATRIX = self._generate_scoring_matrix()
 
         # Calculate statistics
@@ -172,7 +164,7 @@ class StatisticalDistanceTest:
                 'probability': np.arange(len(normalized_sample)) / float(len(normalized_sample)),
             }
         )
-        sample = sample[~(sample['probability'] >= 0.95)]
+        sample = sample[~(sample['probability'] >= 0.99)]
         return sample
 
     def _calculate_wasserstein_distance_statistics(self) -> float:
@@ -202,6 +194,21 @@ class StatisticalDistanceTest:
             self.sample_b["measure"].values
         )
         return round(kolmogorov_smirnov_distance, 3), kolmogorov_smirnov_probability
+
+    def _determine_population_direction(self) -> str:
+        """
+        Will determine if the population has increased in latency or
+        if the population has decreased in latency.
+
+        This increase or decrease indicated with either a + or - after
+        the letter rank.
+        :return: A string that is either + or -
+        """
+        if np.median(self.sample_a["measure"].values) > np.median(self.sample_b["measure"].values):
+            return "-"  # slower
+
+        else:
+            return "+"  # faster
 
     def _score_distance_statistics(self) -> float:
         """
@@ -250,11 +257,11 @@ class StatisticalDistanceTest:
 
         :return: The letter rank in the form as string ranging from S to F
         """
-        for grade in self.LETTER_RANKS:
+        for grade in self.letter_rank_matrix:
             ks_critical_grade = grade["kolmogorov_smirnov_boundary"]
             wasserstein_critical_grade = grade["wasserstein_boundary"]
             if self._ws_d_value < wasserstein_critical_grade and self._ks_d_value < ks_critical_grade:
-                return grade["rank"]
+                return f"{grade['rank'] + self._determine_population_direction()}"
             else:
                 continue
-        return "F"
+        return f"F{self._determine_population_direction()}"

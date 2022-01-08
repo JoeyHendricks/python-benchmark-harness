@@ -1,6 +1,6 @@
-from ..utilities.exceptions import UnableToGenerateVisualizations, UnableToExportVisualization, UnAcceptableTestIdFound
+from .._utilities.exceptions import UnableToGenerateVisualizations, UnableToExportVisualization, UnAcceptableTestIdFound
 from ..statistical.measurements import CodePaths
-from ..templates.heatmap import heatmap_template
+from .._templates.heatmap import heatmap_template
 from datetime import datetime
 from jinja2 import Template
 import numpy

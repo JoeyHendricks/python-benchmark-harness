@@ -1,5 +1,5 @@
-from ..utilities.exceptions import UnableToGenerateVisualizations, UnableToExportVisualization
-from ..templates.flame_graph import flame_graph_template
+from .._utilities.exceptions import UnableToGenerateVisualizations, UnableToExportVisualization
+from .._templates.flame_graph import flame_graph_template
 from ..statistical.measurements import CodePaths
 from datetime import datetime
 from jinja2 import Template

@@ -1,5 +1,5 @@
 from .._database.common import CommonDatabaseInteractions
-from ..utilities.defaults import default_sqlite_database_name
+from .._utilities.defaults import default_sqlite_database_name
 from .._configuration import options
 from sqlalchemy import select, func
 from tempfile import gettempdir
@@ -44,7 +44,7 @@ class Read(CommonDatabaseInteractions):
     def __init__(self):
         super(Read, self).__init__()
 
-    def select_benchmark_profiled_method_response_times(self, url: str, tcn: str, test_id: int) -> list:
+    def select_benchmark_profiled_method_response_times(self, url: str, tcn: str, test_id: float) -> list:
         """
 
         :param url:
@@ -65,7 +65,7 @@ class Read(CommonDatabaseInteractions):
             )
         ]
 
-    def select_benchmark_profiled_method_cumulative_latency(self, url: str, tcn: str, test_id: int) -> list:
+    def select_benchmark_profiled_method_cumulative_latency(self, url: str, tcn: str, test_id: float) -> list:
         """
 
         :param url:
@@ -98,8 +98,7 @@ class Read(CommonDatabaseInteractions):
         return [
             float(row.test_id) for row in self.execute_sql_statement(
                 connection_url=url,
-                query=select([table.c.test_id]).distinct().limit(number).order_by(table.c.test_id.desc()
-                )
+                query=select([table.c.test_id]).distinct().limit(number).order_by(table.c.test_id.desc())
             )
         ]
 
@@ -148,23 +147,23 @@ class Read(CommonDatabaseInteractions):
         table = self.c_profiler_statistics_data_model(test_case_name=tcn)
         return [
             {
-                    "uuid": row.uuid,
-                    "test_id": row.test_id,
-                    "test_case_name": row.test_case_name,
-                    "sample_id": row.sample_id,
-                    "name_of_method_under_test": row.name_of_method_under_test,
-                    "epoch_timestamp": int(row.epoch_timestamp),
-                    "human_timestamp": row.human_timestamp,
-                    "child_path": row.child_path,
-                    "child_line_number": row.child_line_number,
-                    "child_function_name": row.child_function_name,
-                    "parent_path": row.parent_path,
-                    "parent_line_number": row.parent_line_number,
-                    "parent_function_name": row.parent_function_name,
-                    "number_of_calls": row.number_of_calls,
-                    "total_time": float(row.total_time),
-                    "cumulative_time": float(row.cumulative_time),
-                    "total_response_time": float(row.total_response_time)
+                "uuid": row.uuid,
+                "test_id": row.test_id,
+                "test_case_name": row.test_case_name,
+                "sample_id": row.sample_id,
+                "name_of_method_under_test": row.name_of_method_under_test,
+                "epoch_timestamp": int(row.epoch_timestamp),
+                "human_timestamp": row.human_timestamp,
+                "child_path": row.child_path,
+                "child_line_number": row.child_line_number,
+                "child_function_name": row.child_function_name,
+                "parent_path": row.parent_path,
+                "parent_line_number": row.parent_line_number,
+                "parent_function_name": row.parent_function_name,
+                "number_of_calls": row.number_of_calls,
+                "total_time": float(row.total_time),
+                "cumulative_time": float(row.cumulative_time),
+                "total_response_time": float(row.total_response_time)
             }
             for row in self.execute_sql_statement(
                 connection_url=url,
@@ -176,7 +175,7 @@ class Read(CommonDatabaseInteractions):
             )
         ]
 
-    def select_benchmark_call_stack_by_test_id(self, url: str, tcn: str, test_id: str) -> list:
+    def select_benchmark_call_stack_by_test_id(self, url: str, tcn: str, test_id: float) -> list:
         """
 
         :param url:
@@ -215,7 +214,7 @@ class Read(CommonDatabaseInteractions):
             )
         ]
 
-    def select_all_sample_ids_in_benchmark_by_test_id(self, url: str, tcn: str, test_id: str) -> list:
+    def select_all_sample_ids_in_benchmark_by_test_id(self, url: str, tcn: str, test_id: float) -> list:
         """
 
         :param url:
@@ -243,7 +242,7 @@ class Delete(CommonDatabaseInteractions):
     def __init__(self):
         super(Delete, self).__init__()
 
-    def delete_performance_statistics_that_match_test_id(self, url: str, tcn: str, test_id: str) -> None:
+    def delete_performance_statistics_that_match_test_id(self, url: str, tcn: str, test_id: float) -> None:
         """
 
         :param url:
@@ -311,7 +310,6 @@ class Crud(Create, Read, Delete):
             self.c_profiler_statistics_data_model(test_case_name=tcn),
             self.test_report_model(test_case_name=tcn)
         ]
-        print(url)
         for table_model in models:
 
             # verify if relevant table exists

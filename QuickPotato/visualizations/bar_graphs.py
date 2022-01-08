@@ -1,4 +1,4 @@
-from ..utilities.exceptions import UnableToGenerateVisualizations, UnableToExportVisualization
+from .._utilities.exceptions import UnableToGenerateVisualizations, UnableToExportVisualization
 from .._database.collection import Crud
 from datetime import datetime
 import plotly.graph_objects as go

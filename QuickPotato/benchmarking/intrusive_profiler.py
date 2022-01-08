@@ -5,8 +5,8 @@ from QuickPotato import micro_benchmark as pt
 from QuickPotato._configuration.config import options
 from QuickPotato.benchmarking.code_instrumentation import Profiler
 from QuickPotato.benchmarking.result_interpreters import ProfilerStatisticsInterpreter
-from QuickPotato.utilities.exceptions import CouchPotatoCannotFindMethod
-from QuickPotato.utilities.defaults import default_test_case_name, default_sqlite_database_name
+from QuickPotato._utilities.exceptions import CouchPotatoCannotFindMethod
+from QuickPotato._utilities.defaults import default_test_case_name, default_sqlite_database_name
 
 
 def performance_breakpoint(method=None, enabled=True, test_case_name=default_test_case_name,

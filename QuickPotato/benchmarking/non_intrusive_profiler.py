@@ -14,18 +14,20 @@ import time
 
 class MicroBenchmark(Crud):
 
+    LETTER_RANK_DECISION_MATRIX = [
+
+        {"wasserstein_boundary": 0.030, "kolmogorov_smirnov_boundary": 0.300, "rank": "S"},
+        {"wasserstein_boundary": 0.060, "kolmogorov_smirnov_boundary": 0.500, "rank": "A"},
+        {"wasserstein_boundary": 0.100, "kolmogorov_smirnov_boundary": 0.700, "rank": "B"},
+        {"wasserstein_boundary": 0.125, "kolmogorov_smirnov_boundary": 0.800, "rank": "C"},
+        {"wasserstein_boundary": 0.150, "kolmogorov_smirnov_boundary": 1.000, "rank": "D"},
+        {"wasserstein_boundary": 0.200, "kolmogorov_smirnov_boundary": 1.200, "rank": "E"},
+        {"wasserstein_boundary": 0.250, "kolmogorov_smirnov_boundary": 1.400, "rank": "F"},
+
+    ]
+
     def __init__(self):
-        Crud.__init__(self)
-
-        # Test meta data variables
-        self.current_test_id = None
-        self.previous_test_id = None
-        self._test_case_name = "Default"
-        self._url = None
-
-        # Code performance comparison metrics
-        self.rank = None
-        self.score = None
+        super(MicroBenchmark, self).__init__()
 
     def _execute_code_under_test(self, method: object, arguments=None, iteration=1, pacing=0) -> None:
         """
@@ -58,20 +60,6 @@ class MicroBenchmark(Crud):
                 method_name=method.__name__,
                 sample_id=sample_id
             )
-
-    def _reset_performance_test(self, test_case_name: str) -> None:
-        """
-
-        :param test_case_name:
-        :return:
-        """
-        benchmarks = self.select_benchmarks_with_statistics(
-            url=self.database_connection_url,
-            tcn=test_case_name,
-            number=1
-        )
-        self.previous_test_id = benchmarks[0] if len(benchmarks) > 0 else None
-        self.current_test_id = datetime.now().timestamp()
 
     @property
     def benchmark_statistics(self) -> Statistics:
@@ -110,26 +98,69 @@ class MicroBenchmark(Crud):
         )
 
     @property
-    def distance_test_statistics(self) -> StatisticalDistanceTest:
+    def distance_statistics(self) -> StatisticalDistanceTest:
         """
 
         :return:
         """
         return StatisticalDistanceTest(
             population_a=self.baseline_statistics.raw_data,
-            population_b=self.benchmark_statistics.raw_data
+            population_b=self.benchmark_statistics.raw_data,
+            letter_rank_matrix=self.LETTER_RANK_DECISION_MATRIX
         )
 
     @property
     def test_case_name(self) -> str:
         """
-        The test case name that has been defined in the unit load test.
 
-        Raises
-        -------
-            AgentCannotFindTestCase If no test case is found
+        :return:
         """
-        return self._test_case_name
+        if "test_case_name" in self.__dict__:
+
+            return self.__dict__["test_case_name"]
+
+        else:
+            return "default"
+
+    @property
+    def current_test_id(self) -> float or None:
+        """
+
+        :return:
+        """
+        if "current_test_id" in self.__dict__:
+
+            return self.__dict__["current_test_id"]
+
+        else:
+            return None
+
+    @property
+    def previous_test_id(self) -> float or None:
+        """
+
+        :return:
+        """
+        if "previous_test_id" in self.__dict__:
+
+            return self.__dict__["previous_test_id"]
+
+        else:
+            return None
+
+    @current_test_id.setter
+    def current_test_id(self, value):
+        """
+
+        """
+        self.__dict__["current_test_id"] = value
+
+    @previous_test_id.setter
+    def previous_test_id(self, value):
+        """
+
+        """
+        self.__dict__["previous_test_id"] = value
 
     @property
     def database_connection_url(self) -> str:
@@ -137,11 +168,11 @@ class MicroBenchmark(Crud):
 
         :return:
         """
-        if self._url is None:
+        if "database_connection_url" not in self.__dict__:
             return self._create_default_db_url()
 
         else:
-            return self._url
+            return self.__dict__["database_connection_url"]
 
     @test_case_name.setter
     def test_case_name(self, value: str) -> None:
@@ -156,12 +187,21 @@ class MicroBenchmark(Crud):
 
         :param value: The new test case name defined by the user.
         """
+        # create tables in database where benchmark needs to save statistics.
         self._verify_and_create_relevant_tables_in_database(
             url=self.database_connection_url,
             tcn=value
         )
-        self._test_case_name = value
-        self._reset_performance_test(value)
+        self.__dict__["test_case_name"] = value
+
+        # reset the performance test identifying variables.
+        benchmarks = self.select_benchmarks_with_statistics(
+            url=self.database_connection_url,
+            tcn=value,
+            number=1
+        )
+        self.previous_test_id = benchmarks[0] if len(benchmarks) > 0 else None
+        self.current_test_id = datetime.now().timestamp()
 
     @database_connection_url.setter
     def database_connection_url(self, value: str) -> None:
@@ -170,7 +210,7 @@ class MicroBenchmark(Crud):
         :param value:
         :return:
         """
-        self._url = value
+        self.__dict__['database_connection_url'] = value
 
     @staticmethod
     def verify_boundaries(boundaries: list) -> bool or None:
@@ -212,14 +252,14 @@ class MicroBenchmark(Crud):
 
         :return:
         """
-        self.rank = self.distance_test_statistics.rank
-        self.score = self.distance_test_statistics.score
+        self.rank = self.distance_statistics.rank
+        self.score = self.distance_statistics.score
         return {
             "rank": check_letter_rank_boundary(minimum_letter_rank, self.rank),
-            "score": check_max_boundary(self.score, minimum_score)
+            "score": check_min_boundary(self.score, minimum_score)
         }
 
-    def measure_method_performance(self, method, arguments=None, iteration=1, pacing=0, processes=0):
+    def run(self, method, arguments=None, iteration=1, pacing=0, processes=0):
         """
 
         :param method:

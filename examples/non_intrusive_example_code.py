@@ -69,7 +69,6 @@ class FancyCode:
         :return: True because you waited :)
         """
         length = int(self.length_of_name(name))
-        #time.sleep(length + 0.001)
         return True
 
     @staticmethod

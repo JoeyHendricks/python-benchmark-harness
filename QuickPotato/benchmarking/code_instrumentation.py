@@ -14,9 +14,10 @@ class Profiler(object):
     def profile_method_under_test(self, method, *args, **kwargs):
         """
 
-        Returns
-        -------
-
+        :param method:
+        :param args:
+        :param kwargs:
+        :return:
         """
         # Initializing the Profiler, ProfileResults and creating the results
         profiler = cProfile.Profile()
