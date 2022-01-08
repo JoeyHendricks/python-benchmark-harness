@@ -14,18 +14,6 @@ import time
 
 class MicroBenchmark(Crud):
 
-    LETTER_RANK_DECISION_MATRIX = [
-
-        {"wasserstein_boundary": 0.030, "kolmogorov_smirnov_boundary": 0.300, "rank": "S"},
-        {"wasserstein_boundary": 0.060, "kolmogorov_smirnov_boundary": 0.500, "rank": "A"},
-        {"wasserstein_boundary": 0.100, "kolmogorov_smirnov_boundary": 0.700, "rank": "B"},
-        {"wasserstein_boundary": 0.125, "kolmogorov_smirnov_boundary": 0.800, "rank": "C"},
-        {"wasserstein_boundary": 0.150, "kolmogorov_smirnov_boundary": 1.000, "rank": "D"},
-        {"wasserstein_boundary": 0.200, "kolmogorov_smirnov_boundary": 1.200, "rank": "E"},
-        {"wasserstein_boundary": 0.250, "kolmogorov_smirnov_boundary": 1.400, "rank": "F"},
-
-    ]
-
     def __init__(self):
         super(MicroBenchmark, self).__init__()
 
@@ -106,7 +94,6 @@ class MicroBenchmark(Crud):
         return StatisticalDistanceTest(
             population_a=self.baseline_statistics.raw_data,
             population_b=self.benchmark_statistics.raw_data,
-            letter_rank_matrix=self.LETTER_RANK_DECISION_MATRIX
         )
 
     @property
@@ -247,16 +234,20 @@ class MicroBenchmark(Crud):
         else:
             return True
 
-    def compare_benchmark(self, minimum_letter_rank: str, minimum_score: float) -> dict:
+    def compare_benchmark(self, instructions: dict) -> dict:
         """
 
         :return:
         """
-        self.rank = self.distance_statistics.rank
-        self.score = self.distance_statistics.score
         return {
-            "rank": check_letter_rank_boundary(minimum_letter_rank, self.rank),
-            "score": check_min_boundary(self.score, minimum_score)
+            "rank": check_letter_rank_boundary(
+                instructions["critical_letter_rank"],
+                self.distance_statistics.letter_rank
+            ),
+            "score": check_min_boundary(
+                self.distance_statistics.score,
+                instructions["critical_score"]
+            )
         }
 
     def run(self, method, arguments=None, iteration=1, pacing=0, processes=0):

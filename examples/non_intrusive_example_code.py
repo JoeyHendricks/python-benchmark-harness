@@ -1,90 +1,59 @@
-import time
 import math
-
-
-def slow_method():
-    num = 6 ** 6 ** 6
-    return len(str(num))
-
-
-def fast_method():
-    num = 6 ** 6 ** 6
-    return int(math.log10(num))
+import random
+import numpy as np
 
 
 class FancyCode:
-    """
-    A totally random piece of code used to examples quick profiling.
-    """
 
-    # @performance_breakpoint <-- (Uncomment this line to use intrusive profiling by ways of the decorator)
-    def say_my_name_and_more(self, name):
-        print(f"Your name is: {self.capitalize_name(name)}\n")
-        print(f"The length of your name is: {self.length_of_name(name)}")
-        print(f"Your name in lowercase: {self.lowercase_name(name)}")
-        print(f"Your name in uppercase: {self.uppercase_name(name)}")
-        self.sleep_based_on_name_length(name)
+    SAMPLE_SIZE = 20000
 
-    @staticmethod
-    def capitalize_name(name):
+    def __init__(self, use_slow_method=False, use_fast_method=False):
         """
-        Your name but capitalized
-        :param name: your name
-        :return: Your name but capitalized
+        Used to control_the_speed of the object.
+        :param use_slow_method: will slow down the object
+        :param use_fast_method:  Will add a method but now slow it down
         """
-        return name.capitalize()
-
-    def length_of_name(self, name):
-        """
-        Will count the length of your name
-        :param name: your name
-        :return: The length of your name
-        """
-        length = len(name)
-        if length > 10:
-            self.show_message_when_name_very_long()
-        return length
-
-    def show_message_when_name_very_long(self):
-        print("You have a long name ;)")
-        self.x()
-
-    def x(self):
-        self.y()
-        return True
-
-    def y(self):
-        self.foo()
-        print("deep")
-        return True
+        self.use_slow_method, self.use_fast_method = use_slow_method, use_fast_method
 
     @staticmethod
-    def foo():
-        return True
-
-    def sleep_based_on_name_length(self, name):
-        """
-        Will sleep based on the length of your  name.
-        :param name: Your  name
-        :return: True because you waited :)
-        """
-        length = int(self.length_of_name(name))
-        return True
+    def slow_method():
+        num = 6 ** 6 ** 6
+        return len(str(num))
 
     @staticmethod
-    def uppercase_name(name):
-        """
-        Converts your name to all CAPS!
-        :param name: Your name
-        :return: Will return you name in all CAPS
-        """
-        return name.upper()
+    def fast_method():
+        num = 6 ** 6 ** 6
+        return int(math.log10(num))
 
-    @staticmethod
-    def lowercase_name(name):
+    def _generate_fancy_numbers(self):
         """
-        Converts your name to all lower case.
-        :param name: Your name
-        :return: Will return you name in all lowercase
+        Will give back a random fancy number
         """
-        return name.lower()
+        for _ in range(0, self.SAMPLE_SIZE):
+            yield float(random.random())
+
+    def _create_fancy_population(self) -> list:
+        """
+        Will create a fancy population.
+        :return: returns a list containing the population.
+        """
+        return [number for number in self._generate_fancy_numbers()]
+
+    def calculate_statistics_about_fancy_population(self):
+        """
+
+        :return:
+        """
+        if self.use_slow_method:
+            self.slow_method()
+
+        elif self.use_fast_method:
+            self.fast_method()
+
+        return {
+            "median": np.median(self._create_fancy_population()),
+            "standard_deviation": np.std(self._create_fancy_population()),
+            "variance": np.var(self._create_fancy_population())
+        }
+
+

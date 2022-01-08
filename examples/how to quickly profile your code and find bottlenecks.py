@@ -24,14 +24,14 @@ print(pt.compare_benchmark(minimum_score=90.00, minimum_letter_rank="A"))
 print(pt.distance_statistics.wasserstein_distance)
 print(pt.distance_statistics.kolmogorov_smirnov_distance)
 print(pt.score)
-print(pt.rank)
+print(pt.letter_rank)
 
 LineGraph(
     benchmark=pt.distance_statistics.sample_a,
     baseline=pt.distance_statistics.sample_b,
     kolmogorov_smirnov_distance=pt.distance_statistics.kolmogorov_smirnov_distance,
     wasserstein_distance=pt.distance_statistics.wasserstein_distance,
-    rank=pt.rank,
+    rank=pt.letter_rank,
     score=pt.score,
     change=0
 ).show()

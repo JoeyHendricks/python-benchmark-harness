@@ -33,7 +33,19 @@ class StatisticalDistanceTest:
     SEED = 1996
     # The letter rank that interprets the wasserstein & kolmogorov smirnov distance.
 
-    def __init__(self, population_a: list, population_b: list, letter_rank_matrix: list) -> None:
+    LETTER_RANK_DECISION_MATRIX = [
+
+        {"wasserstein_boundary": 0.030, "kolmogorov_smirnov_boundary": 0.300, "rank": "S"},
+        {"wasserstein_boundary": 0.060, "kolmogorov_smirnov_boundary": 0.600, "rank": "A"},
+        {"wasserstein_boundary": 0.100, "kolmogorov_smirnov_boundary": 0.700, "rank": "B"},
+        {"wasserstein_boundary": 0.125, "kolmogorov_smirnov_boundary": 0.800, "rank": "C"},
+        {"wasserstein_boundary": 0.150, "kolmogorov_smirnov_boundary": 1.000, "rank": "D"},
+        {"wasserstein_boundary": 0.200, "kolmogorov_smirnov_boundary": 1.200, "rank": "E"},
+        {"wasserstein_boundary": 0.250, "kolmogorov_smirnov_boundary": 1.400, "rank": "F"},
+
+    ]
+
+    def __init__(self, population_a: list, population_b: list) -> None:
         """
         Will construct the class and calculate all the required statistics.
         After all of the computation have been completed the following information can then
@@ -42,8 +54,6 @@ class StatisticalDistanceTest:
         :param population_a: An list of floats of the A population (baseline).
         :param population_b: An list of floats of the B population (benchmark).
         """
-        # Letter Rank scoring matrix
-        self.letter_rank_matrix = letter_rank_matrix
 
         # Building scoring matrix
         self._wasserstein_lowest_boundary = 0.010
@@ -58,7 +68,7 @@ class StatisticalDistanceTest:
         self.sample_b = self._calculate_empirical_cumulative_distribution_function(population_b)
         self._ws_d_value = self._calculate_wasserstein_distance_statistics()
         self._ks_d_value, self._ks_p_value = self._calculate_kolmogorov_smirnov_distance_statistics()
-        self.rank = self._letter_rank_distance_statistics()
+        self.letter_rank = self._letter_rank_distance_statistics()
         self.score = self._score_distance_statistics()
 
     @property
@@ -257,7 +267,7 @@ class StatisticalDistanceTest:
 
         :return: The letter rank in the form as string ranging from S to F
         """
-        for grade in self.letter_rank_matrix:
+        for grade in self.LETTER_RANK_DECISION_MATRIX:
             ks_critical_grade = grade["kolmogorov_smirnov_boundary"]
             wasserstein_critical_grade = grade["wasserstein_boundary"]
             if self._ws_d_value < wasserstein_critical_grade and self._ks_d_value < ks_critical_grade:
