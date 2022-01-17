@@ -1,6 +1,6 @@
 from examples.non_intrusive_example_code import FancyCode
-from QuickPotato import micro_benchmark as mb
-from QuickPotato.statistical.verification import check_letter_rank_boundary
+from PyBench import micro_benchmark as mb
+from PyBench.statistical.verification import check_letter_rank_boundary
 import unittest
 import re
 

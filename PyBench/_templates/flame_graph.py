@@ -67,7 +67,7 @@ flame_graph_template = """
             </form>
           </div>
         </nav>
-        <h3 class="text-muted">QuickPotato</h3>
+        <h3 class="text-muted">PyBench</h3>
       </div>
       <div id="chart">
       </div>

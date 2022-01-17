@@ -72,7 +72,7 @@ class BarChart(Crud):
         df = pd.DataFrame(self.json)
         fig = go.Figure()
         fig.update_layout(
-            title="<span style='font-size: 22px;'>QuickPotato Method Performance Bar Chart</span>",
+            title="<span style='font-size: 22px;'>PyBench Method Performance Bar Chart</span>",
             template="ggplot2",
             xaxis=dict(title_text="Test-id's"),
             yaxis=dict(title_text="Time spent in seconds"),

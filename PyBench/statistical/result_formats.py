@@ -1,5 +1,5 @@
-from QuickPotato._database.collection import Crud
-from QuickPotato._utilities.exceptions import UnableToExportVisualization
+from PyBench._database.collection import Crud
+from PyBench._utilities.exceptions import UnableToExportVisualization
 from datetime import datetime
 import pandas as pd
 import os

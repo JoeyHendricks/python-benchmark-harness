@@ -1,6 +1,6 @@
 from examples.non_intrusive_example_code import FancyCode
-from QuickPotato import micro_benchmark as pt
-from QuickPotato.visualizations._line_graphs import LineGraph
+from PyBench import micro_benchmark as pt
+from PyBench.visualizations._line_graphs import LineGraph
 from visuals import LineGraph
 import pandas as pd
 

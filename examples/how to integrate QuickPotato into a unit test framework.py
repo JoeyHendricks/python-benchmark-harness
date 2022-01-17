@@ -1,5 +1,5 @@
-from QuickPotato import micro_benchmark as pt
-from QuickPotato._configuration.config import options
+from PyBench import micro_benchmark as pt
+from PyBench._configuration.config import options
 from examples.non_intrusive_example_code import FancyCode
 import unittest
 
@@ -9,7 +9,7 @@ class TestPerformance(unittest.TestCase):
     def setUp(self):
         """
         Disable the selection of failed or untested test results.
-        This will make sure QuickPotato will only compare you tests against a valid baseline.
+        This will make sure PyBench will only compare you tests against a valid baseline.
         """
         options.enable_policy_to_filter_out_invalid_test_ids = False
 

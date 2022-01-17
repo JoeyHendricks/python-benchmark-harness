@@ -1,16 +1,16 @@
 from setuptools import setup
 
 setup(
-    name='QuickPotato',
+    name='PyBench',
     version='1.0.1',
     packages=[
-        'QuickPotato',
-        'QuickPotato.benchmarking',
-        'QuickPotato._database',
-        'QuickPotato.profiling',
-        'QuickPotato._utilities',
-        'QuickPotato.statistical',
-        'QuickPotato._configuration'
+        'PyBench',
+        'PyBench.benchmarking',
+        'PyBench._database',
+        'PyBench.profiling',
+        'PyBench._utilities',
+        'PyBench.statistical',
+        'PyBench._configuration'
     ],
     install_requires=[
         'numpy',

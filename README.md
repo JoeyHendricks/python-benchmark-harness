@@ -36,7 +36,7 @@ development life cycle in a simple, reliable, and fast way.
 
 Install using [pip](https://pip.pypa.io/en/stable/) or download the source code from GitHub.
 ```bash
-pip install QuickPotato
+pip install PyBench
 ```
 
 ## Generating Flame Graphs
@@ -57,8 +57,8 @@ In the following way you can generate a Python flame graph with QuickPotato:
 
 ```python
 from examples.non_intrusive_example_code import FancyCode
-from QuickPotato import micro_benchmark as pt
-from QuickPotato.visualizations.visualizations import FlameGraph
+from PyBench import micro_benchmark as pt
+from PyBench.visualizations.visualizations import FlameGraph
 
 # Create a test case
 pt.test_case_name = "FlameGraph"
@@ -97,8 +97,8 @@ In the following way you can generate a Python heatmap with QuickPotato:
 
 ```python
 from examples.non_intrusive_example_code import FancyCode
-from QuickPotato import micro_benchmark as pt
-from QuickPotato.visualizations.visualizations import HeatMap
+from PyBench import micro_benchmark as pt
+from PyBench.visualizations.visualizations import HeatMap
 
 # Create a test case
 pt.test_case_name = "Heatmap"
@@ -127,8 +127,8 @@ You can generate a CSV export in the following way:
 
 ```python
 from examples.non_intrusive_example_code import FancyCode
-from QuickPotato import micro_benchmark as pt
-from QuickPotato.visualizations.visualizations import CsvFile
+from PyBench import micro_benchmark as pt
+from PyBench.visualizations.visualizations import CsvFile
 
 # Create a test case
 pt.test_case_name = "exporting to csv"
@@ -165,8 +165,8 @@ You can generate a simple interactive bar chart in the following way:
 
 ```python
 from examples.non_intrusive_example_code import FancyCode
-from QuickPotato import micro_benchmark as pt
-from QuickPotato.visualizations.visualizations import BarChart
+from PyBench import micro_benchmark as pt
+from PyBench.visualizations.visualizations import BarChart
 
 # Create a test case
 pt.test_case_name = "bar chart"
@@ -190,7 +190,7 @@ Within QuickPotato, it is possible to create a performance test that validates i
 defined boundary or not. An example of this sort of test can be found in the snippet below:
 
 ```python
-from QuickPotato import micro_benchmark as pt
+from PyBench import micro_benchmark as pt
 from examples.non_intrusive_example_code import FancyCode
 
 # Create a test case
@@ -218,8 +218,8 @@ It is also possible to verify that there is no regression between the current be
 The method for creating such a test can also be found in the snippet below:
 
 ```python
-from QuickPotato import micro_benchmark as pt
-from QuickPotato._configuration.config import options
+from PyBench import micro_benchmark as pt
+from PyBench._configuration.config import options
 from examples.non_intrusive_example_code import FancyCode
 
 # Disabling this setting will filter out untested or failed test-id's out of your baseline selection.
@@ -246,8 +246,8 @@ Uplifting basic performance tests into a test framework is easy within QuickPota
 the following way:
 
 ````python
-from QuickPotato import micro_benchmark as pt
-from QuickPotato._configuration.config import options
+from PyBench import micro_benchmark as pt
+from PyBench._configuration.config import options
 from examples.non_intrusive_example_code import *
 import unittest
 
@@ -257,7 +257,7 @@ class TestPerformance(unittest.TestCase):
   def setUp(self):
     """
     Disable the selection of failed or untested test results.
-    This will make sure QuickPotato will only compare you tests against a valid baseline.
+    This will make sure PyBench will only compare you tests against a valid baseline.
     """
     options.enable_policy_to_filter_out_invalid_test_ids = False
 
