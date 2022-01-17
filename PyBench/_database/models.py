@@ -13,8 +13,8 @@ class StatisticsModels(object):
         meta = MetaData()
         table = Table(
             test_case_name + "_c_profiler_statistics_data", meta,
-            Column('uuid', String(99)),
-            Column('test_id', Float),
+            Column("uuid", String(99)),
+            Column("test_id", Float),
             Column("test_case_name", String(999)),
             Column('sample_id', String(99)),
             Column("name_of_method_under_test", String(999)),
@@ -37,7 +37,7 @@ class StatisticsModels(object):
 class TestResultModels(object):
 
     @staticmethod
-    def test_report_model(test_case_name: str) -> Table:
+    def boundary_test_report_model(test_case_name: str) -> Table:
         """
 
         :param test_case_name:
@@ -45,16 +45,14 @@ class TestResultModels(object):
         """
         meta = MetaData()
         table = Table(
-            test_case_name + "_test_report", meta,
-            Column('uuid', String(99)),
-            Column('test_id', Float),
-            Column("test_case_name", String(999)),
-            Column("epoch_timestamp", Integer),
-            Column("human_timestamp", String(99)),
-            Column("status", Boolean),
-            Column("boundaries_breached", Boolean),
-            Column("regression_found", Boolean),
+            test_case_name + "_boundary_test_report", meta,
+            Column("uuid", String(99)),
+            Column("test_id", Float),
+            Column("boundary_name", String(99)),
+            Column("value", Float),
+            Column("minimum_boundary", Float),
+            Column("maximum_boundary", Float),
+            Column("minimum_verification_results", Boolean),
+            Column("maximum_verification_results", Boolean)
         )
         return table
-
-
