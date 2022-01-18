@@ -1,6 +1,7 @@
 from .._database.collection import Crud
 from .._configuration import options
 from datetime import datetime
+from uuid import uuid4
 import asyncio
 
 
@@ -84,6 +85,7 @@ class ProfilerStatisticsInterpreter(Crud):
 
             if len(callers) == 0 and str(function[2]) == self.method_name:
                 yield {
+                    "uuid": str(uuid4()),
                     "test_id": self.test_id,
                     "sample_id": self.sample_id,
                     "test_case_name": self.test_case_name,
@@ -108,6 +110,7 @@ class ProfilerStatisticsInterpreter(Crud):
             else:
                 for row in callers:
                     yield {
+                        "uuid": str(uuid4()),
                         "test_id": self.test_id,
                         "sample_id": self.sample_id,
                         "test_case_name": self.test_case_name,
