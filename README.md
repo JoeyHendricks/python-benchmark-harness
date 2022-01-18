@@ -1,6 +1,6 @@
 <!-- LOGO -->
 <p align="center">
-  <img src="https://github.com/JoeyHendricks/QuickPotato/blob/master/images/banner-wide-with-text.jpg"/>
+  <img src="https://github.com/JoeyHendricks/QuickPotato/blob/master/media/banner-wide-with-text.jpg"/>
 </p>
 
 <!-- TAG LINE -->
