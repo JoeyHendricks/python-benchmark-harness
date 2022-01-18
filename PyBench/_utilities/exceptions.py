@@ -67,3 +67,13 @@ class UnableToExportVisualization(Exception):
     """
     def __str__(self):
         return self.__doc__
+
+
+class NoAnnotationFoundOnMethod(Exception):
+    """
+    The decorator could not find any annotations to check.
+    Please use this decorator on the correct methods.
+    """
+    def __str__(self):
+        return self.__doc__
+

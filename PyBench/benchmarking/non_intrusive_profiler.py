@@ -3,6 +3,7 @@ from ..benchmarking.result_interpreters import ProfilerStatisticsInterpreter
 from ..statistical.heuristics import StatisticalDistanceTest
 from ..benchmarking.code_instrumentation import Profiler
 from ..statistical.measurements import Statistics
+from .._utilities.decorators import verify_method_annotations
 from .._database.collection import Crud
 from multiprocessing import Process
 from datetime import datetime
@@ -137,14 +138,14 @@ class MicroBenchmark(Crud):
             return None
 
     @current_test_id.setter
-    def current_test_id(self, value):
+    def current_test_id(self, value: float):
         """
 
         """
         self.__dict__["current_test_id"] = value
 
     @previous_test_id.setter
-    def previous_test_id(self, value):
+    def previous_test_id(self, value: float):
         """
 
         """
@@ -200,6 +201,7 @@ class MicroBenchmark(Crud):
         """
         self.__dict__['database_connection_url'] = value
 
+    @verify_method_annotations
     def verify_boundaries(self, boundaries: list) -> bool or None:
         """
 
@@ -245,6 +247,7 @@ class MicroBenchmark(Crud):
         else:
             return True
 
+    @verify_method_annotations
     def compare_benchmark(self, instructions: dict) -> dict:
         """
 
