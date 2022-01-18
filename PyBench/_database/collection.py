@@ -10,7 +10,7 @@ class Create(CommonDatabaseInteractions):
     def __init__(self):
         super(Create, self).__init__()
 
-    def insert_benchmark_performance_statistics(self, url: str, payload: list, tcn: str) -> None:
+    def insert_performance_statistics(self, url: str, payload: list, tcn: str) -> None:
         """
 
         :param url:
@@ -24,7 +24,7 @@ class Create(CommonDatabaseInteractions):
             payload=payload
         )
 
-    def insert_benchmark_verification_results(self, url: str, payload: list, tcn: str) -> None:
+    def insert_boundary_verification_results(self, url: str, payload: list, tcn: str) -> None:
         """
 
         :param url:
@@ -34,7 +34,7 @@ class Create(CommonDatabaseInteractions):
         """
         return self.bulk_insert(
             connection_url=url,
-            table=self.test_report_model(test_case_name=tcn),
+            table=self.boundary_test_report_model(test_case_name=tcn),
             payload=payload
         )
 
@@ -110,7 +110,7 @@ class Read(CommonDatabaseInteractions):
         :param number:
         :return:
         """
-        table = self.test_report_model(test_case_name=tcn)
+        table = self.boundary_test_report_model(test_case_name=tcn)
         return [
             str(row.test_id) for row in self.execute_sql_statement(
                 connection_url=url,
@@ -308,7 +308,7 @@ class Crud(Create, Read, Delete):
         # Models that need to be available in the _database
         models = [
             self.c_profiler_statistics_data_model(test_case_name=tcn),
-            self.test_report_model(test_case_name=tcn)
+            self.boundary_test_report_model(test_case_name=tcn)
         ]
         for table_model in models:
 

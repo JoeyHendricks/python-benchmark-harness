@@ -4,7 +4,7 @@ from sqlalchemy import MetaData, Table, Column, Integer, Float, String, Boolean
 class StatisticsModels(object):
 
     @staticmethod
-    def c_profiler_statistics_data_model(test_case_name: str) -> Table:
+    def c_profiler_statistics_data_model(test_case_name: str):
         """
 
         :param test_case_name:
@@ -37,7 +37,7 @@ class StatisticsModels(object):
 class TestResultModels(object):
 
     @staticmethod
-    def boundary_test_report_model(test_case_name: str) -> Table:
+    def boundary_test_report_model(test_case_name: str):
         """
 
         :param test_case_name:

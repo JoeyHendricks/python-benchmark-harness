@@ -199,15 +199,14 @@ class MicroBenchmark(Crud):
         """
         self.__dict__['database_connection_url'] = value
 
-    @staticmethod
-    def verify_boundaries(boundaries: list) -> bool or None:
+    def verify_boundaries(self, boundaries: list) -> bool or None:
         """
 
         :return:
         """
-        results = []
+        self.__dict__['boundary_test_results'] = []
         for boundary in boundaries:
-            results.append(
+            self.__dict__['boundary_test_results'].append(
                 {
                     "boundary_name": boundary["name"],
                     "value": boundary["value"],
@@ -224,11 +223,11 @@ class MicroBenchmark(Crud):
                 }
             )
 
-        if len(results) == 0:
+        if len(self.__dict__['boundary_test_results']) == 0:
             warnings.warn("Warning no test have been executed against the benchmark")
             return None
 
-        elif False in results:
+        elif False in self.__dict__['boundary_test_results']:
             return False
 
         else:
