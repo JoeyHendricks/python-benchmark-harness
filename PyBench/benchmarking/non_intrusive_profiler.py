@@ -6,6 +6,7 @@ from ..statistical.measurements import Statistics
 from .._database.collection import Crud
 from multiprocessing import Process
 from datetime import datetime
+from uuid import uuid4
 import warnings
 import string
 import random
@@ -202,12 +203,15 @@ class MicroBenchmark(Crud):
     def verify_boundaries(self, boundaries: list) -> bool or None:
         """
 
+        :param boundaries:
         :return:
         """
         self.__dict__['boundary_test_results'] = []
         for boundary in boundaries:
             self.__dict__['boundary_test_results'].append(
                 {
+                    "uuid": str(uuid4()),
+                    "test_id": self.current_test_id,
                     "boundary_name": boundary["name"],
                     "value": boundary["value"],
                     "minimum_boundary": boundary["minimum"],
@@ -223,6 +227,14 @@ class MicroBenchmark(Crud):
                 }
             )
 
+        # Upload test evidence
+        self.bulk_insert(
+            connection_url=self.database_connection_url,
+            table=self.boundary_test_report_model(self.test_case_name),
+            payload=self.__dict__['boundary_test_results']
+        )
+
+        # Verification
         if len(self.__dict__['boundary_test_results']) == 0:
             warnings.warn("Warning no test have been executed against the benchmark")
             return None
@@ -236,6 +248,7 @@ class MicroBenchmark(Crud):
     def compare_benchmark(self, instructions: dict) -> dict:
         """
 
+        :param instructions:
         :return:
         """
         return {

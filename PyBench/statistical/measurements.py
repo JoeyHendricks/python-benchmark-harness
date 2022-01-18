@@ -41,7 +41,7 @@ class Statistics(Crud):
         return float(sum(self._collected_measurements) / len(self._collected_measurements))
 
     @property
-    def maximum_outlier_in_response_times(self) -> float:
+    def maximum_outlier(self) -> float:
         """
 
         Returns
@@ -51,7 +51,7 @@ class Statistics(Crud):
         return float(max(self._collected_measurements))
 
     @property
-    def minimum_outlier_in_response_times(self) -> float:
+    def minimum_outlier(self) -> float:
         """
 
         Returns
