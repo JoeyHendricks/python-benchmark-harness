@@ -106,7 +106,7 @@ class TestBoundaryChecks(unittest.TestCase):
         # Verify if the boundary works with just the max boundary
         self.assertTrue(
             mb.verify_boundaries(
-                [
+                boundaries=[
                     {
                         "name": "verify_max_recorded_latency",
                         "value": mb.benchmark_statistics.maximum_outlier,
