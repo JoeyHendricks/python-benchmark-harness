@@ -242,7 +242,7 @@ heatmap_template = """
                 .attr("y", -70)
                 .attr("text-anchor", "left")
                 .style("font-size", 50)
-                .text("PyBench Code Path Heatmap");
+                .text("Benchmarking Code Path Heatmap");
 
             // Add subtitle to graph
             svg.append("text")

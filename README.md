@@ -13,7 +13,7 @@
 </p>
 
 <!-- CONTENT -->
-## PyBench in a nutshell
+## python-micro-benchmarks in a nutshell
 
 QuickPotato is a Python library that aims to make it easier to rapidly profile your software and produce powerful 
 code visualizations that enables you to quickly investigate where potential performance bottlenecks are hidden.
@@ -26,7 +26,7 @@ development life cycle in a simple, reliable, and fast way.
 
 Installation is easy using [pip](https://pip.pypa.io/en/stable/) or clone the source code straight from GitHub.
 ```bash
-pip install PyBench
+pip install python-micro-benchmarks
 ```
 
 > currently not yet deployed on pypi
@@ -34,7 +34,7 @@ pip install PyBench
 ## Getting Started
 
 ```Python
-from PyBench import micro_benchmark as mb
+from Benchmarking import micro_benchmark as mb
 from tests.stubs import FancyCode as Fc
 
 # Give your benchmark a name
@@ -61,7 +61,7 @@ letter_rank = mb.distance_statistics.letter_rank  # > A+
 </p>
 
 Visualization are an excellent way to find out why your code slowdown or isn't working the way you would expect.
-PyBench offers out of the box the following visualizations, so you don't need to worry how to get your eyes on that 
+python-micro-benchmarks offers out of the box the following visualizations, so you don't need to worry how to get your eyes on that 
 pesky bottleneck:
 
 - Flame Graphs
@@ -70,7 +70,7 @@ pesky bottleneck:
 - Scatter plots (Coming soon)
 - Line Graphs (Coming soon)
 
-Want to visualize the data yourself or share the data in a common format, no problem Pybench has you covered. 
+Want to visualize the data yourself or share the data in a common format, no problem python-micro-benchmarks has you covered. 
 You can export your benchmarks in the following formats through the benchmark API:
 
 - CSV
@@ -78,14 +78,14 @@ You can export your benchmarks in the following formats through the benchmark AP
 
 > Check out the docs for more information how to visualize or export your measurements.
 
-## Learn more about PyBench
+## Learn more about python-micro-benchmarks
 
-Want to learn more about PyBench then I would recommend read the documentation, 
-or to check my older conference recordings about Pybench:
+Want to learn more about python-micro-benchmarks then I would recommend read the documentation, 
+or to check my older conference recordings about python-micro-benchmarks:
 
 - 11/07/2020: [Don’t lose your mind over slow code check your performance sanity.](https://www.linkedin.com/pulse/dont-lose-your-mind-over-slow-code-check-performance-sanity-joey/) 
-- 08/10/2020: [My recording about PyBench @NeotysPAC 2020.](https://www.youtube.com/watch?v=AWlhalEywEw) 
-- 15/12/2020: [Interview about PyBench @TestGuild 2020.)](https://testguild.com/podcast/performance/p56-joey/)
+- 08/10/2020: [My recording about python-micro-benchmarks @NeotysPAC 2020.](https://www.youtube.com/watch?v=AWlhalEywEw) 
+- 15/12/2020: [Interview about python-micro-benchmarks @TestGuild 2020.)](https://testguild.com/podcast/performance/p56-joey/)
 - 12/01/2020: [An article I wrote for Neotys about my @NeotysPAC 2020 presentation.](https://www.neotys.com/blog/neotyspac-performance-testing-unit-level-joey-hendricks/)
 
-> PyBench was formerly known as QuickPotato and has been renamed to better reflect its purpose.
+> python-micro-benchmarks was formerly known as QuickPotato and has been renamed to better reflect its purpose.

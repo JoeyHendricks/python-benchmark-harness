@@ -1,16 +1,16 @@
 from setuptools import setup
 
 setup(
-    name='PyBench',
+    name='Benchmarking',
     version='1.0.1',
     packages=[
-        'PyBench',
-        'PyBench.benchmarking',
-        'PyBench._database',
-        'PyBench.profiling',
-        'PyBench._utilities',
-        'PyBench.statistical',
-        'PyBench._configuration'
+        'Benchmarking',
+        'Benchmarking.benchmarking',
+        'Benchmarking._database',
+        'Benchmarking.profiling',
+        'Benchmarking._utilities',
+        'Benchmarking.statistical',
+        'Benchmarking._configuration'
     ],
     install_requires=[
         'numpy',

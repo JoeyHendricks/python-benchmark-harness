@@ -1,5 +1,5 @@
-from PyBench._database.collection import Crud
-from PyBench._utilities.exceptions import UnableToExportVisualization
+from Benchmarking._database.collection import Crud
+from Benchmarking._utilities.exceptions import UnableToExportVisualization
 from datetime import datetime
 import pandas as pd
 import os

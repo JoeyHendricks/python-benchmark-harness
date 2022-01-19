@@ -1,12 +1,12 @@
 import random
 import string
 from functools import wraps, partial
-from PyBench import micro_benchmark as pt
-from PyBench._configuration.config import options
-from PyBench.benchmarking.code_instrumentation import Profiler
-from PyBench.benchmarking.result_interpreters import ProfilerStatisticsInterpreter
-from PyBench._utilities.exceptions import CouchPotatoCannotFindMethod
-from PyBench._utilities.defaults import default_test_case_name, default_sqlite_database_name
+from Benchmarking import micro_benchmark as pt
+from Benchmarking._configuration.config import options
+from Benchmarking.benchmarking.code_instrumentation import Profiler
+from Benchmarking.benchmarking.result_interpreters import ProfilerStatisticsInterpreter
+from Benchmarking._utilities.exceptions import CouchPotatoCannotFindMethod
+from Benchmarking._utilities.defaults import default_test_case_name, default_sqlite_database_name
 
 
 def performance_breakpoint(method=None, enabled=True, test_case_name=default_test_case_name,
