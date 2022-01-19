@@ -53,7 +53,7 @@ mb.run(
     processes=2
 )
 
-# Get a letter rank how changes compare to the previous run.
+# Get a letter rank how your changes compare to a previous benchmark.
 letter_rank = mb.distance_statistics.letter_rank  # > A+
 ```
 
