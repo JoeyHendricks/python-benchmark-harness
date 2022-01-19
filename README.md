@@ -31,7 +31,24 @@ pip install PyBench
 
 ## Quick Start
 
-```
+```Python
+from PyBench import micro_benchmark as mb
+from tests.stubs import FancyCode as Fc
+
+# Give your benchmark a name
+mb.test_case_name = "quick_start"
+
+# Define you benchmark
+mb.run(
+    method=Fc().fast_method,  # <-- Make sure you don't call the method
+    arguments=[],
+    iteration=100,
+    pacing=0,
+    processes=2
+)
+
+# Get a letter rank how changes compare to the previous run.
+letter_rank = mb.distance_statistics.letter_rank  # > A+
 ```
 
 ## Visualize that pesky bottleneck
@@ -46,7 +63,9 @@ pip install PyBench
 
 Want to learn more about PyBench then I would recommend to check out the following resources:
 
-- 11/07/2020: [Don’t lose your mind over slow code check your performance sanity.(Uses old project name)](https://www.linkedin.com/pulse/dont-lose-your-mind-over-slow-code-check-performance-sanity-joey/) 
-- 08/10/2020: [My recording about PyBench @NeotysPAC 2020. (Uses old project name)](https://www.youtube.com/watch?v=AWlhalEywEw) 
-- 15/12/2020: [Interview about PyBench @TestGuild 2020. (Uses old project name)](https://testguild.com/podcast/performance/p56-joey/)
-- 12/01/2020: [An article I wrote for Neotys about my @NeotysPAC 2020 presentation. (Uses old project name)](https://www.neotys.com/blog/neotyspac-performance-testing-unit-level-joey-hendricks/)
+- 11/07/2020: [Don’t lose your mind over slow code check your performance sanity.](https://www.linkedin.com/pulse/dont-lose-your-mind-over-slow-code-check-performance-sanity-joey/) 
+- 08/10/2020: [My recording about PyBench @NeotysPAC 2020.](https://www.youtube.com/watch?v=AWlhalEywEw) 
+- 15/12/2020: [Interview about PyBench @TestGuild 2020.)](https://testguild.com/podcast/performance/p56-joey/)
+- 12/01/2020: [An article I wrote for Neotys about my @NeotysPAC 2020 presentation.](https://www.neotys.com/blog/neotyspac-performance-testing-unit-level-joey-hendricks/)
+
+> PyBench was formerly known as QuickPotato and has been renamed to better reflect its purpose.
