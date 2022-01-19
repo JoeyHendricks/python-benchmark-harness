@@ -54,7 +54,7 @@ class TestHeuristics(unittest.TestCase):
                 )
             )
 
-    def test_ranking_heuristic_on_code_with_a_change_and_regression(self):
+    def test_ranking_heuristic_on_code_with_a_change_and_regression_slow_down(self):
         """
 
         """
@@ -76,6 +76,37 @@ class TestHeuristics(unittest.TestCase):
                 )
             # Verify if the last letter rank fails to meet the predefined situation.
             self.assertFalse(
+                check_letter_rank_boundary(
+                    boundary_letter_rank="A",
+                    current_letter_rank=re.sub(r"[+-]", '', mb.distance_statistics.letter_rank)
+                )
+            )
+
+    def test_ranking_heuristic_on_code_with_a_change_and_no_regression(self):
+        """
+        Will force a change in the dummy code but the change has no performance
+        impact therefore this test should not fail and result in a true.
+        """
+        test_definitions = [
+
+            {"use_slow_method": False, "use_fast_method": False},  # Test 1
+            {"use_slow_method": False, "use_fast_method": True}    # Test 2
+
+        ]
+        for instructions in test_definitions:
+            # Run a benchmark on our demo code.
+            mb.test_case_name = "demo"
+            mb.run(
+                method=FancyCode(
+                    instructions["use_slow_method"],
+                    instructions["use_fast_method"]
+                ).calculate_statistics_about_fancy_population,
+                arguments=[],
+                iteration=self.ITERATIONS,
+                pacing=0,
+            )
+            # Verify if the last letter rank fails to meet the predefined situation.
+            self.assertTrue(
                 check_letter_rank_boundary(
                     boundary_letter_rank="A",
                     current_letter_rank=re.sub(r"[+-]", '', mb.distance_statistics.letter_rank)
