@@ -8,7 +8,7 @@
 <p align="center">
     <a href="https://www.linkedin.com/in/joey-hendricks/">Contact me</a> -
     <a href="https://github.com/JoeyHendricks/QuickPotato/issues">Report Bug or Request Feature</a> -
-    <a href="https://github.com/JoeyHendricks/QuickPotato/discussions">Want to discuss stuff</a> -
+    <a href="https://github.com/JoeyHendricks/QuickPotato/discussions">Discussions</a> -
     <a href="https://github.com/JoeyHendricks/QuickPotato/wiki">Documentation</a>
 </p>
 
@@ -29,7 +29,7 @@ Install using [pip](https://pip.pypa.io/en/stable/) or download the source code 
 pip install PyBench
 ```
 
-## Quick Start
+## Getting Started
 
 ```Python
 from PyBench import micro_benchmark as mb
