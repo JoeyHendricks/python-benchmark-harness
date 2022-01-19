@@ -5,7 +5,7 @@ import unittest
 import re
 
 
-class TestHeuristics(unittest.TestCase):
+class TestVerifications(unittest.TestCase):
 
     ITERATIONS = 10
 
@@ -56,7 +56,8 @@ class TestHeuristics(unittest.TestCase):
 
     def test_ranking_heuristic_on_code_with_a_change_and_regression_slow_down(self):
         """
-
+        Will simulate a change on the dummy code that has a performance impact
+        the heuristic should catch this change and give it a lower then acceptable letter rank.
         """
         test_definitions = [
             [{"slow_down": False}, {"slow_down": True}],  # Test 1
@@ -112,9 +113,6 @@ class TestHeuristics(unittest.TestCase):
                     current_letter_rank=re.sub(r"[+-]", '', mb.distance_statistics.letter_rank)
                 )
             )
-
-
-class TestBoundaryChecks(unittest.TestCase):
 
     def test_boundary_verification_max_and_min_thresholds(self):
         """
