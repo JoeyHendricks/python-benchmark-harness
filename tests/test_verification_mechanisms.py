@@ -1,6 +1,6 @@
 from tests.stubs import FancyCode
-from package.Benchmarking import micro_benchmark as mb
-from package.Benchmarking.statistical.verification import check_letter_rank_boundary
+from src.Benchmarking import micro_benchmark as mb
+from src.Benchmarking.statistical.verification import check_letter_rank_boundary
 import unittest
 import re
 
