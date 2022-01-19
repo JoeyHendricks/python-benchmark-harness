@@ -13,7 +13,7 @@
 </p>
 
 <!-- CONTENT -->
-## python-micro-benchmarks in a nutshell
+## The project in a nutshell
 
 QuickPotato is a Python library that aims to make it easier to rapidly profile your software and produce powerful 
 code visualizations that enables you to quickly investigate where potential performance bottlenecks are hidden.
@@ -29,7 +29,7 @@ Installation is easy using [pip](https://pip.pypa.io/en/stable/) or clone the so
 pip install python-micro-benchmarks
 ```
 
-> currently not yet deployed on pypi
+> currently, not yet deployed on pypi
 
 ## Getting Started
 
@@ -78,7 +78,7 @@ You can export your benchmarks in the following formats through the benchmark AP
 
 > Check out the docs for more information how to visualize or export your measurements.
 
-## Learn more about python-micro-benchmarks
+## Learn more about the project
 
 Want to learn more about python-micro-benchmarks then I would recommend read the documentation, 
 or to check my older conference recordings about python-micro-benchmarks:
