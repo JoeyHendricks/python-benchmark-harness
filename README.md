@@ -4,7 +4,7 @@
 </p>
 
 <!-- TAG LINE -->
-<h3 align="center">Profile and test to gain insights into the performance of your beautiful Python code</h3>
+<h3 align="center">Get your code of the couch by stressing it on the bench</h3>
 <p align="center">
     <a href="https://github.com/JoeyHendricks/QuickPotato">View Demo</a> -
     <a href="https://github.com/JoeyHendricks/QuickPotato/issues">Report Bug</a> -
@@ -49,13 +49,9 @@ pip install PyBench
 
 ## Learn more about PyBench
 
-If you want to learn more about test driven performance testing and want to 
-see how this project reached its current state? 
-Then I would encourage you to check out the following resources:
+Want to learn more about PyBench then I would recommend to check out the following resources:
 
-- 11/07/2020: [Don’t lose your mind over slow code check your performance sanity.(English)](https://www.linkedin.com/pulse/dont-lose-your-mind-over-slow-code-check-performance-sanity-joey/) 
-- 08/10/2020: [My recording about QuickPotato @NeotysPAC 2020. (English)](https://www.youtube.com/watch?v=AWlhalEywEw) 
-- 15/12/2020: [Interview about QuickPotato @TestGuild 2020. (English)](https://testguild.com/podcast/performance/p56-joey/)
-- 12/01/2020: [An article I wrote for Neotys about my @NeotysPAC 2020 presentation. (English)](https://www.neotys.com/blog/neotyspac-performance-testing-unit-level-joey-hendricks/)
-
-[![SonarCloud](https://sonarcloud.io/images/project_badges/sonarcloud-white.svg)](https://sonarcloud.io/dashboard?id=JoeyHendricks_QuickPotato)
+- 11/07/2020: [Don’t lose your mind over slow code check your performance sanity.(Uses old project name)](https://www.linkedin.com/pulse/dont-lose-your-mind-over-slow-code-check-performance-sanity-joey/) 
+- 08/10/2020: [My recording about PyBench @NeotysPAC 2020. (Uses old project name)](https://www.youtube.com/watch?v=AWlhalEywEw) 
+- 15/12/2020: [Interview about PyBench @TestGuild 2020. (Uses old project name)](https://testguild.com/podcast/performance/p56-joey/)
+- 12/01/2020: [An article I wrote for Neotys about my @NeotysPAC 2020 presentation. (Uses old project name)](https://www.neotys.com/blog/neotyspac-performance-testing-unit-level-joey-hendricks/)
