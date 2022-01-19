@@ -24,7 +24,7 @@ development life cycle in a simple, reliable, and fast way.
 
 ## Installation
 
-Install using [pip](https://pip.pypa.io/en/stable/) or download the source code from GitHub.
+Installation is easy using [pip](https://pip.pypa.io/en/stable/) or clone the source code straight from GitHub.
 ```bash
 pip install PyBench
 ```
@@ -55,15 +55,33 @@ letter_rank = mb.distance_statistics.letter_rank  # > A+
 
 ## Visualize that pesky bottleneck
 
-<!-- LOGO -->
+<!-- Visualization Animation -->
 <p align="center">
   <img src="https://github.com/JoeyHendricks/QuickPotato/blob/master/media/gifs/code_visualzation_animation.gif?raw=true"/>
 </p>
 
+Visualization are an excellent way to find out why your code slowdown or isn't working the way you would expect.
+PyBench offers out of the box the following visualizations, so you don't need to worry how to get your eyes on that 
+pesky bottleneck:
+
+- Flame Graphs
+- Code Heat Maps
+- Bar charts
+- Scatter plots (Coming soon)
+- Line Graphs (Coming soon)
+
+Want to visualize the data yourself or share the data in a common format, no problem Pybench has you covered. 
+You can export your benchmarks in the following formats through the benchmark API:
+
+- CSV
+- JSON (Coming soon)
+
+> Check out the docs for more information how to visualize or export your measurements.
 
 ## Learn more about PyBench
 
-Want to learn more about PyBench then I would recommend to check out the following resources:
+Want to learn more about PyBench then I would recommend read the documentation, 
+or to check my older conference recordings about Pybench:
 
 - 11/07/2020: [Don’t lose your mind over slow code check your performance sanity.](https://www.linkedin.com/pulse/dont-lose-your-mind-over-slow-code-check-performance-sanity-joey/) 
 - 08/10/2020: [My recording about PyBench @NeotysPAC 2020.](https://www.youtube.com/watch?v=AWlhalEywEw) 
