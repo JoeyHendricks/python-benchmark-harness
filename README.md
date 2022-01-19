@@ -29,6 +29,8 @@ Install using [pip](https://pip.pypa.io/en/stable/) or download the source code 
 pip install PyBench
 ```
 
+> currently not yet deployed on pypi
+
 ## Getting Started
 
 ```Python
