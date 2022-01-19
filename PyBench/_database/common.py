@@ -1,10 +1,10 @@
-from .._database.models import StatisticsModels, TestResultModels
+from .._database.models import TableModels
 from sqlalchemy_utils import database_exists
 from sqlalchemy.engine import create_engine
 from sqlalchemy import inspect
 
 
-class CommonDatabaseContextManager(StatisticsModels, TestResultModels):
+class CommonDatabaseContextManager(TableModels):
 
     @staticmethod
     def spawn_engine(connection_url: str) -> object:

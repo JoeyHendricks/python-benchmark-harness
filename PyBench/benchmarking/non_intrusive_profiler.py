@@ -208,9 +208,9 @@ class MicroBenchmark(Crud):
         :param boundaries:
         :return:
         """
-        self.__dict__['boundary_test_results'] = []
+        self.__dict__['boundary_verification_results'] = []
         for boundary in boundaries:
-            self.__dict__['boundary_test_results'].append(
+            self.__dict__['boundary_verification_results'].append(
                 {
                     "uuid": str(uuid4()),
                     "test_id": self.current_test_id,
@@ -233,37 +233,51 @@ class MicroBenchmark(Crud):
         self.bulk_insert(
             connection_url=self.database_connection_url,
             table=self.boundary_test_report_model(self.test_case_name),
-            payload=self.__dict__['boundary_test_results']
+            payload=self.__dict__['boundary_verification_results']
         )
 
         # Verification
-        if len(self.__dict__['boundary_test_results']) == 0:
+        if len(self.__dict__['boundary_verification_results']) == 0:
             warnings.warn("Warning no test have been executed against the benchmark")
             return None
 
-        elif False in self.__dict__['boundary_test_results']:
+        elif False in self.__dict__['boundary_verification_results']:
             return False
 
         else:
             return True
 
     @verify_method_annotations
-    def compare_benchmark(self, instructions: dict) -> dict:
+    def compare_measurements(self, instructions: dict) -> bool:
         """
 
         :param instructions:
         :return:
         """
-        return {
-            "rank": check_letter_rank_boundary(
-                instructions["critical_letter_rank"],
-                self.distance_statistics.letter_rank
-            ),
-            "score": check_min_boundary(
-                self.distance_statistics.score,
-                instructions["critical_score"]
-            )
-        }
+        self.__dict__['comparison_results'] = [
+            {
+                "uuid": str(uuid4()),
+                "test_id": self.current_test_id,
+                "critical_letter_rank": instructions["critical_letter_rank"],
+                "observed_letter_rank": self.distance_statistics.letter_rank,
+                "critical_score": instructions["critical_score"],
+                "observed_score": self.distance_statistics.score,
+                "letter_rank_comparison_result": check_letter_rank_boundary(
+                    instructions["critical_letter_rank"],
+                    self.distance_statistics.letter_rank
+                ),
+                "score_comparison_result": check_min_boundary(
+                    self.distance_statistics.score,
+                    instructions["critical_score"]
+                )
+            }
+        ]
+        self.bulk_insert(
+            connection_url=self.database_connection_url,
+            table=self.compare_test_report_model(self.test_case_name),
+            payload=self.__dict__['comparison_results']
+        )
+        return False if False in self.__dict__['comparison_results'] else True
 
     def run(self, method, arguments=None, iteration=1, pacing=0, processes=0):
         """

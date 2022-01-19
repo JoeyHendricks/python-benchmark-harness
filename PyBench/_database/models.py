@@ -1,7 +1,7 @@
 from sqlalchemy import MetaData, Table, Column, Integer, Float, String, Boolean
 
 
-class StatisticsModels(object):
+class TableModels(object):
 
     @staticmethod
     def c_profiler_statistics_data_model(test_case_name: str):
@@ -33,9 +33,6 @@ class StatisticsModels(object):
         )
         return table
 
-
-class TestResultModels(object):
-
     @staticmethod
     def boundary_test_report_model(test_case_name: str):
         """
@@ -56,3 +53,25 @@ class TestResultModels(object):
             Column("maximum_verification_results", Boolean)
         )
         return table
+
+    @staticmethod
+    def compare_test_report_model(test_case_name: str):
+        """
+
+        :param test_case_name:
+        :return:
+        """
+        meta = MetaData()
+        table = Table(
+            test_case_name + "_boundary_test_report", meta,
+            Column("uuid", String(99)),
+            Column("test_id", Float),
+            Column("critical_letter_rank", String(5)),
+            Column("observed_letter_rank", String(5)),
+            Column("critical_score", Float),
+            Column("observed_score", Float),
+            Column("letter_rank_comparison_result", Boolean),
+            Column("score_comparison_result", Boolean)
+        )
+        return table
+
