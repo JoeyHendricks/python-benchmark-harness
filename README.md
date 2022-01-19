@@ -6,9 +6,10 @@
 <!-- TAG LINE -->
 <h3 align="center">Get your code of the couch by stressing it on the bench</h3>
 <p align="center">
-    <a href="https://github.com/JoeyHendricks/QuickPotato">View Demo</a> -
-    <a href="https://github.com/JoeyHendricks/QuickPotato/issues">Report Bug</a> -
-    <a href="https://github.com/JoeyHendricks/QuickPotato/issues">Request Feature</a>
+    <a href="https://www.linkedin.com/in/joey-hendricks/">Contact me</a> -
+    <a href="https://github.com/JoeyHendricks/QuickPotato/issues">Report Bug or Request Feature</a> -
+    <a href="https://github.com/JoeyHendricks/QuickPotato/discussions">Want to discuss stuff</a> -
+    <a href="https://github.com/JoeyHendricks/QuickPotato/wiki">Documentation</a>
 </p>
 
 <!-- CONTENT -->
@@ -26,6 +27,11 @@ development life cycle in a simple, reliable, and fast way.
 Install using [pip](https://pip.pypa.io/en/stable/) or download the source code from GitHub.
 ```bash
 pip install PyBench
+```
+
+## Quick Start
+
+```
 ```
 
 ## Visualize that pesky bottleneck
