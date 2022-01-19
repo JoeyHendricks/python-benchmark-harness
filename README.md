@@ -2,7 +2,6 @@
 <p align="center">
   <img src="https://github.com/JoeyHendricks/python-micro-benchmarks/blob/master/media/images/banner-wide-with-text.jpeg?raw=true"/>
 </p>
-
 <!-- TAG LINE -->
 <h3 align="center">Get your code of the couch by stressing it on the bench</h3>
 <p align="center">
