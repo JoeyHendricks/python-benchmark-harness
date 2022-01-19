@@ -27,5 +27,5 @@ setup(
     author='Joey Hendricks',
     author_email='joey.hendricks20@icloud.com',
     description='Making performance testing within Python easy and understandable.',
-    python_requires='>=3.7'
+    python_requires='>=3.8'
 )
