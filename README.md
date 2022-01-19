@@ -29,9 +29,13 @@ Installation is easy using [pip](https://pip.pypa.io/en/stable/) or clone the so
 pip install python-micro-benchmarks
 ```
 
-> currently, not yet deployed on pypi
-
 ## Getting Started
+
+Getting started is easy after installing the package you can import the micro benchmarking object and **define a 
+benchmark name** after that you can use the **run()** method to execute your benchmark on your creation and see 
+if it is performing as expected.
+
+Below you can find a simple example:
 
 ```Python
 from Benchmarking import micro_benchmark as mb
@@ -52,6 +56,8 @@ mb.run(
 # Get a letter rank how changes compare to the previous run.
 letter_rank = mb.distance_statistics.letter_rank  # > A+
 ```
+
+> See the documentation for more information and benchmarking options
 
 ## Visualize that pesky bottleneck
 
