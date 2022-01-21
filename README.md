@@ -6,20 +6,21 @@
 <h3 align="center">Get your code of the couch by stressing it on the bench</h3>
 <p align="center">
     <a href="https://www.linkedin.com/in/joey-hendricks/">Contact me</a> -
-    <a href="https://github.com/JoeyHendricks/QuickPotato/issues">Report Bug or Request Feature</a> -
-    <a href="https://github.com/JoeyHendricks/QuickPotato/discussions">Discussions</a> -
-    <a href="https://github.com/JoeyHendricks/QuickPotato/wiki">Documentation</a>
+    <a href="https://github.com/JoeyHendricks/python-micro-benchmarks/issues">Report Bug or Request Feature</a> -
+    <a href="https://github.com/JoeyHendricks/python-micro-benchmarks/discussions">Discussions</a> -
+    <a href="https://github.com/JoeyHendricks/python-micro-benchmarks/wiki">Documentation</a>
 </p>
 
 <!-- CONTENT -->
 ## The project in a nutshell
 
-QuickPotato is a Python library that aims to make it easier to rapidly profile your software and produce powerful 
-code visualizations that enables you to quickly investigate where potential performance bottlenecks are hidden.
+Python-micro-benchmark is a library that aids in creating micro to macro performance benchmarks for 
+your code to find and visualize performance bottlenecks in your implementation in a flexible way.
 
-Also, QuickPotato is trying to provide you with a path to add an automated performance testing angle to 
-your regular unit tests or test-driven development test cases allowing you to test your code early in the 
-development life cycle in a simple, reliable, and fast way.
+With an emphasis on automation and visualizations, this library can integrate your benchmark 
+within a unit test framework allowing you to test your code early in the development life cycle 
+and letting you render an assortment of visualizations to get the drop on a pesky performance 
+problem in your code.
 
 ## Installation
 
@@ -30,7 +31,7 @@ pip install python-micro-benchmarks
 
 ## Getting Started
 
-Getting started is easy after installing the package you can import the micro benchmarking object and **define a 
+Getting started is straightforward after installing the package you can import the micro benchmarking object and **define a 
 benchmark name** after that you can use the **run()** method to execute your benchmark on your creation and see 
 if it is performing as expected.
 
@@ -56,13 +57,13 @@ mb.run(
 letter_rank = mb.regression.letter_rank  # > A+
 ```
 
-> See the documentation for more information and benchmarking options
+> Check out the [documentation](https://github.com/JoeyHendricks/python-micro-benchmarks/wiki) for more help to get started.
 
 ## Visualize that pesky bottleneck
 
 <!-- Visualization Animation -->
 <p align="center">
-  <img src="https://github.com/JoeyHendricks/QuickPotato/blob/master/media/gifs/code_visualzation_animation.gif?raw=true"/>
+  <img src="https://github.com/JoeyHendricks/python-micro-benchmarks/blob/master/media/gifs/code_visualzation_animation.gif?raw=true"/>
 </p>
 
 Visualization are an excellent way to find out why your code slowdown or isn't working the way you would expect.
