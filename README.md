@@ -14,7 +14,7 @@
 <!-- CONTENT -->
 ## The project in a nutshell
 
-Python-micro-benchmark is a library that aids in creating micro to macro performance benchmarks for 
+Python-micro-benchmark is a library that aids in creating [micro to macro performance benchmarks](https://link.springer.com/referenceworkentry/10.1007%2F978-3-319-77525-8_111#:~:text=Definitions,operations%2C%20bandwidth%2C%20or%20latency.) for 
 your code to find and visualize performance bottlenecks in your implementation in a flexible way.
 
 With an emphasis on automation and visualizations, this library can integrate your benchmark 
