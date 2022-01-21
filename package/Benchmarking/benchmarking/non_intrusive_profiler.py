@@ -88,7 +88,7 @@ class MicroBenchmark(Crud):
         )
 
     @property
-    def distance_statistics(self) -> StatisticalDistanceTest:
+    def regression(self) -> StatisticalDistanceTest:
         """
 
         :return:
@@ -259,15 +259,15 @@ class MicroBenchmark(Crud):
                 "uuid": str(uuid4()),
                 "test_id": self.current_test_id,
                 "critical_letter_rank": instructions["critical_letter_rank"],
-                "observed_letter_rank": self.distance_statistics.letter_rank,
+                "observed_letter_rank": self.regression.letter_rank,
                 "critical_score": instructions["critical_score"],
-                "observed_score": self.distance_statistics.score,
+                "observed_score": self.regression.score,
                 "letter_rank_comparison_result": check_letter_rank_boundary(
                     instructions["critical_letter_rank"],
-                    self.distance_statistics.letter_rank
+                    self.regression.letter_rank
                 ),
                 "score_comparison_result": check_min_boundary(
-                    self.distance_statistics.score,
+                    self.regression.score,
                     instructions["critical_score"]
                 )
             }

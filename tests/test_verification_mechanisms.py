@@ -50,7 +50,7 @@ class TestVerifications(unittest.TestCase):
             self.assertTrue(
                 check_letter_rank_boundary(
                     boundary_letter_rank="A",
-                    current_letter_rank=re.sub(r"[+-]", '', mb.distance_statistics.letter_rank)
+                    current_letter_rank=re.sub(r"[+-]", '', mb.regression.letter_rank)
                 )
             )
 
@@ -79,7 +79,7 @@ class TestVerifications(unittest.TestCase):
             self.assertFalse(
                 check_letter_rank_boundary(
                     boundary_letter_rank="A",
-                    current_letter_rank=re.sub(r"[+-]", '', mb.distance_statistics.letter_rank)
+                    current_letter_rank=re.sub(r"[+-]", '', mb.regression.letter_rank)
                 )
             )
 
@@ -110,7 +110,7 @@ class TestVerifications(unittest.TestCase):
             self.assertTrue(
                 check_letter_rank_boundary(
                     boundary_letter_rank="A",
-                    current_letter_rank=re.sub(r"[+-]", '', mb.distance_statistics.letter_rank)
+                    current_letter_rank=re.sub(r"[+-]", '', mb.regression.letter_rank)
                 )
             )
 

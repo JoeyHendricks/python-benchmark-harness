@@ -53,7 +53,7 @@ mb.run(
 )
 
 # Get a letter rank how your changes compare to a previous benchmark.
-letter_rank = mb.distance_statistics.letter_rank  # > A+
+letter_rank = mb.regression.letter_rank  # > A+
 ```
 
 > See the documentation for more information and benchmarking options
