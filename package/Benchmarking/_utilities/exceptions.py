@@ -10,15 +10,6 @@ class UnAcceptableTestIdFound(Exception):
         return self.__doc__
 
 
-class CouchPotatoCannotFindMethod(Exception):
-    """
-    Benchmarking has not detected any method to collect metrics from.
-    Please review the use of the 'profile' decorator in the Benchmarking documentation.
-    """
-    def __str__(self):
-        return self.__doc__
-
-
 class DatabaseSchemaCannotBeSpawned(Exception):
     """
     It was not possible to create a _database with a specified connection URL, p

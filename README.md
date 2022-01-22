@@ -35,7 +35,7 @@ Getting started is straightforward after installing the package you can import t
 benchmark name** after that you can use the **run()** method to execute your benchmark on your creation and see 
 if it is performing as expected.
 
-Below you can find a simple example:
+Below you can find a simple example that work non-intrusively on your code (no changes needed):
 
 ```Python
 from Benchmarking import micro_benchmark as mb
@@ -56,6 +56,11 @@ mb.run(
 # Get a letter rank how your changes compare to a previous benchmark.
 letter_rank = mb.regression.letter_rank  # > A+
 ```
+
+That start up a benchmark or profiling session more flexibly you can also use the **trace** decorator.
+To do this you simple decorator the function or method you wish to benchmark this can be done the following way:
+
+
 
 > Check out the [documentation](https://github.com/JoeyHendricks/python-micro-benchmarks/wiki) for more help to get started.
 

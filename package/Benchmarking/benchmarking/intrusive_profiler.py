@@ -5,7 +5,6 @@ from Benchmarking import micro_benchmark as pt
 from Benchmarking._configuration.config import options
 from Benchmarking.benchmarking.code_instrumentation import Profiler
 from Benchmarking.benchmarking.result_interpreters import ProfilerStatisticsInterpreter
-from Benchmarking._utilities.exceptions import CouchPotatoCannotFindMethod
 from Benchmarking._utilities.defaults import default_test_case_name, default_sqlite_database_name
 
 
