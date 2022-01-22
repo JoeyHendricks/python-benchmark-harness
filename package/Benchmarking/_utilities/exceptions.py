@@ -68,3 +68,12 @@ class NoAnnotationFoundOnMethod(Exception):
     def __str__(self):
         return self.__doc__
 
+
+class DecoratorCouldNotFindTargetMethod(Exception):
+    """
+    The intrusive decorator could not find the target
+    decorator and was therefore unable to measure the performance
+    of the code that was under test.
+    """
+    def __str__(self):
+        return self.__doc__

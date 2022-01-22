@@ -1,20 +1,16 @@
+from ..benchmarking.result_interpreters import ProfilerStatisticsInterpreter
+from .._utilities.exceptions import DecoratorCouldNotFindTargetMethod
+from ..benchmarking.non_intrusive_profiler import MicroBenchmark
+from ..benchmarking.code_instrumentation import Profiler
+from functools import wraps, partial
 import random
 import string
-from functools import wraps, partial
-from Benchmarking import micro_benchmark as pt
-from Benchmarking._configuration.config import options
-from Benchmarking.benchmarking.code_instrumentation import Profiler
-from Benchmarking.benchmarking.result_interpreters import ProfilerStatisticsInterpreter
-from Benchmarking._utilities.defaults import default_test_case_name, default_sqlite_database_name
 
 
-def performance_breakpoint(method=None, enabled=True, test_case_name=default_test_case_name,
-                           database_name=default_sqlite_database_name, test_id=None):
+def performance_breakpoint(method, test_case_name, enabled=True):
     """
     This decorator can be used to gather performance statistical
     on a method.
-    :param test_id: Used to overwrite the automatically generated test id with a custom one.
-    :param database_name: the name of the _database that this test case uses.
     :param test_case_name: Used to attach a test case name to this decorator.
     :param method: The method that is being profiled
     :param enabled: If True will profile the method under test
@@ -32,43 +28,34 @@ def performance_breakpoint(method=None, enabled=True, test_case_name=default_tes
         :param kwargs: The key word arguments of the method under test
         :return: the methods results
         """
-        if enabled and options.enable_intrusive_profiling:
+        # Setting up the benchmarking object so measurements an tracing can take place
+        mb = MicroBenchmark()
+        mb.test_case_name = test_case_name
 
-            sample_id = ''.join(random.choices(string.ascii_uppercase + string.digits, k=8))
-            pf = Profiler()
-            pf.profile_method_under_test(method, *args, **kwargs)
+        # Measure and record method performance
+        pf = Profiler()
+        pf.profile_method_under_test(method, *args, **kwargs)
 
-            pt.database_connection_url = database_name
-            pt.test_case_name = test_case_name
+        # Extract and upload method performance statistics
+        ProfilerStatisticsInterpreter(
+            performance_statistics=pf.performance_statistics,
+            total_response_time=pf.total_response_time,
+            test_case_name=mb.test_case_name,
+            connection_url=mb.database_connection_url,
+            test_id=mb.current_test_id,
+            method_name=method.__name__,
+            sample_id=''.join(random.choices(string.ascii_uppercase + string.digits, k=8))
+        )
 
-            ProfilerStatisticsInterpreter(
-                performance_statistics=pf.performance_statistics,
-                total_response_time=pf.total_response_time,
-                test_case_name=pt.test_case_name,
-                database_name=pt.database_connection_url,
-                test_id=pt.current_test_id if test_id is None else test_id,
-                method_name=method.__name__,
-                sample_id=sample_id
-            )
-
-            return pf.functional_output
-
-        else:
-            return method(*args, **kwargs)
+        return pf.functional_output
 
     # ---------------------------------------------------------------------
 
     if method is None:
-        return partial(
-            performance_breakpoint,
-            enabled=enabled,
-            test_case_name=test_case_name,
-            test_id=test_id,
-            database_name=database_name
-        )
+        return partial(performance_breakpoint, test_case_name=test_case_name, enabled=enabled)
 
     elif callable(method) is not True:
-        raise CouchPotatoCannotFindMethod()
+        raise DecoratorCouldNotFindTargetMethod()
 
     else:
         # Execute the method under test
