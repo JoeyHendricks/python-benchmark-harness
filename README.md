@@ -103,7 +103,8 @@ using a letter rank:
 </p>
 
 > More information about the math behind this method and how this works can be found 
-> [here](https://github.com/JoeyHendricks/automated-performance-test-result-analysis).
+> [here](https://github.com/JoeyHendricks/automated-performance-test-result-analysis)
+> or within the [documentation](https://github.com/JoeyHendricks/python-micro-benchmarks/wiki).
 
 ## Learn more about the project
 
