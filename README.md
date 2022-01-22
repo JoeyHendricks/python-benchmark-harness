@@ -31,9 +31,9 @@ pip install python-micro-benchmarks
 
 ## Getting Started
 
-Getting started is straightforward after installing the package you can import the micro benchmarking object and **define a 
-benchmark name** after that you can use the **run()** method to execute your benchmark on your creation and see 
-if it is performing as expected.
+Getting started is straightforward after installing the package you can import the micro benchmarking object and 
+**define a benchmark name** after that you can use the **run()** method to execute your benchmark on your creation 
+and see if it is performing as expected.
 
 Below you can find a simple example that work non-intrusively on your code (no changes needed):
 
@@ -57,8 +57,9 @@ mb.run(
 letter_rank = mb.regression.letter_rank  # > A+
 ```
 
-That start up a benchmark or profiling session more flexibly you can also use the **trace** decorator.
-To do this you simple decorator the function or method you wish to benchmark this can be done the following way:
+To start up a benchmark or profiling session more flexibly you can also use the **trace** decorator called 
+**"collect_measurements"**. To do this you simple decorator the function or method you wish to benchmark 
+this can be done the following way:
 
 ```Python
 from Benchmarking.profiling.intrusive_profiler import collect_measurements
@@ -82,7 +83,8 @@ print(mb.regression.letter_rank)
 
 ```
 
-> Check out the [documentation](https://github.com/JoeyHendricks/python-micro-benchmarks/wiki) for more help to get started.
+> Check out the [documentation](https://github.com/JoeyHendricks/python-micro-benchmarks/wiki) for more help to 
+> get started.
 
 ## Visualize that pesky bottleneck
 
@@ -92,8 +94,8 @@ print(mb.regression.letter_rank)
 </p>
 
 Visualization are an excellent way to find out why your code slowdown or isn't working the way you would expect.
-python-micro-benchmarks offers out of the box the following visualizations, so you don't need to worry how to get your eyes on that 
-pesky bottleneck:
+python-micro-benchmarks offers out of the box the following visualizations, so you don't need to worry how to get 
+your eyes on that pesky bottleneck:
 
 - Flame Graphs
 - Code Heat Maps
@@ -101,8 +103,8 @@ pesky bottleneck:
 - Scatter plots (Coming soon)
 - Line Graphs (Coming soon)
 
-Want to visualize the data yourself or share the data in a common format, no problem python-micro-benchmarks has you covered. 
-You can export your benchmarks in the following formats through the benchmark API:
+Want to visualize the data yourself or share the data in a common format, no problem python-micro-benchmarks has 
+you covered. You can export your benchmarks in the following formats through the benchmark API:
 
 - CSV
 - JSON (Coming soon)
