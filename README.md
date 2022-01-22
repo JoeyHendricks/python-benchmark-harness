@@ -89,7 +89,7 @@ You can export your benchmarks in the following formats through the benchmark AP
 This project has the ability to detect an interesting performance regression using 
 [statistical methods](https://en.wikipedia.org/wiki/Statistical_distance) allowing 
 that a code change can be ranked with a score from 0 to 100, or a letter 
-[Japanese letter rank](https://en.wikipedia.org/wiki/Academic_grading_in_Japan) ranging from F to S.
+[Japanese letter rank ranging from F to S](https://en.wikipedia.org/wiki/Academic_grading_in_Japan).
 These ranking metrics allow users of this framework to quickly asses how much the performance of their code has
 regressed after introducing a code change.
 
