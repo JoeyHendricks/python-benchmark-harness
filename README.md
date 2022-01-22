@@ -90,11 +90,10 @@ This project has the ability to detect an interesting performance regression usi
 [statistical methods](https://en.wikipedia.org/wiki/Statistical_distance) allowing 
 that a code change can be ranked with a score from 0 to 100, or a letter 
 [Japanese letter rank ranging from F to S](https://en.wikipedia.org/wiki/Academic_grading_in_Japan).
-These ranking metrics allow users of this framework to quickly asses how much the performance of their code has
-regressed after introducing a code change.
 
-In the below animation you can see the ranking metrics at work measuring the distance between two 
-[CDF](https://en.wikipedia.org/wiki/Cumulative_distribution_function) and ranking it 
+These ranking metrics allow users of this framework to quickly asses how much the performance of their code has
+regressed after introducing a code change.In the below animation you can see the ranking metrics at work measuring 
+the distance between two [CDF](https://en.wikipedia.org/wiki/Cumulative_distribution_function) and ranking it 
 using a letter rank:
 
 <!-- Letter rank Animation -->
