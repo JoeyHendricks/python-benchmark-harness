@@ -17,7 +17,7 @@
 Python-micro-benchmark is a library that aids in creating [micro to macro performance benchmarks](https://link.springer.com/referenceworkentry/10.1007%2F978-3-319-77525-8_111#:~:text=Definitions,operations%2C%20bandwidth%2C%20or%20latency.) for 
 your code to find and visualize performance bottlenecks in your implementation in a flexible way.
 
-With an emphasis on automation and visualizations, this library can integrate your benchmark 
+With an emphasis on automation and visualizations, this library can integrate your benchmarks 
 within a unit test framework allowing you to test your code early in the development life cycle 
 and letting you render an assortment of visualizations to get the drop on a pesky performance 
 problem in your code.
