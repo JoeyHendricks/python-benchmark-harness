@@ -4,8 +4,7 @@ from .._utilities.decorators import takes_arguments
 from ..profiling.code_instrumentation import Profiler
 from .. import micro_benchmark as mb
 from functools import wraps, partial
-import random
-import string
+from uuid import uuid4
 
 
 @takes_arguments
@@ -44,7 +43,7 @@ def collect_measurements(method, test_case_name, enabled=True):
             connection_url=mb.database_connection_url,
             test_id=mb.current_test_id,
             method_name=method.__name__,
-            sample_id=''.join(random.choices(string.ascii_uppercase + string.digits, k=8))
+            sample_id=str(uuid4())[:8]
         )
 
         return pf.functional_output

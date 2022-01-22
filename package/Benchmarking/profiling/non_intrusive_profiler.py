@@ -9,8 +9,6 @@ from multiprocessing import Process
 from datetime import datetime
 from uuid import uuid4
 import warnings
-import string
-import random
 import time
 
 
@@ -30,9 +28,6 @@ class MicroBenchmark(Crud):
             # Pacing in between actions.
             time.sleep(pacing)
 
-            # Random ID.
-            sample_id = ''.join(random.choices(string.ascii_uppercase + string.digits, k=8))
-
             # Run method and profile it
             pf = Profiler()
             if arguments is None:
@@ -48,7 +43,7 @@ class MicroBenchmark(Crud):
                 test_case_name=self.test_case_name,
                 test_id=self.current_test_id,
                 method_name=method.__name__,
-                sample_id=sample_id
+                sample_id=str(uuid4())[:8]
             )
 
     @property
