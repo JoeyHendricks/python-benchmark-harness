@@ -84,6 +84,27 @@ You can export your benchmarks in the following formats through the benchmark AP
 
 > Check out the docs for more information how to visualize or export your measurements.
 
+# Detecting regression between benchmarks
+
+This project has the ability to detect an interesting performance regression using 
+[statistical methods](https://en.wikipedia.org/wiki/Statistical_distance) allowing 
+that a code change can be ranked with a score from 0 to 100, or a letter 
+[Japanese letter rank](https://en.wikipedia.org/wiki/Academic_grading_in_Japan) ranging from F to S.
+These ranking metrics allow users of this framework to quickly asses how much the performance of their code has
+regressed after introducing a code change.
+
+In the below animation you can see the ranking metrics at work measuring the distance between two 
+[CDF](https://en.wikipedia.org/wiki/Cumulative_distribution_function) and ranking it 
+using a letter rank:
+
+<!-- Letter rank Animation -->
+<p align="center">
+  <img src="https://github.com/JoeyHendricks/python-micro-benchmarks/blob/master/media/gifs/letter_ranking_simulation.gif?raw=true"/>
+</p>
+
+> More information about the math behind this method and how this works can be found 
+> [here](https://github.com/JoeyHendricks/automated-performance-test-result-analysis).
+
 ## Learn more about the project
 
 Want to learn more about python-micro-benchmarks then I would recommend read the documentation, 
