@@ -35,7 +35,6 @@ class FlameGraph(CodePaths):
         )
         self._current_number_of_children = 0
         self.test_case_name = test_case_name
-
         self.json = [
             self._count_code_path_length(
                 self._map_out_hierarchical_stack_relationships(

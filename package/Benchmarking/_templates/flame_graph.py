@@ -53,11 +53,11 @@ flame_graph_template = """
         <nav>
           <div class="pull-right">
             <form class="form-inline" id="form">
-              <execute_sql_statement id="sample" class="form-control">
+              <select id="sample" class="form-control">
               {% for sample in list_of_samples %}
                 <option>{{sample}}</option>
               {% endfor %}
-              </execute_sql_statement>
+              </select>
               <a class="btn" href="javascript: resetZoom();">Reset zoom</a>
               <a class="btn" href="javascript: clear();">Clear</a>
               <div class="form-group">
@@ -126,7 +126,7 @@ flame_graph_template = """
     function render_flame_graph(){
 
       $("#chart").empty();
-      var selected_sample = $('execute_sql_statement[id="sample"] option:selected').val()
+      var selected_sample = $('select[id="sample"] option:selected').val()
 
       flameGraph = d3.flamegraph()
       .width(960)
@@ -143,7 +143,7 @@ flame_graph_template = """
       var details = document.getElementById("details");
       flameGraph.setDetailsElement(details);
 
-      d3.execute_sql_statement("#chart")
+      d3.select("#chart")
       .datum(payload[selected_sample])
       .call(flameGraph);
     }
