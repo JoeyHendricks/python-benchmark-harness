@@ -84,7 +84,7 @@ You can export your benchmarks in the following formats through the benchmark AP
 
 > Check out the docs for more information how to visualize or export your measurements.
 
-# Detecting regression between benchmarks
+## Detecting regression between benchmarks
 
 This project has the ability to detect an interesting performance regression using 
 [statistical methods](https://en.wikipedia.org/wiki/Statistical_distance) allowing 
