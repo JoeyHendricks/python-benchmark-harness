@@ -60,7 +60,27 @@ letter_rank = mb.regression.letter_rank  # > A+
 That start up a benchmark or profiling session more flexibly you can also use the **trace** decorator.
 To do this you simple decorator the function or method you wish to benchmark this can be done the following way:
 
+```Python
+from Benchmarking.profiling.intrusive_profiler import collect_measurements
+from Benchmarking import micro_benchmark as mb
 
+
+# decorate your function to be able to collect measurements.
+@collect_measurements(test_case_name="decorated_function", enabled=True)
+def slow_method():
+    num = 6 ** 6 ** 6
+    return len(str(num))
+
+
+# Run your method.
+slow_method()
+
+# Interact with the micro benchmarking object to extract information.
+print(mb.current_test_id)
+print(mb.test_case_name)
+print(mb.regression.letter_rank)
+
+```
 
 > Check out the [documentation](https://github.com/JoeyHendricks/python-micro-benchmarks/wiki) for more help to get started.
 

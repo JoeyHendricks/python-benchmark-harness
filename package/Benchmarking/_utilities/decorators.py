@@ -50,3 +50,24 @@ def verify_method_annotations(method):
         return method(*args, **kwargs)
 
     return execution
+
+
+def takes_arguments(function):
+    """
+    A decorator for a decorator that should take arguments.
+    With the purpose to make other decorator that use
+    arguments less complicated.
+
+    more info: https://stackoverflow.com/questions/5929107/decorators-with-parameters
+
+    :param function: The decorator that should take arguments
+    :return:
+    """
+
+    def decorator(*args, **kwargs):
+        def wrapper(f):
+            return function(f, *args, **kwargs)
+
+        return wrapper
+
+    return decorator

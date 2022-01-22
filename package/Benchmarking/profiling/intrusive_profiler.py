@@ -1,22 +1,26 @@
-from ..benchmarking.result_interpreters import ProfilerStatisticsInterpreter
+from ..profiling.result_interpreters import ProfilerStatisticsInterpreter
 from .._utilities.exceptions import DecoratorCouldNotFindTargetMethod
-from ..benchmarking.non_intrusive_profiler import MicroBenchmark
-from ..benchmarking.code_instrumentation import Profiler
+from .._utilities.decorators import takes_arguments
+from ..profiling.code_instrumentation import Profiler
+from .. import micro_benchmark as mb
 from functools import wraps, partial
 import random
 import string
 
 
-def performance_breakpoint(method, test_case_name, enabled=True):
+@takes_arguments
+def collect_measurements(method, test_case_name, enabled=True):
     """
     This decorator can be used to gather performance statistical
     on a method.
     :param test_case_name: Used to attach a test case name to this decorator.
     :param method: The method that is being profiled
     :param enabled: If True will profile the method under test
-    :return: The method output
+    :return: The method functional output
     """
     # ---------------------------------------------------------------------
+    # Setting up the profiling object so measurements an tracing can take place
+    mb.test_case_name = test_case_name
 
     @wraps(method)
     def method_execution(*args, **kwargs):
@@ -28,10 +32,6 @@ def performance_breakpoint(method, test_case_name, enabled=True):
         :param kwargs: The key word arguments of the method under test
         :return: the methods results
         """
-        # Setting up the benchmarking object so measurements an tracing can take place
-        mb = MicroBenchmark()
-        mb.test_case_name = test_case_name
-
         # Measure and record method performance
         pf = Profiler()
         pf.profile_method_under_test(method, *args, **kwargs)
@@ -52,12 +52,11 @@ def performance_breakpoint(method, test_case_name, enabled=True):
     # ---------------------------------------------------------------------
 
     if method is None:
-        return partial(performance_breakpoint, test_case_name=test_case_name, enabled=enabled)
+        return partial(method, test_case_name, enabled)
 
     elif callable(method) is not True:
         raise DecoratorCouldNotFindTargetMethod()
 
     else:
-        # Execute the method under test
-        output = method_execution
-        return output
+        # Return method under test with profiler tracers inplace.
+        return method_execution

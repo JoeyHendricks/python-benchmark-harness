@@ -5,7 +5,7 @@ setup(
     version='1.0.1',
     packages=[
         'Benchmarking',
-        'Benchmarking.benchmarking',
+        'Benchmarking.profiling',
         'Benchmarking._database',
         'Benchmarking.profiling',
         'Benchmarking._utilities',
