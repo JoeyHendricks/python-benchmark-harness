@@ -59,7 +59,7 @@ class StatisticalDistanceTest:
         self._wasserstein_lowest_boundary = 0.010
         self._kolmogorov_smirnov_lowest_boundary = 0.200
         self._matrix_size = 100
-        self.boundary_increment = 0.010
+        self._boundary_increment = 0.010
         self.SCORING_MATRIX = self._generate_scoring_matrix()
 
         # Calculate statistics
@@ -147,8 +147,8 @@ class StatisticalDistanceTest:
                     "punishment": punishment
                 }
             )
-            wst_start_val += self.boundary_increment
-            ks_start_val += self.boundary_increment
+            wst_start_val += self._boundary_increment
+            ks_start_val += self._boundary_increment
 
         return scoring_matrix
 

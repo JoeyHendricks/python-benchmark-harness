@@ -41,7 +41,7 @@ def collect_measurements(method, test_case_name, enabled=True):
             total_response_time=pf.total_response_time,
             test_case_name=mb.test_case_name,
             connection_url=mb.database_connection_url,
-            test_id=mb.current_test_id,
+            test_id=mb.test_id,
             method_name=method.__name__,
             sample_id=str(uuid4())[:8]
         )

@@ -19,7 +19,7 @@ class TestVerifications(unittest.TestCase):
             iteration=self.ITERATIONS,
             pacing=0,
         )
-        return {"baseline_test_id": mb.previous_test_id, "benchmark_test_id": mb.current_test_id}
+        return {"baseline_test_id": mb.baseline_test_id, "benchmark_test_id": mb.test_id}
 
     def test_flame_graph_html_rendering(self):
         """

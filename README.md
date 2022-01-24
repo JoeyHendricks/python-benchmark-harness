@@ -77,7 +77,7 @@ def slow_method():
 slow_method()
 
 # Interact with the micro benchmarking object to extract information.
-print(mb.current_test_id)
+print(mb.test_id)
 print(mb.test_case_name)
 print(mb.regression.letter_rank)
 

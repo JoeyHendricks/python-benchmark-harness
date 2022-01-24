@@ -2,7 +2,7 @@ from .._database.collection import Crud
 import numpy as np
 
 
-class Statistics(Crud):
+class Statistics:
 
     def __init__(self, measurements):
         super(Statistics, self).__init__()

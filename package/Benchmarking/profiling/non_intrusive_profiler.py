@@ -12,10 +12,10 @@ import warnings
 import time
 
 
-class MicroBenchmark(Crud):
+class Benchmark(Crud):
 
     def __init__(self):
-        super(MicroBenchmark, self).__init__()
+        super(Benchmark, self).__init__()
 
     def _execute_code_under_test(self, method: object, arguments=None, iteration=1, pacing=0) -> None:
         """
@@ -41,7 +41,7 @@ class MicroBenchmark(Crud):
                 total_response_time=pf.total_response_time,
                 connection_url=self.database_connection_url,
                 test_case_name=self.test_case_name,
-                test_id=self.current_test_id,
+                test_id=self.test_id,
                 method_name=method.__name__,
                 sample_id=str(uuid4())[:8]
             )
@@ -58,7 +58,7 @@ class MicroBenchmark(Crud):
         response_times = self.select_benchmark_profiled_method_cumulative_latency(
             url=self.database_connection_url,
             tcn=self.test_case_name,
-            test_id=self.current_test_id
+            test_id=self.test_id
         )
         return Statistics(
             measurements=response_times
@@ -76,7 +76,7 @@ class MicroBenchmark(Crud):
         response_times = self.select_benchmark_profiled_method_cumulative_latency(
             url=self.database_connection_url,
             tcn=self.test_case_name,
-            test_id=self.previous_test_id
+            test_id=self.baseline_test_id
         )
         return Statistics(
             measurements=response_times
@@ -107,44 +107,30 @@ class MicroBenchmark(Crud):
             return "default"
 
     @property
-    def current_test_id(self) -> float or None:
+    def test_id(self) -> float or None:
         """
 
         :return:
         """
-        if "current_test_id" in self.__dict__:
+        if "test_id" in self.__dict__:
 
-            return self.__dict__["current_test_id"]
+            return self.__dict__["test_id"]
 
         else:
             return None
 
     @property
-    def previous_test_id(self) -> float or None:
+    def baseline_test_id(self) -> float or None:
         """
 
         :return:
         """
-        if "previous_test_id" in self.__dict__:
+        if "baseline_test_id" in self.__dict__:
 
-            return self.__dict__["previous_test_id"]
+            return self.__dict__["baseline_test_id"]
 
         else:
             return None
-
-    @current_test_id.setter
-    def current_test_id(self, value: float):
-        """
-
-        """
-        self.__dict__["current_test_id"] = value
-
-    @previous_test_id.setter
-    def previous_test_id(self, value: float):
-        """
-
-        """
-        self.__dict__["previous_test_id"] = value
 
     @property
     def database_connection_url(self) -> str:
@@ -157,6 +143,20 @@ class MicroBenchmark(Crud):
 
         else:
             return self.__dict__["database_connection_url"]
+
+    @test_id.setter
+    def test_id(self, value: float):
+        """
+
+        """
+        self.__dict__["test_id"] = value
+
+    @baseline_test_id.setter
+    def baseline_test_id(self, value: float):
+        """
+
+        """
+        self.__dict__["baseline_test_id"] = value
 
     @test_case_name.setter
     def test_case_name(self, value: str) -> None:
@@ -178,14 +178,20 @@ class MicroBenchmark(Crud):
         )
         self.__dict__["test_case_name"] = value
 
+        # Run test data retention policy
+        self._enforce_data_retention_policy(
+            url=self.database_connection_url,
+            tcn=value,
+        )
+
         # reset the performance test identifying variables.
         benchmarks = self.select_benchmarks_with_statistics(
             url=self.database_connection_url,
             tcn=value,
             number=1
         )
-        self.previous_test_id = benchmarks[0] if len(benchmarks) > 0 else None
-        self.current_test_id = datetime.now().timestamp()
+        self.baseline_test_id = benchmarks[0] if len(benchmarks) > 0 else None
+        self.test_id = datetime.now().timestamp()
 
     @database_connection_url.setter
     def database_connection_url(self, value: str) -> None:
@@ -208,7 +214,7 @@ class MicroBenchmark(Crud):
             self.__dict__['boundary_verification_results'].append(
                 {
                     "uuid": str(uuid4()),
-                    "test_id": self.current_test_id,
+                    "test_id": self.test_id,
                     "boundary_name": boundary["name"],
                     "value": boundary["value"],
                     "minimum_boundary": boundary["minimum"],
@@ -252,7 +258,7 @@ class MicroBenchmark(Crud):
         self.__dict__['comparison_results'] = [
             {
                 "uuid": str(uuid4()),
-                "test_id": self.current_test_id,
+                "test_id": self.test_id,
                 "critical_letter_rank": instructions["critical_letter_rank"],
                 "observed_letter_rank": self.regression.letter_rank,
                 "critical_score": instructions["critical_score"],
