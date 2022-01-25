@@ -62,7 +62,7 @@ To start up a benchmark or profiling session more flexibly you can also use the 
 this can be done the following way:
 
 ```Python
-from Benchmarking.profiling.intrusive_profiler import collect_measurements
+from Benchmarking.profiling.intrusive import collect_measurements
 from Benchmarking import micro_benchmark as mb
 
 

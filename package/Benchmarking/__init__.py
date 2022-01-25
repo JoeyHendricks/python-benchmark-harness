@@ -1,4 +1,4 @@
-from .profiling.non_intrusive_profiler import Benchmark
+from .profiling.non_intrusive import Benchmark
 
 __version__ = '1.0.1'
 

@@ -178,12 +178,6 @@ class Benchmark(Crud):
         )
         self.__dict__["test_case_name"] = value
 
-        # Run test data retention policy
-        self._enforce_data_retention_policy(
-            url=self.database_connection_url,
-            tcn=value,
-        )
-
         # reset the performance test identifying variables.
         benchmarks = self.select_benchmarks_with_statistics(
             url=self.database_connection_url,
