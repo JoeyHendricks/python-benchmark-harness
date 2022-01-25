@@ -1,5 +1,5 @@
 from ..statistical.verification import check_max_boundary, check_min_boundary, check_letter_rank_boundary
-from ..profiling.result_interpreters import ProfilerStatisticsInterpreter
+from ..profiling.interpreters import ProfilerStatisticsInterpreter
 from ..statistical.heuristics import StatisticalDistanceTest
 from ..profiling.code_instrumentation import Profiler
 from ..statistical.measurements import Statistics

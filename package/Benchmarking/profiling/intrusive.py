@@ -1,4 +1,4 @@
-from ..profiling.result_interpreters import ProfilerStatisticsInterpreter
+from ..profiling.interpreters import ProfilerStatisticsInterpreter
 from .._utilities.exceptions import DecoratorCouldNotFindTargetMethod
 from .._utilities.decorators import takes_arguments
 from ..profiling.code_instrumentation import Profiler
