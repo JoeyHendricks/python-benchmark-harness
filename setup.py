@@ -17,15 +17,15 @@ setup(
         'SQLAlchemy-Utils',
         'scipy',
         'SQLAlchemy',
-        'PyMySQL',
         'pandas',
         'PyYAML',
         'Jinja2'
     ],
-    url='https://github.com/JoeyHendricks/QuickPotato',
+    url='https://github.com/JoeyHendricks/python-benchmarks',
     license='MIT',
     author='Joey Hendricks',
     author_email='joey.hendricks20@icloud.com',
-    description='Making performance testing within Python easy and understandable.',
+    description='A micro/macro benchmark framework for the Python programming '
+                'language that helps with optimizing your software.',
     python_requires='>=3.8'
 )
