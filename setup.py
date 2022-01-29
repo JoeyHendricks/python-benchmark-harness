@@ -1,8 +1,9 @@
 from setuptools import setup
+from Benchmarking import __version__
 
 setup(
     name='Benchmarking',
-    version='1.0.1',
+    version=str(__version__),
     packages=[
         'Benchmarking',
         'Benchmarking.profiling',
