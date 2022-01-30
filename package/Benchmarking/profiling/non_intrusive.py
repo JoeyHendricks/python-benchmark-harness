@@ -1,7 +1,7 @@
 from ..statistical.verification import check_max_boundary, check_min_boundary, check_letter_rank_boundary
 from ..profiling.interpreters import ProfilerStatisticsInterpreter
 from ..statistical.heuristics import StatisticalDistanceTest
-from ..profiling.code_instrumentation import Profiler
+from ..profiling.instrumentation import Profiler
 from ..statistical.measurements import Statistics
 from .._utilities.decorators import verify_method_annotations
 from .._database.collection import Crud
