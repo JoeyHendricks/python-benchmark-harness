@@ -3,7 +3,7 @@
   <img src="https://github.com/JoeyHendricks/python-micro-benchmarks/blob/master/media/images/banner-wide-with-text.jpeg?raw=true"/>
 </p>
 <!-- TAG LINE -->
-<h3 align="center">Get your code of the couch by stressing it on the bench</h3>
+<h3 align="center">Get your code off the couch by stressing it on the bench</h3>
 <p align="center">
     <a href="https://www.linkedin.com/in/joey-hendricks/">Contact me</a> -
     <a href="https://github.com/JoeyHendricks/python-micro-benchmarks/issues">Report Bug or Request Feature</a> -
@@ -14,8 +14,11 @@
 <!-- CONTENT -->
 ## The project in a nutshell
 
-Python-micro-benchmark is a library that aids in creating [micro to macro performance benchmarks](https://link.springer.com/referenceworkentry/10.1007%2F978-3-319-77525-8_111#:~:text=Definitions,operations%2C%20bandwidth%2C%20or%20latency.) for 
-your code to find and visualize performance bottlenecks in your implementation in a flexible way.
+A [micro/macro benchmark](https://link.springer.com/referenceworkentry/10.1007%2F978-3-319-77525-8_111#:~:text=Definitions,operations%2C%20bandwidth%2C%20or%20latency.) 
+is an act of testing the performance of a framework, algorithm, routine, or application to make sure it has the 
+performance you are expecting. **python-benchmark-harness** is therefore a library that aids in creating these 
+[micro or macro performance benchmarks](https://link.springer.com/referenceworkentry/10.1007%2F978-3-319-77525-8_111#:~:text=Definitions,operations%2C%20bandwidth%2C%20or%20latency.)
+for your code to find and visualize performance bottlenecks in your implementation in a flexible way.
 
 With an emphasis on automation and visualizations, this library can integrate your benchmarks 
 within a unit test framework allowing you to test your code early in the development life cycle 
@@ -26,16 +29,14 @@ problem in your code.
 
 Installation is easy using [pip](https://pip.pypa.io/en/stable/) or clone the source code straight from GitHub.
 ```bash
-pip install python-micro-benchmarks
+pip install python-benchmark-harness
 ```
 
 ## Getting Started
 
-Getting started is straightforward after installing the package you can import the micro benchmarking object and 
-**define a benchmark name** after that you can use the **run()** method to execute your benchmark on your creation 
-and see if it is performing as expected.
-
-Below you can find a simple example that work non-intrusively on your code (no changes needed):
+After installing the package import the benchmarking object and **define a benchmark name**. 
+Use the **run()** method to execute your benchmark on your creation and evaluate its performance.
+Below you can find a simple example that benchmarks your code non-intrusively:
 
 ```Python
 from Benchmarking import micro_benchmark as mb
@@ -57,9 +58,9 @@ mb.run(
 letter_rank = mb.regression.letter_rank  # > A+
 ```
 
-To start up a benchmark or profiling session more flexibly you can also use the **trace** decorator called 
-**"collect_measurements"**. To do this you simple decorator the function or method you wish to benchmark 
-this can be done the following way:
+To start up a benchmarking session more flexibly you can also use the **trace** decorator called 
+**"collect_measurements"**. To do this you use **"collect_measurements"** to decorator your code that 
+you want to benchmark:
 
 ```Python
 from Benchmarking.profiling.intrusive import collect_measurements
@@ -93,9 +94,8 @@ print(mb.regression.letter_rank)
   <img src="https://github.com/JoeyHendricks/python-micro-benchmarks/blob/master/media/gifs/code_visualzation_animation.gif?raw=true"/>
 </p>
 
-Visualization are an excellent way to find out why your code slowdown or isn't working the way you would expect.
-python-micro-benchmarks offers out of the box the following visualizations, so you don't need to worry how to get 
-your eyes on that pesky bottleneck:
+It is possible to visualize performance bottlenecks with variety of visualization the ones 
+that are currently available within the package are the following: 
 
 - Flame Graphs
 - Code Heat Maps
@@ -103,8 +103,8 @@ your eyes on that pesky bottleneck:
 - Scatter plots (Coming soon)
 - Line Graphs (Coming soon)
 
-Want to visualize the data yourself or share the data in a common format, no problem python-micro-benchmarks has 
-you covered. You can export your benchmarks in the following formats through the benchmark API:
+If you want to visualize the data yourself or share the data in a common format, this is possible. 
+You can export your benchmarks in the following formats through the benchmark API:
 
 - CSV
 - JSON (Coming soon)
@@ -134,12 +134,12 @@ using a letter rank:
 
 ## Learn more about the project
 
-Want to learn more about python-micro-benchmarks then I would recommend read the documentation, 
-or to check my older conference recordings about python-micro-benchmarks:
+Want to learn more about this project then I would recommend read the documentation, 
+or to check my older conference recordings about this topic:
 
 - 11/07/2020: [Don’t lose your mind over slow code check your performance sanity.](https://www.linkedin.com/pulse/dont-lose-your-mind-over-slow-code-check-performance-sanity-joey/) 
 - 08/10/2020: [My recording about python-micro-benchmarks @NeotysPAC 2020.](https://www.youtube.com/watch?v=AWlhalEywEw) 
 - 15/12/2020: [Interview about python-micro-benchmarks @TestGuild 2020.)](https://testguild.com/podcast/performance/p56-joey/)
 - 12/01/2020: [An article I wrote for Neotys about my @NeotysPAC 2020 presentation.](https://www.neotys.com/blog/neotyspac-performance-testing-unit-level-joey-hendricks/)
 
-> python-micro-benchmarks was formerly known as QuickPotato and has been renamed to better reflect its purpose.
+> This project was formerly known as QuickPotato and has been renamed to better reflect its purpose.

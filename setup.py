@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(
-    name='python-micro-benchmarks',
+    name='python-benchmark-harness',
     version='1.0.2',
     packages=[
         'Benchmarking',
