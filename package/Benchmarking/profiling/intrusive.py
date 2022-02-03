@@ -2,7 +2,7 @@ from ..profiling.interpreters import ProfilerStatisticsInterpreter
 from .._utilities.exceptions import DecoratorCouldNotFindTargetMethod
 from .._utilities.decorators import takes_arguments
 from ..profiling.instrumentation import Profiler
-from .. import micro_benchmark as mb
+from .. import benchmark as mb
 from functools import wraps, partial
 from uuid import uuid4
 

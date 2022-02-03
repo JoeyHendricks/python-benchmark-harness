@@ -39,7 +39,7 @@ Use the **run()** method to execute your benchmark on your creation and evaluate
 Below you can find a simple example that benchmarks your code non-intrusively:
 
 ```Python
-from Benchmarking import micro_benchmark as mb
+from Benchmarking import benchmark as mb
 from tests.stubs import FancyCode as Fc
 
 # Give your benchmark a name
@@ -64,7 +64,7 @@ you want to benchmark:
 
 ```Python
 from Benchmarking.profiling.intrusive import collect_measurements
-from Benchmarking import micro_benchmark as mb
+from Benchmarking import benchmark as mb
 
 
 # decorate your function to be able to collect measurements.

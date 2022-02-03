@@ -1,5 +1,5 @@
 from tests.stubs import FancyCode
-from package.Benchmarking import micro_benchmark as mb
+from package.Benchmarking import benchmark as mb
 from package.Benchmarking.visualizations.flame_graphs import FlameGraph
 import unittest
 
